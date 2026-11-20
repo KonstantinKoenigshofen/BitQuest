@@ -1,0 +1,263 @@
+"use strict";
+
+const quantenQuests = [
+  {
+    id: "qubit-messen", title: "Ein Qubit vorbereiten und messen",
+    description: "Stelle Amplituden und Phase ein und vergleiche Messungen in drei Basen.",
+    lessons: [{
+      title: "Gleiche Häufigkeiten, verschiedene Zustände", lab: "qubit-zustand",
+      opening: "Zwei Qubits liefern in der Standardbasis gleich oft 0 und 1. Im Labor kannst du bei einem davon die relative Phase ändern. In welcher Messbasis wird der Unterschied sichtbar?",
+      intro: "Ein Qubit hat den Zustand α|0⟩ + β|1⟩. Die komplexen Amplituden erfüllen |α|² + |β|² = 1. In der Z-Basis sind |α|² und |β|² die Wahrscheinlichkeiten für 0 und 1.",
+      sections: [
+        ["Betrag und Phase", "Die komplexe Zahl i beschreibt eine Vierteldrehung in der komplexen Ebene. |i|² ist 1. Änderst du nur β von β zu iβ, bleiben die Z-Wahrscheinlichkeiten gleich. Die relative Phase ändert trotzdem, wie sich Amplituden bei einer späteren Operation addieren."],
+        ["Z- und X-Basis", "In der X-Basis heißen die Zustände |+⟩ = (|0⟩ + |1⟩)/√2 und |−⟩ = (|0⟩ − |1⟩)/√2. Eine X-Messung lässt sich im Schaltkreis durch ein Hadamard-Gatter und anschließendes Messen in Z umsetzen."],
+        ["Y-Basis und Blochkugel", "Eine relative Phase von 90° führt bei gleichen Beträgen zu |+i⟩ = (|0⟩ + i|1⟩)/√2. Die Y-Messung erkennt diesen Zustand sicher. Die drei angezeigten Bloch-Koordinaten geben je Achse den Unterschied zwischen den Wahrscheinlichkeiten für das positive und das negative Ergebnis an. In Z zählt 0 als positives Ergebnis und 1 als negatives."],
+        ["Einzelmessung und Serie", "Ein Durchlauf liefert genau ein Ergebnis. Für eine Messserie wird der Zustand vor jedem Durchlauf neu vorbereitet. Eine endliche Serie kann von der theoretischen Verteilung abweichen."],
+      ],
+      check: ["Stelle 50 % und Phase 180° ein. Was erwartest du in Z und in X?", "In Z sind beide Ergebnisse gleich wahrscheinlich. In X erscheint sicher |−⟩."],
+      source: ["IBM Quantum Learning · Single Systems: Quantum Information", "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/single-systems/quantum-information"],
+    }],
+    practice: {
+      title: "Messdaten aus zwei Basen deuten",
+      intro: "Ein Gerät präpariert entweder |+⟩ oder |−⟩. In Z siehst du in beiden Fällen ungefähr gleich viele Nullen und Einsen.",
+      questions: [{ prompt: "Welches Experiment unterscheidet die beiden Präparationen?", options: ["Mehr Messungen ausschließlich in Z.", "In X messen und auf + oder − achten."], answer: 1, clue: "Überlege, welche Messung auf die relative Phase reagiert.", explanation: "Die beiden Zustände sind die zwei Basiszustände der X-Messung." }],
+      summary: "Du hast Messwahrscheinlichkeiten und relative Phase unterschieden.",
+    },
+    transfer: { prompt: "Ein anderes Qubit hat α = √3/2 und β = i/2. Wie wahrscheinlich ist 1 in Z?", options: ["25 %", "50 %", "75 %"], answer: 0, clue: "Quadriere den Betrag von β. Der Faktor i hat den Betrag 1.", explanation: "|i/2|² = (1/2)² = 1/4." },
+  },
+  {
+    id: "quantengatter-kombinieren", title: "Quantengatter kombinieren und umkehren",
+    description: "Führe X, Z, H und S aus und verfolge, was mit den Amplituden passiert.",
+    lessons: [{
+      title: "Schaltungsschritte als Matrixoperationen", lab: "qubit-gatter",
+      opening: "Ein Kollege behauptet, Z habe auf |+⟩ keine Wirkung, weil die Z-Messwahrscheinlichkeiten gleich bleiben. Entwickle mit den Gattern einen kurzen Gegenversuch.",
+      intro: "Ein Gatter multipliziert den Zustandsvektor mit einer unitären Matrix. Unitarität erhält Norm und Skalarprodukte und erlaubt eine Umkehrung mit der adjungierten Matrix.",
+      sections: [
+        ["X, Z, H und S", "X vertauscht α und β. Z wechselt das Vorzeichen von β. H bildet (α, β) auf ((α+β)/√2, (α−β)/√2) ab. S multipliziert β mit i und S† mit −i."],
+        ["Reihenfolge und Umkehrung", "Für erst H, dann Z, steht die Matrixrechnung ZH|ψ⟩. Um die Folge rückgängig zu machen, führst du zuerst Z, dann H aus. H, X und Z sind ihre eigenen Inversen. Das Ergebnis einer Messung verrät im Allgemeinen zu wenig, um den vorherigen Zustand zu rekonstruieren."],
+      ],
+      check: ["Welchen Z-Messwert liefert |+⟩ nach erst Z und dann H?", "Z erzeugt |−⟩. H bildet |−⟩ auf |1⟩ ab."],
+      source: ["IBM Quantum Learning · Bits, Gates, and Circuits", "https://quantum.cloud.ibm.com/learning/en/courses/utility-scale-quantum-computing/bits-gates-and-circuits"],
+    }],
+    practice: {
+      title: "Eine Phasendrehung rückgängig machen",
+      intro: "Auf |+⟩ wurde erst H und dann S angewendet. Du möchtest die ganze Operation für einen beliebigen Eingangszustand umkehren.",
+      questions: [{ prompt: "Welche Reihenfolge ist die Inverse der gesamten Folge?", options: ["Erst S†, dann H.", "Erst H, dann S†.", "Erst S, dann H."], answer: 0, clue: "Beginne mit dem Gatter, das zuletzt ausgeführt wurde.", explanation: "S† hebt S auf. Danach hebt H das ursprüngliche H auf." }],
+      summary: "Du kannst eine Gatterfolge lesen und ihre Umkehrung angeben.",
+    },
+    transfer: { prompt: "Welches Ergebnis liefert |0⟩ nach der Folge H, Z, H in der Z-Messung?", options: ["Sicher 0", "Sicher 1", "0 oder 1 mit je 50 %"], answer: 1, clue: "Verfolge die Zwischenzustände |+⟩ und |−⟩.", explanation: "H erzeugt |+⟩, Z erzeugt |−⟩ und das letzte H ergibt |1⟩." },
+  },
+  {
+    id: "quantenregister-aufbauen", title: "Ein Quantenregister aufbauen und teilweise messen",
+    description: "Bilde ein Tensorprodukt und beobachte, was eine Messung an genau einem Qubit ändert.",
+    lessons: [{
+      title: "Vom Produktzustand zum Messzweig", lab: "qubit-register",
+      opening: "Du steckst zwei unabhängig vorbereitete Qubits in ein Register. Vor der Messung willst du vorhersagen, welche der vier gemeinsamen Ausgaben noch möglich sind, wenn nur das erste Qubit gemessen wird.",
+      intro: "Die Anzeige schreibt das erste Qubit links. Das Register hat die Basis |00⟩, |01⟩, |10⟩, |11⟩. Ein Produktzustand hat die Amplituden (αγ, αδ, βγ, βδ), wenn die Einzelzustände (α, β) und (γ, δ) sind.",
+      sections: [
+        ["Nur ein Qubit messen", "Für Ergebnis 0 am ersten Qubit addierst du die Wahrscheinlichkeiten von |00⟩ und |01⟩. Im beobachteten Zweig bleiben nur diese Amplituden. Geteilt durch die Wurzel der Zweigwahrscheinlichkeit ergeben sie wieder einen normierten Zustand."],
+        ["Unabhängigkeit im Produktzustand", "Wenn sich der Zustand als Produkt schreiben lässt, ändert eine Messung am ersten Qubit den Zustand des zweiten nicht. Bei verschränkten Zuständen lässt sich diese Produktrechnung nicht anwenden."],
+      ],
+      check: ["Welche Basiszustände enthält |+⟩ ⊗ |1⟩?", "|01⟩ und |11⟩ haben jeweils die Amplitude 1/√2. Die übrigen Amplituden sind null."],
+      source: ["IBM Quantum Learning · Multiple Systems: Quantum Information", "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/multiple-systems/quantum-information"],
+    }],
+    practice: {
+      title: "Das zweite Qubit ungemessen lassen",
+      intro: "Ein Register steht in |1⟩ ⊗ |+⟩. Ein Messgerät liest nur das erste Qubit aus.",
+      questions: [{ prompt: "Welche Aussage stimmt?", options: ["Das erste Ergebnis wird zufällig 0 oder 1.", "Das erste Ergebnis ist 1 und das zweite Qubit bleibt in |+⟩."], answer: 1, clue: "Lies die beiden Faktoren getrennt. Das Messgerät wirkt nur auf den ersten.", explanation: "Die Messung bestätigt den Zustand des ersten Qubits. Der zweite unabhängige Faktor bleibt erhalten." }],
+      summary: "Du hast das Register und eine Teilmessung korrekt ausgewertet.",
+    },
+    transfer: { prompt: "Wie groß ist für |+⟩ ⊗ |+⟩ die Wahrscheinlichkeit von |10⟩?", options: ["0 %", "25 %", "50 %"], answer: 1, clue: "Multipliziere die beiden Einzelwahrscheinlichkeiten für erstes Qubit 1 und zweites Qubit 0.", explanation: "(1/2) · (1/2) = 1/4." },
+  },
+  {
+    id: "deutsch-algorithmus-verfolgen", title: "Deutsch-Algorithmus Schritt für Schritt ausführen",
+    description: "Unterscheide konstante und balancierte Funktionen mit einem Quantenorakel.", group: "Algorithmen und Quanteninformation",
+    lessons: [{
+      title: "Information aus einem Orakelaufruf", lab: "deutsch-orakel",
+      opening: "Ein Orakel berechnet eine unbekannte Funktion f mit einem Eingabebit. Du möchtest wissen, ob f(0) und f(1) gleich sind. Teste die Schaltung für alle vier möglichen Funktionen.",
+      intro: "Das reversible Orakel U_f bildet |x,y⟩ auf |x,y ⊕ f(x)⟩ ab. Die Schaltung startet mit |01⟩ und legt durch zwei H-Gatter das Hilfsqubit in |−⟩.",
+      sections: [
+        ["Phasenrückwirkung", "X|−⟩ = −|−⟩. Die Orakeloperation belässt das Hilfsqubit deshalb in |−⟩ und gibt dem Zweig |x⟩ den Faktor (−1)^f(x). Gleiche Funktionswerte erzeugen höchstens eine globale Phase. Verschiedene Werte erzeugen ein relatives Minus."],
+        ["Das letzte H lesen", "Das letzte H auf dem ersten Qubit bildet gleiche Vorzeichen auf |0⟩ und unterschiedliche auf |1⟩ ab, jeweils bis auf eine globale Phase. Nur das erste Qubit muss gemessen werden."],
+        ["Was die Abfragezahl bedeutet", "Die ideale Quantenschaltung ruft das Orakel einmal auf. Eine klassische deterministische Lösung braucht im schlimmsten Fall beide Funktionswerte. Dieser Vergleich zählt Orakelaufrufe, unabhängig von den Kosten, das Orakel zu bauen."],
+      ],
+      check: ["Was ändert sich bei f(0)=f(1)=1 gegenüber f(0)=f(1)=0?", "Der Zustand nach dem Orakel hat ein globales Minus. Beide Fälle ergeben als erstes Messbit 0."],
+      source: ["IBM Quantum Learning · The Deutsch–Jozsa Algorithm", "https://quantum.cloud.ibm.com/learning/en/modules/computer-science/deutsch-jozsa"],
+    }],
+    practice: {
+      title: "Ein komplementäres Orakel einordnen",
+      intro: "Das Orakel bildet 0 auf 1 und 1 auf 0 ab. Verwende dieselbe Schaltung und dieselbe Ausleseregel wie im Labor.",
+      questions: [{ prompt: "Welches Ergebnis erhältst du am ersten Qubit?", options: ["1, die Funktion ist balanciert.", "0, die Funktion ist konstant."], answer: 0, clue: "Vergleiche die beiden Werte. Das letzte H macht ein relatives Minus sichtbar.", explanation: "Die Werte unterscheiden sich, daher liest du im idealen Modell 1." }],
+      summary: "Du kannst aus dem Messbit auf die Funktionsklasse schließen.",
+    },
+    transfer: { prompt: "Welche Aussage erhältst du aus dem Ergebnis 1?", options: ["f(0)=1 und f(1)=0 sind beide bekannt.", "Die beiden Funktionswerte sind verschieden, ihre Reihenfolge bleibt offen."], answer: 1, clue: "Beide balancierten Orakel erzeugen dasselbe erste Messbit.", explanation: "Der Algorithmus bestimmt die Gleichheit der Werte und lässt offen, welcher Eingang auf 1 abbildet." },
+  },
+  {
+    id: "doppelspalt-interferenz", title: "Interferenz am Doppelspalt untersuchen",
+    description: "Vergleiche offene Spalte, eine Phasenverschiebung und unterscheidbare Wege.", group: "Algorithmen und Quanteninformation",
+    lessons: [{
+      title: "Amplituden addieren und Treffer erklären", lab: "doppelspalt-bild",
+      opening: "Mit zwei offenen Spalten ist ein Punkt auf dem Schirm dunkel, obwohl jeder Spalt einzeln dort Treffer beitragen würde. Verändere die Phase und dann die Weginformation.",
+      intro: "Das Labor zeigt ein idealisiertes Schirmprofil mit gleich starken Beiträgen. Es blendet das Beugungsprofil der einzelnen Spalte aus und zeigt Intensitäten relativ zum hellsten möglichen Balken.",
+      sections: [
+        ["Ununterscheidbare Wege", "Für denselben Treffer addieren sich die beiden komplexen Amplituden. Sind sie am selben Ort gleich groß und entgegengesetzt, ergibt sich eine Amplitude von null. Das quadrierte Ergebnis ist die Intensität."],
+        ["Weginformation", "Wenn die beiden Wege mit unterscheidbaren Zuständen eines Detektors markiert sind, verschwindet das Interferenzmuster im Schirmbild, das beide Markierungen zusammenfasst. Die Beiträge erscheinen dann als Summe der Einzelintensitäten."],
+      ],
+      check: ["Wie änderst du einen hellen Mittelpunkt in einen dunklen, während beide Wege offen bleiben?", "Verschiebe die relative Phase um 180°. Die beiden gleich großen Beiträge heben sich in der Mitte auf."],
+      source: ["The Feynman Lectures on Physics · Quantum Behavior", "https://www.feynmanlectures.caltech.edu/III_01.html"],
+    }],
+    practice: {
+      title: "Ein dunkler Streifen trotz zweier Wege",
+      intro: "Zwei gleich starke, ununterscheidbare Wege tragen zu einem Punkt bei. Die Phasen unterscheiden sich gerade um 180°.",
+      questions: [{ prompt: "Was ergibt die Rechnung am betrachteten Punkt?", options: ["Die Amplituden löschen sich aus.", "Die beiden Einzelintensitäten verdoppeln sich."], answer: 0, clue: "Addiere zwei gleich große Zahlen mit entgegengesetztem Vorzeichen, bevor du quadrierst.", explanation: "Die Summe der beiden Amplituden ist null. Damit ist die Intensität an diesem Punkt im Modell null." }],
+      summary: "Du hast Interferenz aus den Amplituden erklärt.",
+    },
+    transfer: { prompt: "Ein Detektor kennzeichnet die Wege eindeutig. Was geschieht mit dem Schirmprofil, wenn du die Markierungen in der Auswertung zusammenfasst?", options: ["Die Streifen bleiben vollständig erhalten.", "Die Interferenz verschwindet und die Einzelintensitäten addieren sich."], answer: 1, clue: "Welche der beiden Situationen liefert noch ununterscheidbare Beiträge?", explanation: "Die unterscheidbaren Detektorzustände entfernen den Interferenzbeitrag aus dem zusammengefassten Schirmbild." },
+  },
+  {
+    id: "bell-zustaende-vergleichen", title: "Verschränkung von klassischer Korrelation unterscheiden",
+    description: "Vergleiche ein Bell-Paar und klassisch geteilte Bits in mehreren Messbasen.", group: "Algorithmen und Quanteninformation",
+    lessons: [{
+      title: "Zwei Messwerte gemeinsam betrachten", lab: "bell-messungen",
+      opening: "Alice und Bob sehen in Z immer gleiche Werte. Das passt sowohl zu einem Bell-Paar als auch zu zwei gemeinsam ausgelosten klassischen Bits. Wechsle beide Messbasen und suche den Unterschied.",
+      intro: "|Φ+⟩ = (|00⟩ + |11⟩)/√2 ist ein einzelner Quantenzustand mit einer definierten relativen Phase. Die Mischung aus |00⟩ und |11⟩ beschreibt eine Zufallswahl zwischen zwei verschiedenen Präparationen.",
+      sections: [
+        ["Gleiche Z-Verteilung", "Beide Präparationen liefern beim Messen in Z nur 00 oder 11. Die gemeinsame X-Messung zeigt bei |Φ+⟩ gleiche und bei |Φ−⟩ entgegengesetzte Werte. Die klassische Mischung liefert dabei alle vier Kombinationen gleich oft im Erwartungswert."],
+        ["Einzelwerte und gemeinsame Statistik", "In diesem Beispiel sieht jede Seite für sich gleichverteilt zwei Ergebnisse. Die Korrelation wird erst sichtbar, wenn die Messwerte verglichen werden. Alice kann damit keine Nachricht allein durch Wahl ihrer Messbasis an Bob senden."],
+      ],
+      check: ["Warum reichen die Z-Daten im Beispiel nicht aus, um die Präparationen zu unterscheiden?", "Z-Messungen prüfen die Betragsquadrate der Amplituden und erkennen den Unterschied in der relativen Phase beziehungsweise der Kohärenz nicht."],
+      source: ["IBM Quantum Learning · Multiple Systems: Quantum Information", "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/multiple-systems/quantum-information"],
+    }],
+    practice: {
+      title: "Die Vorzeichen der Bell-Zustände erkennen",
+      intro: "Du weißt, dass die Quelle entweder |Φ+⟩ oder |Φ−⟩ präpariert. In einer idealen X/X-Messung sind die Ergebnisse durchgehend entgegengesetzt.",
+      questions: [{ prompt: "Welche Präparation passt zur Beobachtung?", options: ["|Φ+⟩", "|Φ−⟩"], answer: 1, clue: "Rufe den Lauf mit dem relativen Minus zwischen |00⟩ und |11⟩ auf.", explanation: "|Φ−⟩ hat in X/X die Ausgaben +− und −+." }],
+      summary: "Du hast eine Basis gewählt, die den Unterschied der Präparationen sichtbar macht.",
+    },
+    transfer: { prompt: "Bob sieht ohne Alice jeweils etwa 50 % + und 50 % −. Kann er daraus allein ihre Basis erkennen?", options: ["Ja, aus dem häufigeren Wert.", "Nein, seine Einzelverteilung enthält diese Information nicht."], answer: 1, clue: "Unterscheide eine Einzelstatistik von einer gemeinsamen Statistik.", explanation: "Die gemeinsame Korrelation zeigt sich erst beim Vergleich der Ausgaben." },
+  },
+  {
+    id: "qubit-teleportieren", title: "Ein Qubit teleportieren",
+    description: "Verfolge die gemeinsam genutzte Verschränkung, zwei klassische Bits und Bobs Korrektur.", group: "Algorithmen und Quanteninformation",
+    lessons: [{
+      title: "Vier Messzweige, ein Zielzustand", lab: "qubit-teleportation",
+      opening: "Alice will den Zustand eines Qubits auf Bobs Qubit übertragen. Beide besitzen je eine Hälfte eines Bell-Paars. Vergleiche die vier möglichen Nachrichten von Alice und probiere Bobs Korrekturen aus.",
+      intro: "Alice koppelt den Eingang durch CNOT an ihre Hälfte des Bell-Paars, wendet H auf den Eingang an und misst ihre beiden Qubits in Z. Jedes der vier Bitpaare tritt mit Wahrscheinlichkeit 1/4 auf.",
+      sections: [
+        ["Welches Bit korrigiert was?", "In der Anzeige steht das erste Bit für Z und das zweite für X. Bob führt zuerst X aus, wenn das zweite Bit 1 ist, und dann Z, wenn das erste Bit 1 ist. Sein ursprüngliches Qubit trägt anschließend den Eingangszustand bis auf eine mögliche globale Phase."],
+        ["Was Alice schickt", "Die klassischen Bits bezeichnen den beobachteten Messzweig. Vor ihrem Eintreffen ist jeder Zweig aus Bobs Sicht gleich wahrscheinlich. Alice hat das Eingangsqubit gemessen und behält keine zweite Kopie des unbekannten Zustands."],
+      ],
+      check: ["Was sollte Bob bei der Nachricht 10 tun?", "Das zweite Bit ist 0, also kein X. Das erste Bit ist 1, also Z anwenden."],
+      source: ["IBM Quantum Learning · Quantum Teleportation", "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/entanglement-in-action/quantum-teleportation"],
+    }],
+    practice: {
+      title: "Die Nachricht 01 auswerten",
+      intro: "Alice hat gemessen und teilt das Ergebnis 01 mit. In der Schaltung des Labors steht links das Z-Bit und rechts das X-Bit.",
+      questions: [{ prompt: "Was muss Bob anwenden, damit die Korrektur für jeden Eingang funktioniert?", options: ["X", "Z", "H"], answer: 0, clue: "Lies das rechte Bit als X-Korrektur.", explanation: "Für 01 ist nur das X-Bit gesetzt." }],
+      summary: "Du kannst den Messzweig einer Teleportation in die passende Korrektur übersetzen.",
+    },
+    transfer: { prompt: "Erhält Bob ohne die klassische Nachricht sofort eine auslesbare Kopie der Präparation?", options: ["Ja, er kennt den Zweig aus der Verschränkung.", "Nein, ihm fehlt die Information für die Korrektur."], answer: 1, clue: "Vergleiche die vier möglichen Zustände vor der Korrektur.", explanation: "Bob kann allein nicht erkennen, welcher Messzweig eingetreten ist." },
+  },
+  {
+    id: "quantenkryptographie-bb84", title: "No-Cloning verstehen und mit BB84 einen Schlüssel verteilen",
+    description: "Teste einen scheinbaren Kopierer und untersuche die Basiswahl bei der Quanten-Schlüsselverteilung.", group: "Algorithmen und Quanteninformation",
+    lessons: [{
+      title: "Wann CNOT eine Kopie vortäuscht", lab: "qubit-kopie",
+      opening: "Ein CNOT mit einem leeren Ziel erzeugt aus |00⟩ wieder |00⟩ und aus |10⟩ den Zustand |11⟩. Probiere dieselbe Schaltung mit |+⟩ als Eingabe und vergleiche das Ergebnis mit zwei unabhängigen |+⟩.",
+      intro: "Das No-Cloning-Theorem schließt einen universellen Kopierer für unbekannte Quantenzustände aus. Zustände aus einer bekannten orthogonalen Basis lassen sich mit einer dafür geeigneten Operation kopieren.",
+      sections: [
+        ["Der Test mit einer Superposition", "Wegen der Linearität muss die Schaltung bei |+⟩|0⟩ die Summe der beiden Basisfälle liefern, also (|00⟩ + |11⟩)/√2. Zwei echte |+⟩-Präparationen hätten vier gleich große Amplituden. Der Unterschied ist sogar in der Z-Messung sichtbar."],
+      ],
+      check: ["Welcher Messwert wäre bei zwei idealen |+⟩-Kopien möglich, beim CNOT-Ergebnis aber ausgeschlossen?", "Zum Beispiel 01. Das Produkt enthält alle vier Basiszustände, das Bell-Paar nur 00 und 11."],
+      source: ["IBM Quantum Learning · Limitations on Quantum Information", "https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/quantum-circuits/limitations-on-quantum-information"],
+    }, {
+      title: "BB84 und der Vergleich einer Stichprobe", lab: "bb84-basen",
+      opening: "Alice und Bob wählen pro Runde Z oder X. Nur bei gleicher Basis können sie beide auf dasselbe Bit hoffen. Simuliere mehrere Runden mit und ohne eine Zwischenmessung und sieh dir an, was in der Stichprobe auffällt.",
+      intro: "BB84 ist ein Verfahren zur Schlüsselverteilung. Alice kodiert ein Zufallsbit in einer der beiden Basen. Bob misst in einer zufällig gewählten Basis. Danach vergleichen sie öffentlich die Basen und behalten die Runden mit gleicher Basis.",
+      sections: [
+        ["Fehler in einer Stichprobe", "In einem idealen Modell mit einer zufälligen Zwischenmessung und neuer Präparation ist bei übereinstimmenden Basen von Alice und Bob die Zwischenbasis zur Hälfte falsch. In diesem Fall weicht Bobs Bit wiederum mit Wahrscheinlichkeit 1/2 ab. Erwartet werden damit 25 % Fehler unter den übereinstimmenden Basen."],
+        ["Was danach nötig ist", "Die offengelegte Stichprobe gehört nicht zum verbleibenden Schlüssel. Null Fehler in einer kleinen Stichprobe sind kein Beweis für einen ungestörten Kanal. Ein reales Protokoll benötigt einen authentifizierten klassischen Kanal, Fehlerabgleich und Privacy Amplification."],
+      ],
+      check: ["Welche Runden dürfen nach dem Basisvergleich Kandidaten für den Schlüssel bleiben?", "Nur Runden mit gleicher Sende- und Messbasis. Zur Fehlerprüfung offengelegte Runden werden danach ebenfalls entfernt."],
+      source: ["Bennett und Brassard · Quantum Cryptography: Public Key Distribution and Coin Tossing", "https://arxiv.org/abs/2003.06557"],
+    }],
+    practice: {
+      title: "Die öffentliche Stichprobe auswerten",
+      intro: "Alice und Bob haben 40 Runden mit gleicher Basis. Sie legen davon zehn Werte offen und sehen keine Abweichung.",
+      questions: [{ prompt: "Was tun sie mit den zehn offengelegten Werten?", options: ["Für den geheimen Schlüssel verwenden.", "Aus dem Schlüsselkandidaten entfernen."], answer: 1, clue: "Überlege, wer die offengelegten Bits jetzt kennen kann.", explanation: "Die Stichprobe wurde öffentlich verglichen und kann daher kein geheimer Teil des Schlüssels sein." }],
+      summary: "Du hast Basisabgleich und öffentliche Stichprobe getrennt ausgewertet.",
+    },
+    transfer: { prompt: "Beweisen null Fehler in zehn Testbits, dass niemand den Quantenkanal gestört hat?", options: ["Nein, eine kleine Stichprobe kann Störungen verfehlen.", "Ja, jede Zwischenmessung ändert jedes Bit."], answer: 0, clue: "Bei passender Zwischenbasis entsteht im Demo-Modell kein Fehler.", explanation: "Auch bei einer Störung können alle ausgewählten Testbits zufällig korrekt sein." },
+  },
+  {
+    id: "grover-suche-steuern", title: "Mit Grovers Algorithmus eine markierte Lösung finden",
+    description: "Wende Phasenorakel und Diffusion an und beobachte den richtigen Stoppzeitpunkt.", group: "Algorithmen und Quanteninformation",
+    lessons: [{
+      title: "Amplitude verstärken und rechtzeitig messen", lab: "grover-suche",
+      opening: "In einer Sammlung aus vier oder acht Kandidaten ist genau ein Treffer markiert. Nach dem ersten Orakelaufruf sieht die Wahrscheinlichkeitsverteilung noch genauso aus. Welche Operation macht die Markierung sichtbar?",
+      intro: "Die Schaltung startet mit gleichen Amplituden. Das Phasenorakel wechselt nur das Vorzeichen der markierten Amplitude. Die Diffusion spiegelt danach jede Amplitude am Mittelwert aller Amplituden.",
+      sections: [
+        ["Eine Iteration", "Die Kombination aus Orakel und Diffusion verstärkt anfangs die Trefferamplitude. Das Orakel allein verändert im Modell kein Betragsquadrat und damit noch keine Messwahrscheinlichkeit."],
+        ["Zu viele Schritte", "Die Iteration dreht den Zustand im Raum aus Treffer- und Nichttrefferanteil. Nach dem Maximum kann eine weitere Iteration die Trefferwahrscheinlichkeit wieder senken. Mit einem Treffer und N Kandidaten liegt die passende Zahl der Orakelaufrufe in der Größenordnung √N. Dazu kommen die Kosten der Orakelimplementierung."],
+      ],
+      check: ["Wann würdest du bei vier Kandidaten messen?", "Nach genau einem vollständigen Durchlauf aus Orakel und Diffusion liegt im idealen Modell die ganze Wahrscheinlichkeit beim Treffer."],
+      source: ["IBM Quantum Learning · Grover’s Algorithm: Choosing the Number of Iterations", "https://quantum.cloud.ibm.com/learning/en/courses/fundamentals-of-quantum-algorithms/grover-algorithm/number-of-iterations"],
+    }],
+    practice: {
+      title: "Das Orakel mit der ganzen Iteration vergleichen",
+      intro: "In einem Viererregister ist nach einem Orakelaufruf nur die Amplitude des Treffers negativ geworden.",
+      questions: [{ prompt: "Welcher Schritt hebt die Trefferwahrscheinlichkeit jetzt an?", options: ["Sofortige Messung.", "Die Diffusion als Spiegelung am Mittelwert."], answer: 1, clue: "Berücksichtige, dass der Betrag der markierten Amplitude direkt nach dem Orakel gleich ist.", explanation: "Die Diffusion nutzt den Vorzeichenunterschied und macht daraus eine größere Trefferamplitude." }],
+      summary: "Du hast Phasenmarkierung und Amplitudenverstärkung auseinandergehalten.",
+    },
+    transfer: { prompt: "Bei vier Kandidaten beträgt die Trefferwahrscheinlichkeit nach einer vollständigen Iteration 100 %. Was kann eine zweite Iteration bewirken?", options: ["Sie kann die Trefferwahrscheinlichkeit wieder senken.", "Sie muss die Trefferwahrscheinlichkeit weiter erhöhen."], answer: 0, clue: "Nach dem Maximum setzt die Drehung des Zustands weiter fort.", explanation: "Die zweite Iteration verlässt in diesem Beispiel den Trefferzustand wieder." },
+  },
+  {
+    id: "quantenfehler-korrigieren", title: "Einen Quanten-Bitfehler erkennen und korrigieren",
+    description: "Verfolge die Drei-Qubit-Kodierung, Fehlerhinweise und die Korrektur mit Toffoli.", group: "Fehlerkorrektur und Praxis",
+    lessons: [{
+      title: "Ein logisches Qubit auf drei physikalischen Qubits", lab: "bitflip-code",
+      opening: "Du kodierst einen Zustand in drei Qubits. Eins davon soll unterwegs kippen. Prüfe, welchen Hinweis du aus den Hilfsqubits lesen kannst und ob der logische Zustand zurückkommt.",
+      intro: "Zwei CNOT-Gatter bilden α|0⟩ + β|1⟩ mit zwei leeren Hilfsqubits auf α|000⟩ + β|111⟩ ab. Das verteilt die Amplituden über ein Register.",
+      sections: [
+        ["Das Syndrom", "Nach dem Entkoppeln mit zwei weiteren CNOTs zeigen die Hilfsqubits, welche Bits ungleich waren. Ein X am ersten Qubit ergibt 11, ein X am zweiten 10 und ein X am dritten 01. Die Anzeigen sagen nichts darüber, ob die ursprüngliche Eingabe 0 oder 1 war."],
+        ["Toffoli und Grenzen", "Toffoli kippt sein Ziel, wenn beide Kontrollen 1 sind. In dieser Schaltung sind die Hilfsqubits die Kontrollen. Zwei Bitfehler können wie ein anderer Einzelfehler aussehen. Ein reiner Z-Fehler kann die logische Phase verändern und bleibt im Bitflip-Syndrom unentdeckt."],
+      ],
+      check: ["Warum sollte man das logische Qubit nicht in Z messen, um jeden Fehler zu suchen?", "Eine direkte Z-Messung kann die Superposition zerstören. Das Syndrom vergleicht die physikalischen Bits, ohne die logische Information auszulesen."],
+      source: ["IBM Quantum Learning · Error Correction I", "https://quantum.cloud.ibm.com/learning/en/courses/tools-for-quantum-advantage/error-correction-i"],
+    }],
+    practice: {
+      title: "Ein Syndrom richtig einordnen",
+      intro: "Das Syndrom lautet 11. Für diesen Durchlauf garantiert das Modell, dass höchstens ein X-Fehler aufgetreten ist.",
+      questions: [{ prompt: "Welche Korrektur führt der gezeigte Decoder am logischen Ausgang aus?", options: ["Das erste Qubit mit X zurückkippen.", "Das erste Qubit in Z messen.", "Ein Z auf das erste Qubit anwenden."], answer: 0, clue: "Bei 11 sind beide Toffoli-Kontrollen gesetzt.", explanation: "Ein X am ersten Qubit wird im Modell durch ein zweites X rückgängig gemacht." }],
+      summary: "Du kannst das Syndrom nutzen und die Grenzen des Codes benennen.",
+    },
+    transfer: { prompt: "Der Zustand |+⟩ bekommt einen einzelnen Z-Fehler. Korrigiert der Bitflip-Code ihn zuverlässig?", options: ["Ja, jeder Einzelfehler erzeugt ein Bitflip-Syndrom.", "Nein, der Fehler betrifft die relative Phase und kann beim Syndrom 00 bleiben."], answer: 1, clue: "Vergleiche, was X und Z mit den Z-Basiswerten tun.", explanation: "Der Code erkennt X-Fehler. Z kann die logische Phase ändern, ohne einen der geprüften Bitwerte zu kippen." },
+  },
+  {
+    id: "quantensimulation-einordnen", title: "Von der Simulation zur Quantenhardware",
+    description: "Vergleiche ideale Werte mit Stichproben und einem vereinfachten Modell für Auslesefehler.", group: "Fehlerkorrektur und Praxis",
+    lessons: [{
+      title: "Eine Schaltung bauen und Messdaten vergleichen", lab: "quanten-shots",
+      opening: "Ein idealer Simulator gibt für ein Bell-Paar nur 00 und 11 aus. Bei einer Messserie tauchen zusätzlich 01 und 10 auf. Wechsle die Gatterreihenfolge und verändere die Fehlerrate getrennt, um die Ursachen zu unterscheiden.",
+      intro: "Ein Shot ist eine erneute Präparation und Messung der Schaltung. Der lokale Simulator berechnet die ideale Verteilung und zieht daraus eine Stichprobe. Im Fehlermodell kann jedes ausgelesene Bit unabhängig kippen.",
+      sections: [
+        ["Schaltung und Auslese getrennt prüfen", "Erst H und dann CNOT präparieren aus |00⟩ ein Bell-Paar. Bei umgekehrter Reihenfolge hat CNOT am Anfang keine Wirkung und das ideale Ergebnis kann schon 10 sein. Beim Bell-Paar führen dagegen einzelne Auslesefehler zu 01 oder 10. Echte Geräte haben weitere Fehlerquellen, etwa bei Gattern und durch die Wechselwirkung mit ihrer Umgebung."],
+        ["Eine Schaltung auf Hardware übertragen", "Physikalische Qubits lassen sich etwa mit supraleitenden Schaltkreisen oder gefangenen Ionen realisieren. Verfügbare Gatter und Verbindungen bestimmen, wie ein Schaltkreis für ein Zielgerät übersetzt wird. Vergleiche bei der Auswertung idealen Erwartungswert, simuliertes Rauschen und Messdaten aus getrennten Läufen."],
+      ],
+      check: ["Warum können 00 und 11 in einer idealen Serie mit 32 Shots unterschiedlich oft vorkommen?", "Die Wahrscheinlichkeit beträgt pro Ergebnis 50 %. Die tatsächliche Häufigkeit schwankt in einer endlichen Zufallsstichprobe."],
+      source: ["IBM Quantum Learning · Running Quantum Circuits", "https://quantum.cloud.ibm.com/learning/en/courses/quantum-computing-in-practice/running-quantum-circuits"],
+    }],
+    practice: {
+      title: "Verteilungen aus zwei Läufen erklären",
+      intro: "Ein ideal simulierter Bell-Versuch liefert bei 32 Shots 20-mal 00 und 12-mal 11. Im Modell mit Auslesefehler treten zusätzlich 01 und 10 auf.",
+      questions: [{ prompt: "Welches Merkmal kann reine Stichprobenschwankung des idealen Modells nicht erzeugen?", options: ["Unterschiedliche Häufigkeiten von 00 und 11.", "Einen Treffer bei 01 oder 10."], answer: 1, clue: "Überlege, welche Ergebnisse im idealen Zustand eine Wahrscheinlichkeit von null haben.", explanation: "Die Zufallsziehung kann im idealen Modell nur einen der beiden unterstützten Werte liefern." }],
+      summary: "Du hast ideale Vorhersage, Stichproben und Auslesefehler verglichen.",
+    },
+    transfer: { prompt: "Was bewirken mehr Shots bei unverändertem Auslesefehler?", options: ["Die Anteile werden meist stabiler geschätzt, die Fehlerquelle bleibt bestehen.", "Das Auslesegerät wird dadurch automatisch fehlerfrei."], answer: 0, clue: "Vergleiche eine bessere Schätzung mit einer Veränderung des Geräts.", explanation: "Mehr Wiederholungen ändern die zugrunde liegende Fehlerwahrscheinlichkeit nicht." },
+  },
+].map(({ lessons, transfer, ...quest }) => ({
+  ...quest,
+  topic: "quantencomputer",
+  lessons: lessons.map(({ opening, ...lesson }) => ({ ...lesson, discover: true })),
+  learning: { openings: lessons.map(({ opening }) => opening), transfer },
+}));

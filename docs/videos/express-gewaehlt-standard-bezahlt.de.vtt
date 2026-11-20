@@ -1,0 +1,142 @@
+WEBVTT
+
+00:00:00.140 --> 00:00:03.860
+Nora braucht ihr Paket schnell und wählt
+Expressversand.
+
+00:00:03.860 --> 00:00:08.850
+Der Warenkorb zeigt vier Euro neunzig
+Versandkosten. Für Express sollten es
+
+00:00:08.850 --> 00:00:10.380
+neun Euro neunzig sein.
+
+00:00:11.338 --> 00:00:14.058
+Wir folgen der Auswahl bis zur
+Berechnung.
+
+00:00:14.058 --> 00:00:18.372
+Der Shop bekommt die Lieferart Express
+und die Versanddaten: zwei Kilo,
+
+00:00:18.372 --> 00:00:19.708
+Lieferzone Innenstadt.
+
+00:00:20.352 --> 00:00:23.742
+Probieren wir die Expressregel direkt mit
+diesen Daten aus.
+
+00:00:23.742 --> 00:00:26.402
+Sie liefert neunhundertneunzig Cent.
+
+00:00:26.402 --> 00:00:27.982
+Einzeln gerechnet stimmt der Preis.
+
+00:00:28.602 --> 00:00:32.282
+Der Warenkorb zeigt trotzdem den
+Standardpreis.
+
+00:00:32.282 --> 00:00:35.002
+An welcher Stelle würdest du als Nächstes
+nachsehen?
+
+00:00:39.268 --> 00:00:41.628
+Hier in der Zuordnung steckt der Fehler.
+
+00:00:41.628 --> 00:00:45.608
+Die Leitung vom Menüpunkt Express endet
+bei der Standardregel.
+
+00:00:45.608 --> 00:00:48.608
+Die liefert für dieses Paket
+vierhundertneunzig Cent.
+
+00:00:49.647 --> 00:00:53.787
+Wir lösen diese Verbindung und stecken
+sie bei der Expressregel ein.
+
+00:00:53.787 --> 00:00:56.907
+Jetzt erreicht dieselbe Auswahl die
+passende Berechnung.
+
+00:00:57.718 --> 00:01:02.438
+Der Warenkorb bekommt neunhundertneunzig
+Cent zurück und zeigt neun Euro neunzig.
+
+00:01:02.438 --> 00:01:06.158
+Damit ist die Auswahl von Express bis zur
+Anzeige geprüft.
+
+00:01:06.820 --> 00:01:09.980
+Standard und Express sind zwei
+Versandstrategien.
+
+00:01:09.980 --> 00:01:13.800
+Jede übernimmt die Versanddaten und
+liefert einen Betrag in Cent.
+
+00:01:13.800 --> 00:01:17.040
+Darum kann der Warenkorb beide auf
+dieselbe Weise aufrufen.
+
+00:01:17.685 --> 00:01:19.875
+Jetzt kommt ein Fahrradkurier dazu.
+
+00:01:19.875 --> 00:01:23.785
+Wir schreiben eine dritte Strategie und
+verbinden die neue Lieferart mit ihr.
+
+00:01:24.455 --> 00:01:28.624
+Für zwei Kilo in die Innenstadt liefert
+der Fahrradkurier sechshundertneunzig
+
+00:01:28.624 --> 00:01:28.895
+Cent.
+
+00:01:28.895 --> 00:01:32.235
+Die vorhandene Preisvorschau macht daraus
+sechs Euro neunzig.
+
+00:01:33.312 --> 00:01:37.515
+Wählt Nora stattdessen Standard, fordert
+der Warenkorb seinen Preis von der
+
+00:01:37.515 --> 00:01:38.692
+Standardstrategie an.
+
+00:01:38.692 --> 00:01:42.992
+Auch hier gehen die Versanddaten hinein
+und ein Betrag in Cent kommt heraus.
+
+00:01:42.992 --> 00:01:46.582
+Der Warenkorb kann jede Lieferart mit
+demselben Ablauf ausführen.
+
+00:01:47.227 --> 00:01:50.327
+Zwei Prüfungen hätten den Fehler
+schneller eingegrenzt.
+
+00:01:50.327 --> 00:01:54.387
+Die erste fragt die Expressstrategie
+direkt nach ihrem Preis.
+
+00:01:54.387 --> 00:01:59.094
+Die zweite wählt Express im Shop und
+prüft, welcher Betrag wirklich im
+
+00:01:59.094 --> 00:02:00.237
+Warenkorb landet.
+
+00:02:00.852 --> 00:02:04.572
+Die Zuordnung bestimmt, welche Strategie
+zum Zug kommt.
+
+00:02:04.572 --> 00:02:07.452
+Die Strategie berechnet den Betrag.
+
+00:02:07.452 --> 00:02:11.937
+Der Warenkorb ruft weiterhin dieselbe
+Operation auf und formatiert jedes
+
+00:02:11.937 --> 00:02:13.682
+Ergebnis auf dieselbe Weise.

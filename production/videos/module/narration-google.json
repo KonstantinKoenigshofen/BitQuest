@@ -1,0 +1,198 @@
+{
+  "audio_sha256": "a127c3157f2cdee550ae34677694b3882c093dce25a77f9863b65902326a6ca5",
+  "source": "Vom Nutzer bereitgestellte Google-AI-Studio-Aufnahme",
+  "beats": [
+    {
+      "scene": "conflict",
+      "step": 0,
+      "start": 0.0,
+      "end": 4.205
+    },
+    {
+      "scene": "conflict",
+      "step": 1,
+      "start": 4.205,
+      "end": 7.32
+    },
+    {
+      "scene": "conflict",
+      "step": 2,
+      "start": 7.32,
+      "end": 9.925
+    },
+    {
+      "scene": "conflict",
+      "step": 3,
+      "start": 9.925,
+      "end": 13.13
+    },
+    {
+      "scene": "conflict",
+      "step": 4,
+      "start": 13.13,
+      "end": 15.785
+    },
+    {
+      "scene": "split",
+      "step": 0,
+      "start": 15.785,
+      "end": 20.385
+    },
+    {
+      "scene": "split",
+      "step": 1,
+      "start": 20.385,
+      "end": 24.66
+    },
+    {
+      "scene": "split",
+      "step": 2,
+      "start": 24.66,
+      "end": 28.665
+    },
+    {
+      "scene": "split",
+      "step": 3,
+      "start": 28.665,
+      "end": 33.255
+    },
+    {
+      "scene": "split",
+      "step": 4,
+      "start": 33.255,
+      "end": 37.525
+    },
+    {
+      "scene": "split",
+      "step": 5,
+      "start": 37.525,
+      "end": 41.015
+    },
+    {
+      "scene": "merge",
+      "step": 0,
+      "start": 41.015,
+      "end": 45.095
+    },
+    {
+      "scene": "merge",
+      "step": 1,
+      "start": 45.095,
+      "end": 49.88
+    },
+    {
+      "scene": "merge",
+      "step": 2,
+      "start": 49.88,
+      "end": 53.72
+    },
+    {
+      "scene": "send",
+      "step": 0,
+      "start": 53.72,
+      "end": 57.805
+    },
+    {
+      "scene": "send",
+      "step": 1,
+      "start": 57.805,
+      "end": 62.655
+    },
+    {
+      "scene": "send",
+      "step": 2,
+      "start": 62.655,
+      "end": 66.58
+    },
+    {
+      "scene": "send",
+      "step": 3,
+      "start": 66.58,
+      "end": 70.225
+    },
+    {
+      "scene": "define",
+      "step": 0,
+      "start": 70.225,
+      "end": 74.2
+    },
+    {
+      "scene": "define",
+      "step": 1,
+      "start": 74.2,
+      "end": 77.09
+    },
+    {
+      "scene": "define",
+      "step": 2,
+      "start": 77.09,
+      "end": 79.5
+    },
+    {
+      "scene": "define",
+      "step": 3,
+      "start": 79.5,
+      "end": 82.885
+    },
+    {
+      "scene": "define",
+      "step": 4,
+      "start": 82.885,
+      "end": 85.855
+    },
+    {
+      "scene": "question",
+      "step": 0,
+      "start": 85.855,
+      "end": 88.965
+    },
+    {
+      "scene": "question",
+      "step": 1,
+      "start": 88.965,
+      "end": 91.495
+    },
+    {
+      "scene": "solution",
+      "step": 0,
+      "start": 91.495,
+      "end": 94.425
+    },
+    {
+      "scene": "solution",
+      "step": 1,
+      "start": 94.425,
+      "end": 96.8
+    },
+    {
+      "scene": "solution",
+      "step": 2,
+      "start": 96.8,
+      "end": 100.925
+    },
+    {
+      "scene": "solution",
+      "step": 3,
+      "start": 100.925,
+      "end": 104.21
+    },
+    {
+      "scene": "takeaway",
+      "step": 0,
+      "start": 104.21,
+      "end": 107.175
+    },
+    {
+      "scene": "takeaway",
+      "step": 1,
+      "start": 107.175,
+      "end": 110.195
+    },
+    {
+      "scene": "takeaway",
+      "step": 2,
+      "start": 110.195,
+      "end": 113.08
+    }
+  ]
+}

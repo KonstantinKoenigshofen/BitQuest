@@ -84,7 +84,7 @@ const softwaredesignQuests = [
           ["Eine logische Anforderung erkennen", "Der Aufrufer gibt einen Anforderungsschlüssel mit. Für diese Schnittstelle gilt, dass derselbe Schlüssel mit identischen Eingaben innerhalb von 24 Stunden dasselbe zuvor verarbeitete Ergebnis zurückgibt. Das erlaubt eine Wiederholung nach einem Timeout."],
           ["Die Wirkung prüfen", "Teste zuerst den erfolgreichen Aufruf. Sende danach denselben Schlüssel mit denselben Eingaben. Beide Antworten sollen dieselbe Reservierungsnummer enthalten, und die Zahl der belegten Fächer soll nur einmal steigen. Ein bereits verwendeter Schlüssel mit anderen Eingaben sollte im Vertrag einen eigenen Konfliktfall bekommen."],
         ],
-        check: ["Warum reicht es im Test nicht, zweimal nur auf Erfolg zu prüfen?", "Beide Aufrufe könnten erfolgreich sein und dabei zwei Fächer belegen. Der Test muss Reservierungsnummer und Bestandsänderung mitprüfen."],
+        check: ["Jetzt sind schon drei Fächer belegt. Ein neuer Auftrag mit K7 reserviert A51, die Antwort geht verloren. Was soll dein Test nach dem erneuten Senden prüfen?", "Mit K7 und denselben Angaben muss die Antwort A51 enthalten. Die Belegung soll gegenüber dem Start nur um eins steigen, also von drei auf vier. Ein Erfolg mit anderer Nummer oder fünf belegten Fächern hätte die Doppelreservierung übersehen, wenn du nur den Erfolgsstatus prüfst."],
         source: ["AWS Builders’ Library · Making retries safe with idempotent APIs", "https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/"],
       },
       {
@@ -201,6 +201,7 @@ const softwaredesignQuests = [
   {
     id: "strategien-variieren", topic: "softwaredesign", title: "Verhalten mit Entwurfsmustern variieren",
     description: "Kapsle austauschbare Regeln mit dem Strategy-Muster und ergänze eine Lieferart, ohne die Bestelllogik erneut zu verzweigen.",
+    legacySteps: { 4: 3 },
     lessons: [
       {
         title: "Erkennen, welche Regel sich ändert",
@@ -228,21 +229,12 @@ const softwaredesignQuests = [
         source: ["Gamma, Helm, Johnson und Vlissides · Design Patterns", "https://www.informit.com/store/design-patterns-elements-of-reusable-object-oriented-9780321770462"],
       },
       {
-        title: "Die passende Strategie auswählen und aufrufen",
+        title: "Eine Strategie auswählen und die Auswahl testen",
         intro: "Der Shop wählt die Strategie anhand der Lieferart aus. Die Bestelllogik bekommt die ausgewählte Berechnung übergeben und führt sie aus.",
         sections: [
           ["Auswahl an einer Stelle halten", "Eine Zuordnung verbindet Standard, Express und Abholung mit ihren Strategien. Wenn ein Fahrradkurier hinzukommt, ergänzt das Team die neue Berechnung und ihre Zuordnung. Die Schritte für Preisvorschau und Bestellung können dieselbe Schnittstelle behalten."],
-          ["Komposition nutzen", "Der Shop setzt sein Verhalten aus einer gewählten Berechnung und dem übrigen Bestellablauf zusammen. Diese Form von Komposition funktioniert auch mit Funktionen, sofern sie denselben Vertrag erfüllen."],
-        ],
-        check: ["Wo ergänzt du die neue Lieferart?", "Bei der Auswahl der Strategien und in einer eigenen Berechnung für den Fahrradkurier."],
-        source: ["John Vlissides · Strategy, Structure and Implementation", "https://www.dre.vanderbilt.edu/~schmidt/PDF/GoF.pdf"],
-      },
-      {
-        title: "Berechnung und Auswahl getrennt prüfen",
-        intro: "Tests für einzelne Strategien beantworten eine andere Frage als Tests für ihre Auswahl. Beide helfen dir, eine neue Lieferart sicher einzubauen.",
-        sections: [
-          ["Regeln einzeln prüfen", "Teste den Expresspreis mit einem festen Gewicht und die Abholung mit dem erwarteten Ergebnis von null Cent. Wenn eine Strategie einen Gewichtszuschlag hat, teste auch einen Wert direkt an seiner Grenze."],
-          ["Die Zuordnung prüfen", "Ein weiterer Test wählt Express aus und prüft, dass der Shop die Expressstrategie verwendet. Beim neuen Fahrradkurier ergänzt du Tests für seinen Preis und seine Auswahl. So erkennst du sowohl Rechenfehler als auch eine falsche Zuordnung."],
+          ["Die Berechnung zusammensetzen", "Der Shop kombiniert die ausgewählte Berechnung mit dem übrigen Bestellablauf. Diese Form von Komposition funktioniert auch mit Funktionen, sofern sie denselben Vertrag erfüllen."],
+          ["Berechnung und Zuordnung getrennt prüfen", "Teste die Expressberechnung für feste Gewichte und Grenzwerte. Wähle außerdem Express im Bestellablauf und prüfe, dass der Shop diese Berechnung verwendet. Beim Fahrradkurier helfen dieselben zwei Tests, einen Rechenfehler von einer falschen Zuordnung zu unterscheiden."],
         ],
         check: ["Der Expresstest für die Berechnung ist grün, der Warenkorb zeigt den Standardpreis. Was solltest du zuerst prüfen?", "Prüfe, ob die Lieferart Express tatsächlich der Expressstrategie zugeordnet ist."],
         source: ["MIT 6.102 · Testing und Grenzfälle", "https://web.mit.edu/6.102/www/sp26/classes/02-testing/"],
@@ -460,6 +452,16 @@ const softwaredesignQuests = [
         check: ["Was wäre ein Fehler, den derselbe Test für Liste und Ringpuffer erkennt?", "Wenn die zuletzt eingereihte Person zuerst entnommen wird, verletzt das die zugesicherte Ankunftsreihenfolge."],
         source: ["MIT 6.102 · Testing an Abstract Data Type", "https://web.mit.edu/6.102/www/sp26/classes/06-abstract-data-types/"],
       },
+      {
+        title: "Den internen Speicherzustand in eine Warteliste übersetzen",
+        intro: "Du hast denselben Vorgang am Schalter und im Speicher gesehen. Die Regel, die aus dem Speicherzustand die sichtbare Warteliste macht, heißt Abstraktionsfunktion.",
+        sections: [
+          ["Vom Start aus lesen", "Vor dem Aufruf waren Start 3 und Anzahl 2. Du liest Platz 3 und danach Platz 0. Am Schalter ergibt das A, B. Beim Ansehen bleiben beide Zahlen gleich. Beim Aufrufen von A springt der Start auf 0 und die Anzahl sinkt auf 1."],
+          ["Hinten einreihen", "Nach A wartet B an Platz 0. Ein belegter Platz ab dem Start führt zu Platz 1. Dort landet C. Die Anzahl steigt wieder auf 2, sodass die Abstraktionsfunktion jetzt B, C liefert. Sie liest genau die angegebene Anzahl ab dem Start."],
+        ],
+        check: ["Angenommen, der Start steht auf Platz 2 und drei Tickets warten. Auf welchen Plätzen liest du sie vom ersten bis zum letzten?", "Auf Platz 2, dann 3 und dann 0. Die Abstraktionsfunktion liest drei Einträge und springt nach Platz 3 zum Anfang des Rings."],
+        source: ["MIT 6.102 · Abstraction Functions & Rep Invariants", "https://web.mit.edu/6.102/www/sp26/classes/07-abstraction-functions-rep-invariants/"],
+      },
     ],
     practice: {
       title: "Die Speicherung einer Beratungswarteliste austauschen",
@@ -477,6 +479,7 @@ const softwaredesignQuests = [
         { prompt: "Welche Operation verwendet das Display?", answer: 1, options: ["Entnehmen, damit das Ticket sichtbar wird.", "WerIstDran, damit das Ticket sichtbar wird und weiter wartet."], clue: "Die Anzeige darf die Warteliste beim regelmäßigen Aktualisieren nicht leeren.", explanation: "WerIstDran ist eine lesende Operation." },
         { prompt: "Was soll entnehmen nach dem letzten Ticket zurückgeben?", answer: 0, options: ["LEER, wenn keine weiteren Tickets warten.", "Die zuletzt entnommene Ticket-ID erneut."], clue: "Für die leere Warteliste gibt es eine eigene Zusage im Vertrag.", explanation: "LEER signalisiert, dass aktuell niemand auf den Aufruf wartet." },
         { prompt: "Welche Tests kannst du für beide Implementierungen gleich verwenden?", answer: 1, options: ["Tests, welche internen Speicherpositionen tatsächlich verwendet werden.", "Eine Folge öffentlicher Aufrufe mit erwarteten Ticket-IDs und erwarteter Restreihenfolge."], clue: "Die Tests sollen den Vertrag trotz unterschiedlicher Speicherung prüfen.", explanation: "Die öffentlichen Operationen bilden die gemeinsame Prüffläche beider Implementierungen." },
+        { prompt: "Ein Ring mit vier Plätzen beginnt bei Position 3 und enthält zwei Tickets. An Position 3 steht A, an Position 0 steht B. Was liest die Anzeige?", answer: 0, options: ["A. Die Warteliste lautet A, B.", "B. Die Warteliste lautet B, A."], clue: "Für das erste Ticket zählt die Startposition und für das zweite der nächste Platz im Ring.", explanation: "Die Startposition 3 enthält A. Nach dem letzten Platz beginnt der Ring wieder bei Position 0 mit B." },
       ],
       summary: "Du hast die Warteliste über ihre Operationen beschrieben und beide Speicherformen mit denselben Erwartungen verglichen.",
     },

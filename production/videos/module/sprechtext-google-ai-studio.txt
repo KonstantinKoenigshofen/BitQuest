@@ -1,0 +1,39 @@
+Ein Buch der Stadtbibliothek ist acht Tage überfällig.
+Nach der neuen Regel wird erst ab zehn Tagen gemahnt.
+Am Bildschirm steht: Noch keine Mahnung.
+Im selben Moment bekommt die Leserin eine Mahnmail.
+Wie kann beides gleichzeitig passieren?
+
+Schau dir die beiden Wege an, die dieselbe Ausleihe im Programm nimmt.
+Für die Anzeige wurde die Frist von sieben auf zehn Tage geändert.
+Acht ist kleiner als zehn. Der Bildschirm meldet: Noch keine Mahnung.
+Beim nächtlichen Mailversand ist dagegen die alte Sieben-Tage-Regel geblieben.
+Acht ist mindestens sieben. Dieser Teil löst eine Mahnmail aus.
+Dieselbe Ausleihe liefert zwei verschiedene Antworten.
+
+Wir bauen das Programm um. Die Frist bekommt einen festen Platz.
+Beide Wege fragen jetzt das Mahnmodul. Dort gilt die Zehn-Tage-Regel.
+Bei acht Tagen bekommen beide dieselbe Antwort: Noch keine Mahnung.
+
+Die Leserin behält das Buch noch vier Tage. Jetzt sind es zwölf.
+Zwölf ist mindestens zehn. Das Mahnmodul sagt: Mahnung fällig.
+Der nächtliche Lauf gibt einen Auftrag mit Empfängerin und Nachricht weiter.
+Das Versandmodul bekommt den Auftrag und stellt die Mahnmail zu.
+
+Ein Modul ist ein Teil des Programms mit einer klaren Aufgabe.
+Das Mahnmodul entscheidet, wann gemahnt wird.
+Das Versandmodul kümmert sich um die Zustellung.
+Ändert sich die Frist, passt du sie an einer Stelle an.
+Anzeige und Mahnlauf verwenden dieselbe Entscheidung.
+
+Morgen wechselt die Bibliothek ihren Mailanbieter.
+Welcher Teil des Programms muss sich ändern?
+
+Das Versandmodul wechselt zum neuen Anbieter.
+Es bekommt weiterhin denselben Auftrag.
+Bei zwölf Tagen entscheidet das Mahnmodul weiterhin: Mahnung fällig.
+Die Nachricht erreicht die Leserin jetzt über den neuen Anbieter.
+
+Frag dich bei einer geplanten Änderung:
+Welche Aufgaben ändern sich aus demselben Grund?
+Diese Aufgaben gehören oft in dasselbe Modul.

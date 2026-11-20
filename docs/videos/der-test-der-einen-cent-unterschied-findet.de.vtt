@@ -1,0 +1,142 @@
+WEBVTT
+
+00:00:00.140 --> 00:00:02.760
+Zwei Kassen, ein Fall für dich.
+
+00:00:02.760 --> 00:00:07.220
+Die linke Kasse läuft seit Jahren. Die
+rechte wurde im Code umgebaut.
+
+00:00:07.220 --> 00:00:09.930
+Beide sollen ab hundert Euro Rabatt
+geben.
+
+00:00:10.600 --> 00:00:14.844
+Wir schicken denselben Warenkorb für
+neunundneunzig Euro neunundneunzig durch
+
+00:00:14.844 --> 00:00:15.560
+beide Kassen.
+
+00:00:15.560 --> 00:00:19.630
+Die Ausdrucke stimmen überein. Auf beiden
+steht: kein Rabatt.
+
+00:00:20.288 --> 00:00:24.408
+Nächste Spur. Der Warenkorb kostet
+hundert Euro und einen Cent.
+
+00:00:24.408 --> 00:00:27.688
+Die alte und die neue Kasse zeigen beide:
+Rabatt.
+
+00:00:28.310 --> 00:00:32.270
+Knapp unter der Grenze stimmt alles.
+Knapp darüber auch.
+
+00:00:32.270 --> 00:00:35.260
+Welchen Betrag würdest du als Nächstes
+durch die beiden Kassen schicken?
+
+00:00:39.727 --> 00:00:43.907
+Genau hundert Euro. Jetzt liegen zwei
+verschiedene Belege vor.
+
+00:00:43.907 --> 00:00:46.507
+Links gibt es Rabatt. Rechts bleibt er
+aus.
+
+00:00:47.503 --> 00:00:50.083
+Ein Blick in die Regeln erklärt den
+Unterschied.
+
+00:00:50.083 --> 00:00:55.583
+Links steht größer oder gleich hundert.
+Rechts steht größer als hundert.
+
+00:00:55.583 --> 00:00:58.623
+Bei genau hundert entscheidet das
+Gleichheitszeichen.
+
+00:00:59.688 --> 00:01:02.068
+Aus dem Fund machen wir einen
+Regressionstest.
+
+00:01:02.068 --> 00:01:05.908
+Wir legen den Eingabewert auf genau
+hundert Euro fest.
+
+00:01:05.908 --> 00:01:08.208
+Der Test erwartet, dass die Kasse Rabatt
+gibt.
+
+00:01:08.852 --> 00:01:11.882
+Zuerst lassen wir den Test gegen die alte
+Kasse laufen.
+
+00:01:11.882 --> 00:01:14.902
+Sie gibt den erwarteten Rabatt, der Test
+ist grün.
+
+00:01:14.902 --> 00:01:18.861
+Jetzt behalten wir denselben Warenkorb
+und dieselbe Erwartung für die umgebaute
+
+00:01:18.861 --> 00:01:19.362
+Kasse bei.
+
+00:01:20.017 --> 00:01:23.577
+Der Test läuft gegen die umgebaute Kasse
+und schlägt fehl.
+
+00:01:23.577 --> 00:01:27.537
+So zeigt er, dass das vereinbarte
+Verhalten beim Umbau verloren gegangen
+
+00:01:27.537 --> 00:01:27.757
+ist.
+
+00:01:28.713 --> 00:01:31.173
+Wir ergänzen das Gleichheitszeichen in
+der neuen Regel.
+
+00:01:31.173 --> 00:01:35.113
+Der Test läuft noch einmal mit demselben
+Warenkorb und ist jetzt grün.
+
+00:01:36.067 --> 00:01:38.507
+Wir behalten alle drei Beträge als Tests.
+
+00:01:38.507 --> 00:01:42.107
+Bei neunundneunzig Euro neunundneunzig
+erwarten wir keinen Rabatt.
+
+00:01:42.107 --> 00:01:46.157
+Bei hundert Euro und bei hundert Euro und
+einem Cent erwarten wir Rabatt.
+
+00:01:46.798 --> 00:01:49.318
+Warum gerade ein Cent Abstand?
+
+00:01:49.318 --> 00:01:52.268
+Für einen Betrag mit zwei
+Nachkommastellen ist das der
+
+00:01:52.268 --> 00:01:53.578
+kleinstmögliche Schritt.
+
+00:01:53.578 --> 00:01:57.788
+Wir prüfen genau den Beginn des Rabatts
+und die unmittelbar benachbarten Beträge.
+
+00:01:58.435 --> 00:02:00.745
+Beim nächsten Umbau laufen die Tests
+wieder.
+
+00:02:00.745 --> 00:02:06.465
+Sie prüfen dieselbe fachliche Zusage mit
+drei Beispielen rund um die Grenze.
+
+00:02:06.465 --> 00:02:09.705
+Der wichtigste Hinweis war der Betrag
+genau dazwischen.

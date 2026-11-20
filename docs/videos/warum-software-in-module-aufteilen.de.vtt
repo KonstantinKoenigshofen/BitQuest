@@ -1,0 +1,145 @@
+WEBVTT
+
+00:00:00.140 --> 00:00:04.110
+Auf dem Bildschirm der Stadtbibliothek
+steht: Keine Mahnung fällig.
+
+00:00:04.727 --> 00:00:07.487
+Im selben Moment bekommt Lea eine
+Mahnmail.
+
+00:00:07.487 --> 00:00:11.187
+Sie nennt genau das Buch, das die
+Bibliothek gerade geprüft hat.
+
+00:00:11.187 --> 00:00:12.257
+Wie kann das sein?
+
+00:00:12.923 --> 00:00:14.143
+Spulen wir zurück.
+
+00:00:14.143 --> 00:00:17.703
+Bei Leas Buch ist die Rückgabe seit acht
+Tagen überfällig.
+
+00:00:17.703 --> 00:00:21.303
+Heute wandert dieselbe Ausleihe durch
+zwei Teile der Software.
+
+00:00:21.955 --> 00:00:25.435
+Der obere Weg endet auf dem Bildschirm am
+Bibliothekstresen.
+
+00:00:25.435 --> 00:00:27.815
+Der untere steuert den Mailversand.
+
+00:00:27.815 --> 00:00:30.215
+Beide bekommen dieselbe Zahl: acht Tage.
+
+00:00:30.852 --> 00:00:35.392
+Die Anzeige arbeitet schon mit der neuen
+Frist von zehn Tagen.
+
+00:00:35.392 --> 00:00:36.972
+Acht ist kleiner als zehn.
+
+00:00:36.972 --> 00:00:39.592
+Darum steht auf dem Bildschirm: Keine
+Mahnung fällig.
+
+00:00:40.227 --> 00:00:43.597
+Der Versand rechnet noch mit der alten
+Frist von sieben Tagen.
+
+00:00:43.597 --> 00:00:45.257
+Acht ist mindestens sieben.
+
+00:00:45.257 --> 00:00:47.607
+Also erhält der Mailversand einen
+Auftrag.
+
+00:00:48.417 --> 00:00:51.832
+Wo würdest du die Zehn-Tage-Regel
+unterbringen, damit der nächste
+
+00:00:51.832 --> 00:00:53.567
+Fristwechsel beide Wege erreicht?
+
+00:00:57.977 --> 00:01:01.577
+Wir führen die beiden Prüfungen in einem
+Mahnmodul zusammen.
+
+00:01:01.577 --> 00:01:05.379
+Das bekommt die Zahl der überfälligen
+Tage und gibt zurück, ob eine Mahnung
+
+00:01:05.379 --> 00:01:05.937
+fällig ist.
+
+00:01:06.560 --> 00:01:10.530
+Noch einmal derselbe Tag, dasselbe Buch,
+dieselben acht Tage.
+
+00:01:10.530 --> 00:01:13.190
+Das Modul entscheidet: noch keine
+Mahnung.
+
+00:01:13.190 --> 00:01:15.400
+Beide Wege fragen jetzt dieselbe Regel
+ab.
+
+00:01:16.078 --> 00:01:18.898
+Die Anzeige schreibt weiterhin: Keine
+Mahnung fällig.
+
+00:01:18.898 --> 00:01:21.438
+Diesmal bekommt auch der Versand keinen
+Auftrag.
+
+00:01:21.438 --> 00:01:22.698
+Leas Handy bleibt still.
+
+00:01:23.780 --> 00:01:25.720
+Jetzt prüfen wir ein anderes Buch.
+
+00:01:25.720 --> 00:01:27.780
+Es ist zwölf Tage überfällig.
+
+00:01:27.780 --> 00:01:31.980
+Zwölf erreicht die Zehn-Tage-Frist, also
+meldet das Modul eine fällige Mahnung.
+
+00:01:32.602 --> 00:01:36.322
+Jetzt erhält der Versand einen Auftrag
+und löst die Mail aus.
+
+00:01:36.322 --> 00:01:39.772
+Am Tresen erscheint für diese Ausleihe
+ebenfalls: Mahnung fällig.
+
+00:01:40.723 --> 00:01:44.463
+Wir können die Frist jetzt unabhängig von
+Bildschirm und Mail prüfen.
+
+00:01:44.463 --> 00:01:47.483
+Bei neun überfälligen Tagen erwarten wir
+noch keine Mahnung.
+
+00:01:47.483 --> 00:01:51.710
+Bei genau zehn Tagen erwarten wir schon
+eine. So halten wir fest, was die neue
+
+00:01:51.710 --> 00:01:52.523
+Frist bedeutet.
+
+00:01:53.143 --> 00:01:57.723
+Die Anzeige formuliert den Status. Der
+Versand verschickt die Mail.
+
+00:01:57.723 --> 00:02:00.783
+Das Mahnmodul beantwortet die Frage nach
+der Frist.
+
+00:02:00.783 --> 00:02:05.443
+Beim nächsten Fristwechsel ändern wir die
+Regel an genau einer Stelle.
