@@ -1,6 +1,6 @@
 # BitQuest
 
-BitQuest ist eine deutschsprachige Lernwebsite. Die [Startseite](docs/index.html) führt zu Softwaredesign, Softwarearchitektur und Deep Learning. Die Zahl der Lektionen richtet sich nach dem Inhalt der Quest. Jede Quest endet mit einem interaktiven Praxisbeispiel.
+BitQuest ist eine deutschsprachige Lernwebsite. Die [Startseite](https://konstantinkoenigshofen.github.io/BitQuest/docs/index.html) führt zu Softwaredesign, Softwarearchitektur und Deep Learning. Die Zahl der Lektionen richtet sich nach dem Inhalt der Quest. Jede Quest endet mit einem interaktiven Praxisbeispiel.
 
 ## Themen und Quests
 
