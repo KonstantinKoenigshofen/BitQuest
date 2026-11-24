@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Animierte BitQuest-Lernvideos nach Themen, mit deutschen Untertiteln und passenden Lernquests.">
+  <meta name="description" content="Was ist Softwaredesign? Ein animierter Einstieg in Verantwortung, Kopplung und Schnittstellen, mit deutschen Untertiteln.">
   <meta name="theme-color" content="#f3f6f8">
   <title>BitQuest Videos</title>
   <link rel="icon" href="../favicon.png" type="image/png">
@@ -35,106 +35,32 @@
             <div class="actions"><a class="button secondary" href="../index.html">Zurück zu BitQuest</a></div>
           </div>
         </header>
-        <section class="catalogue" aria-labelledby="videothemen">
-          <h2 id="videothemen">Themen</h2>
-          <div class="card-grid">
-            <a class="card sister-card" href="#softwaredesign">
-              <strong>Softwaredesign</strong>
-              <span class="card-label mint">Videos ansehen</span>
-            </a>
-            <div class="card sister-card">
-              <strong>Softwarearchitektur</strong>
-              <span class="card-description">Noch keine Videos</span>
-            </div>
-            <div class="card sister-card">
-              <strong>Deep Learning</strong>
-              <span class="card-description">Noch keine Videos</span>
-            </div>
-          </div>
-        </section>
         <section class="video-topic" aria-labelledby="softwaredesign">
-          <h2 id="softwaredesign" tabindex="-1">Softwaredesign</h2>
-          <p class="video-season">Staffel 1</p>
-          <nav class="actions" aria-label="Themen zu Softwaredesign">
-            <a class="button secondary" href="#modularitaet">Modularität</a>
-            <a class="button secondary" href="#schnittstellen">Schnittstellen</a>
-            <a class="button secondary" href="#abhaengigkeiten">Abhängigkeiten</a>
-            <a class="button secondary" href="#entwurfsmuster">Entwurfsmuster</a>
-            <a class="button secondary" href="#refactoring">Refactoring und Tests</a>
-          </nav>
-          <article class="sheet video-feature" id="modularitaet" aria-labelledby="video-1" tabindex="-1">
-            <p class="eyebrow section-label">Modularität</p>
-            <h3 id="video-1">Ein Buch, zwei Mahnfristen – warum Module helfen</h3>
-            <p class="video-duration"><time datetime="PT2M7S">2:07 Min.</time></p>
-            <video class="learning-video" controls playsinline preload="none" width="1280" height="720"
-                   poster="./warum-software-in-module-aufteilen.jpg" aria-labelledby="video-1" tabindex="0">
-              <source src="./warum-software-in-module-aufteilen.mp4" type="video/mp4">
-              <track src="./warum-software-in-module-aufteilen.de.vtt" kind="subtitles" srclang="de" label="Deutsch">
-              <p><a href="./warum-software-in-module-aufteilen.mp4">Video als MP4 öffnen</a></p>
+          <h2 id="softwaredesign">Softwaredesign</h2>
+          <article class="sheet video-feature" aria-labelledby="film-titel">
+            <p class="eyebrow section-label">Folge 1 · Grundlagen</p>
+            <h3 id="film-titel">Was ist Softwaredesign? Vom Verhalten zur Struktur</h3>
+            <p>Zwei Timer zählen von drei auf null. Dann gehen beide Displays für zwei Sekunden aus. Welcher Timer kennt noch die richtige Restzeit? Der Unterschied zeigt, wie du Verantwortung in einem Programm verteilen kannst.</p>
+            <p class="video-duration"><time datetime="PT3M38.5S">3:39 Min.</time></p>
+            <video class="learning-video" controls playsinline preload="metadata" width="1280" height="720"
+                   poster="./softwaredesign-vom-verhalten-zur-struktur.jpg" aria-labelledby="film-titel">
+              <source src="./softwaredesign-vom-verhalten-zur-struktur.mp4" type="video/mp4">
+              <track src="./softwaredesign-vom-verhalten-zur-struktur.de.vtt" kind="subtitles" srclang="de" label="Deutsch">
+              <track src="./softwaredesign-vom-verhalten-zur-struktur.kapitel.vtt" kind="chapters" srclang="de" label="Kapitel">
+              <p><a href="./softwaredesign-vom-verhalten-zur-struktur.mp4">Video als MP4 öffnen</a></p>
             </video>
+            <details class="self-check" id="film-kapitel" hidden>
+              <summary>Kapitel auswählen</summary>
+              <ul class="video-chapters"></ul>
+            </details>
             <div class="actions">
-              <a class="button secondary" href="../index.html?quest=module-entwerfen">Zur Quest „Module mit klarer Verantwortung entwerfen“</a>
-            </div>
-          </article>
-          <article class="sheet video-feature" id="schnittstellen" aria-labelledby="video-2" tabindex="-1">
-            <p class="eyebrow section-label">Schnittstellen</p>
-            <h3 id="video-2">Ein Klick zu viel? Das Rätsel der doppelten Reservierung</h3>
-            <p class="video-duration"><time datetime="PT2M4S">2:04 Min.</time></p>
-            <video class="learning-video" controls playsinline preload="none" width="1280" height="720"
-                   poster="./raetsel-der-doppelten-reservierung.jpg" aria-labelledby="video-2" tabindex="0">
-              <source src="./raetsel-der-doppelten-reservierung.mp4" type="video/mp4">
-              <track src="./raetsel-der-doppelten-reservierung.de.vtt" kind="subtitles" srclang="de" label="Deutsch">
-              <p><a href="./raetsel-der-doppelten-reservierung.mp4">Video als MP4 öffnen</a></p>
-            </video>
-            <div class="actions">
-              <a class="button secondary" href="../index.html?quest=schnittstellen-entwerfen">Zur Quest „Verlässliche Schnittstellen entwerfen“</a>
-            </div>
-          </article>
-          <article class="sheet video-feature" id="abhaengigkeiten" aria-labelledby="video-3" tabindex="-1">
-            <p class="eyebrow section-label">Abhängigkeiten</p>
-            <h3 id="video-3">Warum 0,65 eine Regenwarnung verschwinden lässt</h3>
-            <p class="video-duration"><time datetime="PT2M14S">2:14 Min.</time></p>
-            <video class="learning-video" controls playsinline preload="none" width="1280" height="720"
-                   poster="./warum-null-komma-sechs-fuenf-die-regenwarnung-verschluckt.jpg" aria-labelledby="video-3" tabindex="0">
-              <source src="./warum-null-komma-sechs-fuenf-die-regenwarnung-verschluckt.mp4" type="video/mp4">
-              <track src="./warum-null-komma-sechs-fuenf-die-regenwarnung-verschluckt.de.vtt" kind="subtitles" srclang="de" label="Deutsch">
-              <p><a href="./warum-null-komma-sechs-fuenf-die-regenwarnung-verschluckt.mp4">Video als MP4 öffnen</a></p>
-            </video>
-            <div class="actions">
-              <a class="button secondary" href="../index.html?quest=abhaengigkeiten-austauschen">Zur Quest „Abhängigkeiten austauschbar machen“</a>
-            </div>
-          </article>
-          <article class="sheet video-feature" id="entwurfsmuster" aria-labelledby="video-4" tabindex="-1">
-            <p class="eyebrow section-label">Entwurfsmuster</p>
-            <h3 id="video-4">Express gewählt, Standard bezahlt – wie Strategien funktionieren</h3>
-            <p class="video-duration"><time datetime="PT2M16S">2:16 Min.</time></p>
-            <video class="learning-video" controls playsinline preload="none" width="1280" height="720"
-                   poster="./express-gewaehlt-standard-bezahlt.jpg" aria-labelledby="video-4" tabindex="0">
-              <source src="./express-gewaehlt-standard-bezahlt.mp4" type="video/mp4">
-              <track src="./express-gewaehlt-standard-bezahlt.de.vtt" kind="subtitles" srclang="de" label="Deutsch">
-              <p><a href="./express-gewaehlt-standard-bezahlt.mp4">Video als MP4 öffnen</a></p>
-            </video>
-            <div class="actions">
-              <a class="button secondary" href="../index.html?quest=strategien-variieren">Zur Quest „Verhalten mit Entwurfsmustern variieren“</a>
-            </div>
-          </article>
-          <article class="sheet video-feature" id="refactoring" aria-labelledby="video-5" tabindex="-1">
-            <p class="eyebrow section-label">Refactoring und Tests</p>
-            <h3 id="video-5">Der Test, der einen Cent Unterschied findet</h3>
-            <p class="video-duration"><time datetime="PT2M12S">2:12 Min.</time></p>
-            <video class="learning-video" controls playsinline preload="none" width="1280" height="720"
-                   poster="./der-test-der-einen-cent-unterschied-findet.jpg" aria-labelledby="video-5" tabindex="0">
-              <source src="./der-test-der-einen-cent-unterschied-findet.mp4" type="video/mp4">
-              <track src="./der-test-der-einen-cent-unterschied-findet.de.vtt" kind="subtitles" srclang="de" label="Deutsch">
-              <p><a href="./der-test-der-einen-cent-unterschied-findet.mp4">Video als MP4 öffnen</a></p>
-            </video>
-            <div class="actions">
-              <a class="button secondary" href="../index.html?quest=code-refaktorieren">Zur Quest „Bestehenden Code refaktorieren“</a>
+              <a class="button secondary" href="../index.html?thema=softwaredesign">Zum Lernpfad Softwaredesign</a>
             </div>
           </article>
         </section>
       </main>
     </div>
   </div>
+  <script src="./kapitel.js"></script>
 </body>
 </html>

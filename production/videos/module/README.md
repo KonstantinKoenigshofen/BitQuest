@@ -1,6 +1,6 @@
 # Warum Software in Module aufteilen? · frühere Fassung
 
-Die erste Fassung verwendet die vom Nutzer bereitgestellte Google-AI-Studio-Aufnahme in `narration-google.wav`. `narration-google.json` enthält die Prüfsumme und die Audioabschnitte für die einzelnen Bildschritte. Die Schnitte liegen in Sprechpausen. Die Denkpausen aus dem Storyboard werden beim Rendern ergänzt. Die auf der Videoseite eingebundene Neufassung wird aus [Staffel 1](../staffel1/) exportiert.
+Die erste Fassung verwendet die vom Nutzer bereitgestellte Google-AI-Studio-Aufnahme in `narration-google.wav`. `narration-google.json` enthält die Prüfsumme und die Audioabschnitte für die einzelnen Bildschritte. Die Schnitte liegen in Sprechpausen. Die Denkpausen aus dem Storyboard werden beim Rendern ergänzt. Der aktuelle Einstiegsfilm hat eigene [Produktionsquellen](../softwaredesign/).
 
 Für eine Vorschau dieser früheren Fassung führe vom Stammordner des Projekts aus `python -B production/videos/module/render.py --output pfad/zur/vorschau --narration production/videos/module/narration-google.wav --timings production/videos/module/narration-google.json` aus. Der Renderer benötigt Pillow, FFmpeg mit libx264 und die Windows-Schrift Segoe UI.
 

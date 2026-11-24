@@ -60,7 +60,7 @@ def slices(caption):
         yield "\n".join(lines[start:start + 2])
 
 
-def write_captions(path, film, segments, timing):
+def write_captions(path, film, segments, timing, split_caption=slices):
     cues = []
     for shot, segment in zip(film.shots, segments):
         origin = segment.first_frame / FPS
@@ -68,7 +68,7 @@ def write_captions(path, film, segments, timing):
         starts = timing[shot.action]
         ends = (*starts[1:], segment.speech_duration)
         for line_text, start, end in zip(shot.lines, starts, ends):
-            chunks = list(slices(line_text))
+            chunks = list(split_caption(line_text))
             chars = sum(len(chunk) for chunk in chunks)
             cursor = max(start, lead)
             for chunk in chunks:
@@ -101,7 +101,8 @@ def load_segments(film, cache, timing):
     return segments
 
 
-def render(film, output, cache, archive_dir, timing_dir):
+def render(film, output, cache, archive_dir, timing_dir, *, draw_scene=frame, draw_poster=poster,
+           split_caption=slices):
     with tempfile.TemporaryDirectory(prefix="bitquest-staffel-") as temp:
         work = Path(temp)
         archive = archive_dir / f"{film.key}.zip"
@@ -122,12 +123,12 @@ def render(film, output, cache, archive_dir, timing_dir):
         print(f"{film.title} · {production.timecode(duration)}", flush=True)
 
         def draw(action, step, seconds, spoken, end):
-            return frame(film.key, action, Clock(seconds, tuple(timing[action]), spoken, end))
+            return draw_scene(film.key, action, Clock(seconds, tuple(timing[action]), spoken, end))
 
         audio = work / "narration.wav"
         production.audio_track(audio, segments, RATE, initial_lead=LEAD, lead=NEXT_LEAD)
-        write_captions(output / f"{film.stem}.de.vtt", film, segments, timing)
-        poster(film).save(output / f"{film.stem}.jpg", quality=92, optimize=True)
+        write_captions(output / f"{film.stem}.de.vtt", film, segments, timing, split_caption)
+        draw_poster(film).save(output / f"{film.stem}.jpg", quality=92, optimize=True)
         production.encode(output / f"{film.stem}.mp4", audio, segments, draw_frame=draw)
 
         if cache is not None:
@@ -139,6 +140,7 @@ def render(film, output, cache, archive_dir, timing_dir):
                     path = cache_path(cache, film, shot)
                     voice.write(path, path.name)
             temp_archive.replace(archive)
+        return {segment.scene: segment.first_frame / FPS for segment in segments}, duration
 
 
 def main():

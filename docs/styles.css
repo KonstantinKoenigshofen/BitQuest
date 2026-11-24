@@ -89,6 +89,9 @@ button, summary { cursor: pointer; }
 .video-feature h3 { margin: .35rem 0 .55rem; font-size: clamp(1.35rem, 2.8vw, 1.8rem); line-height: 1.2; letter-spacing: -.03em; overflow-wrap: anywhere; }
 .video-duration { margin-bottom: .85rem; font-variant-numeric: tabular-nums; }
 .learning-video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; border-radius: .75rem; background: #132f28; }
+.video-chapters { margin: .45rem 0 0; padding: 0; list-style: none; }
+.video-chapters button { padding: .5rem 0; border: 0; background: none; color: var(--accent); text-align: left; font-variant-numeric: tabular-nums; }
+.video-chapters button:hover { text-decoration: underline; }
 .sheet-intro { font-size: 1.04rem; }
 .lesson-section { margin-top: 1.2rem; }
 .lesson-section h3 { margin-bottom: .35rem; font-size: 1.1rem; }
