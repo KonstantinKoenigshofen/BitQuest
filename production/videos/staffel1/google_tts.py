@@ -21,7 +21,7 @@ STYLE = "Friendly. Warm, neugierig und ruhig erzählen. Hochdeutsche Aussprache 
 URL = "https://generativelanguage.googleapis.com/v1beta/interactions"
 
 
-def request_audio(key, transcript):
+def request_audio(key, transcript, voice=VOICE):
     payload = {
         "model": MODEL,
         "input": [{"type": "user_input", "content": [{
@@ -29,7 +29,7 @@ def request_audio(key, transcript):
             "annotations": [{"type": "speech_metadata", "style": STYLE}],
         }]}],
         "response_format": {"type": "audio"},
-        "generation_config": {"speech_config": [{"voice": VOICE}]},
+        "generation_config": {"speech_config": [{"voice": voice}]},
     }
     request = Request(URL, json.dumps(payload).encode(), {
         "x-goog-api-key": key, "Content-Type": "application/json",
@@ -61,7 +61,8 @@ def request_audio(key, transcript):
 
 def cache_path(folder, film, shot):
     transcript = " ".join(shot.lines)
-    digest = sha256("\0".join((MODEL, VOICE, STYLE, transcript)).encode()).hexdigest()[:12]
+    voice = getattr(film, "voice", None) or VOICE
+    digest = sha256("\0".join((MODEL, voice, STYLE, transcript)).encode()).hexdigest()[:12]
     return folder / film.key / f"{shot.action}-{digest}.wav"
 
 
@@ -69,7 +70,7 @@ def synthesize(key, folder, film):
     path = folder / f"{film.key}.wav"
     if not path.is_file():
         transcript = " <short pause> ".join(" ".join(shot.lines) for shot in film.shots)
-        raw = request_audio(key, transcript)
+        raw = request_audio(key, transcript, getattr(film, "voice", None) or VOICE)
         path.parent.mkdir(parents=True, exist_ok=True)
         partial = path.with_suffix(".tmp")
         partial.write_bytes(raw)

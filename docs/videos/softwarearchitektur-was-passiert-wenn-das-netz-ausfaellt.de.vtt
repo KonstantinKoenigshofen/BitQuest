@@ -1,0 +1,169 @@
+WEBVTT
+
+00:00:00.300 --> 00:00:02.225
+Acht Uhr zwölf am Bahnhof.
+
+00:00:02.225 --> 00:00:06.000
+Die Abfahrtstafel zeigt
+den nächsten Zug nach Bonn.
+
+00:00:06.000 --> 00:00:09.460
+Vier Minuten später fällt
+die Netzwerkverbindung aus.
+
+00:00:09.460 --> 00:00:11.700
+Was sollte die Tafel jetzt anzeigen?
+
+00:00:13.098 --> 00:00:17.391
+Schauen wir hinter die Tafel.
+Ein Fahrplanserver liefert die Daten.
+
+00:00:17.391 --> 00:00:20.338
+Über das Netz kommen sie
+zur Anzeige am Gleis.
+
+00:00:20.338 --> 00:00:23.767
+Welche Teile ein System hat,
+wo sie laufen und wie sie
+
+00:00:23.767 --> 00:00:27.258
+zusammenarbeiten, gehört zu
+seiner Softwarearchitektur.
+
+00:00:27.258 --> 00:00:32.298
+Am Ausfall sehen wir, warum dieser Aufbau
+das Verhalten des ganzen Systems prägt.
+
+00:00:32.965 --> 00:00:37.505
+Im ersten Entwurf zeigt die Tafel nur
+Daten aus der laufenden Verbindung.
+
+00:00:37.505 --> 00:00:42.205
+Beim Ausfall bekommt sie keine neuen
+Daten und hat keinen gespeicherten Stand.
+
+00:00:42.205 --> 00:00:45.205
+Sie kann nur melden,
+dass die Abfahrten unbekannt sind.
+
+00:00:45.902 --> 00:00:49.484
+Im zweiten Entwurf speichert
+die Tafel den letzten gültigen
+
+00:00:49.484 --> 00:00:52.702
+Stand direkt am Gleis,
+zusammen mit der Empfangszeit.
+
+00:00:52.702 --> 00:00:57.122
+Fällt das Netz aus, kann sie diesen
+Stand lokal lesen und anzeigen.
+
+00:00:57.122 --> 00:01:00.722
+Ein sichtbarer Zeitstempel verrät
+den Reisenden, wie alt er ist.
+
+00:01:01.382 --> 00:01:03.422
+Mit dem lokalen Speicher bleibt die
+
+00:01:03.422 --> 00:01:06.162
+Information bei einem
+kurzen Ausfall verfügbar.
+
+00:01:06.162 --> 00:01:08.976
+Aber wenn sich inzwischen
+das Abfahrtsgleis ändert,
+
+00:01:08.976 --> 00:01:12.342
+erfährt die Tafel davon erst,
+wenn die Verbindung zurück ist.
+
+00:01:12.342 --> 00:01:16.912
+Damit stehen zwei Ziele im Konflikt:
+Verfügbarkeit und Aktualität.
+
+00:01:18.030 --> 00:01:20.647
+Machen wir daraus ein überprüfbares Ziel.
+
+00:01:20.647 --> 00:01:25.050
+Bei Netzausfall soll die Tafel
+innerhalb von zwei Sekunden reagieren.
+
+00:01:25.050 --> 00:01:29.890
+Sie zeigt den letzten Stand mit Uhrzeit,
+solange er jünger als fünf Minuten ist.
+
+00:01:29.890 --> 00:01:33.890
+Sobald der Stand fünf Minuten alt ist,
+wechselt sie zum Störungshinweis.
+
+00:01:34.878 --> 00:01:38.374
+Jetzt du. Die letzten Daten
+kamen um acht Uhr zwölf.
+
+00:01:38.374 --> 00:01:41.398
+Das Netz fällt erst um
+acht Uhr sechzehn aus.
+
+00:01:41.398 --> 00:01:45.068
+Bis zu welcher Uhrzeit darf die
+Tafel den gespeicherten Stand zeigen?
+
+00:01:49.143 --> 00:01:50.780
+Bis kurz vor acht Uhr siebzehn.
+
+00:01:50.780 --> 00:01:53.473
+Beim Ausfall sind die Daten
+schon vier Minuten alt.
+
+00:01:53.473 --> 00:01:55.835
+Die fünf Minuten zählen ab dem Empfang.
+
+00:01:55.835 --> 00:01:58.923
+Um acht Uhr siebzehn
+erscheint der Störungshinweis.
+
+00:01:59.720 --> 00:02:02.807
+Ob unser Entwurf das Ziel
+erfüllt, zeigt ein Test.
+
+00:02:02.807 --> 00:02:06.080
+Wir trennen die Verbindung
+und starten eine Stoppuhr.
+
+00:02:06.080 --> 00:02:09.494
+Wir prüfen, wann der
+Zeitstempel erscheint und ob die
+
+00:02:09.494 --> 00:02:12.780
+Tafel bei exakt fünf Minuten
+Datenalter umschaltet.
+
+00:02:12.780 --> 00:02:15.795
+Für diese Entscheidung braucht
+die Tafel Regeln für den
+
+00:02:15.795 --> 00:02:18.920
+Speicher, das Datenalter und
+die Rückkehr der Verbindung.
+
+00:02:19.670 --> 00:02:22.817
+Wenn du eine
+Architekturentscheidung triffst,
+
+00:02:22.817 --> 00:02:25.545
+frag dich: Was muss das System in einer
+
+00:02:25.545 --> 00:02:29.182
+konkreten Lage leisten?
+Welche Struktur hilft dabei?
+
+00:02:29.182 --> 00:02:31.350
+Und welche Folgen hat die Wahl?
+
+00:02:31.350 --> 00:02:34.631
+In der nächsten Folge geht es
+darum, solche Qualitätsziele
+
+00:02:34.631 --> 00:02:37.460
+so zu formulieren,
+dass dein Team sie testen kann.

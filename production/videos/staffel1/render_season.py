@@ -60,6 +60,27 @@ def slices(caption):
         yield "\n".join(lines[start:start + 2])
 
 
+def subtitle_cues(sentence):
+    """Teile an Sprechgruppen, ohne einzelne Restwörter aufblitzen zu lassen."""
+    if len(sentence) <= 41:
+        return [sentence]
+    words = sentence.split()
+    cuts = [(" ".join(words[:i]), " ".join(words[i:])) for i in range(1, len(words))]
+    if not cuts:
+        return [sentence]
+
+    def cost(cut):
+        a, b = cut
+        punctuation = 26 if a.endswith((".", "?", "!")) else 12 if a.endswith(",") else 0
+        return abs(len(a) - len(b)) - punctuation
+
+    lines = [cut for cut in cuts if max(map(len, cut)) <= 41]
+    if lines:
+        return ["\n".join(min(lines, key=cost))]
+    left, right = min(cuts, key=cost)
+    return subtitle_cues(left) + subtitle_cues(right)
+
+
 def write_captions(path, film, segments, timing, split_caption=slices):
     cues = []
     for shot, segment in zip(film.shots, segments):

@@ -23,6 +23,7 @@ class Film:
     quest: str
     quest_title: str
     shots: tuple[Shot, ...]
+    voice: str | None = None
 
 
 FILMS = (
