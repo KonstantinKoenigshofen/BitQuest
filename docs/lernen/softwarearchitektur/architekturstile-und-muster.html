@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Welche Ansätze passen zur inneren Struktur, zum Betrieb und zur Kommunikation?">
+  <title>Architekturstile und Muster · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="./index.html">Softwarearchitektur</a>
+        <a href="../deep-learning/index.html">Deep Learning</a>
+        <a href="../datenbanktechnologien/index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Softwarearchitektur</a>
+          <span aria-current="page">Architekturstile und Muster</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Block 4 von 7</p>
+            <h1>Architekturstile und Muster</h1>
+            <p class="hero-intro">Ordne Architekturstile nach drei Fragen ein. Wie ist eine Anwendung innen aufgebaut? Was wird getrennt betrieben? Wie tauschen sich die Teile aus?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#innere-struktur">Wie strukturierst du den Code einer Anwendung?</a></li>
+              <li><a href="#betrieb">Welche Teile betreibst du getrennt?</a></li>
+              <li><a href="#kommunikation">Wie kommunizieren die Teile?</a></li>
+              <li><a href="#kombination">Welche Ansätze kannst du kombinieren?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="innere-struktur" tabindex="-1">Wie strukturierst du den Code einer Anwendung?</h2>
+              <h3>Schichtenarchitektur</h3>
+              <p>Eine <strong>Schichtenarchitektur</strong> (<i lang="en">layered architecture</i>) ordnet Code nach Aufgaben, etwa Darstellung, Geschäftslogik und Datenzugriff. Eine verbreitete Regel erlaubt einer Schicht, die darunterliegende Schicht aufzurufen. So findest du ähnliche technische Aufgaben an vorhersehbaren Stellen, und ein Eingabeformular kann sich unabhängig von der Speichertechnik ändern.</p>
+              <p>Der Ansatz eignet sich für Anwendungen mit klaren technischen Zuständigkeiten. Schichten brauchen keine getrennten Server. Wenn jede kleine fachliche Änderung alle Schichten durchquert oder tiefere Schichten Datenbankdetails bis zur Oberfläche durchreichen, solltest du die Zuständigkeiten und Schnittstellen erneut prüfen.</p>
+              <h3>Hexagonale Architektur</h3>
+              <p>Die <strong>hexagonale Architektur</strong> (<i lang="en">hexagonal architecture</i>, auch <i lang="en">ports and adapters</i>) trennt den Anwendungskern von äußerer Technik. <strong>Ports</strong> beschreiben, welche fachlichen Operationen der Kern anbietet und welche Leistungen er braucht. <strong>Adapter</strong> verbinden diese Schnittstellen beispielsweise mit HTTP, einer Datenbank oder einem Test. Die Abhängigkeiten im Code zeigen von den Adaptern zum Kern und zu seinen Verträgen.</p>
+              <p>Das lohnt sich, wenn du wichtige Fachlogik unabhängig von Infrastruktur testen oder mehrere Zugangswege unterstützen willst. Schnittstellen und die Übersetzung zwischen Formaten verursachen zusätzlichen Code. Für eine Funktion mit wenig eigener Logik kann eine direkte Anbindung genügen.</p>
+            </section>
+            <section>
+              <h2 id="betrieb" tabindex="-1">Welche Teile betreibst du getrennt?</h2>
+              <h3>Modularer Monolith</h3>
+              <p>Ein <strong>modularer Monolith</strong> (<i lang="en">modular monolith</i>) enthält fachlich abgegrenzte Module in einer gemeinsam bereitgestellten und betriebenen Anwendung. Die Anwendung kann in mehreren Kopien laufen. Die Module werden dabei gemeinsam ausgeliefert und meist im selben Prozess ausgeführt.</p>
+              <p>Das erleichtert Bereitstellung, Aufrufe zwischen Modulen und bei gemeinsamem Datenspeicher auch Transaktionen. Modulgrenzen müssen im Code und beim Datenzugriff eingehalten werden. Freigaben und Skalierung betreffen die gesamte Anwendung.</p>
+              <h3>Microservices</h3>
+              <p><strong>Microservices</strong> sind Dienste mit jeweils klarer fachlicher Zuständigkeit, die sich unabhängig bereitstellen und betreiben lassen. Das kann Teams bei getrennten Freigaben oder stark unterschiedlichen Lastprofilen helfen. Unabhängige Änderungen setzen stabile Verträge und eine klare Datenverantwortung voraus.</p>
+              <p>Verteilte Dienste brauchen Netzwerkaufrufe oder Nachrichten, Betrieb für mehrere Einheiten und eine dienstübergreifende Fehlersuche. Ein Netzwerkausfall kann eine Funktion treffen, obwohl der aufrufende Dienst läuft. Wenn Änderungen regelmäßig mehrere Dienste gleichzeitig betreffen, bleibt der Abstimmungsaufwand trotz getrennter Bereitstellung hoch.</p>
+            </section>
+            <section>
+              <h2 id="kommunikation" tabindex="-1">Wie kommunizieren die Teile?</h2>
+              <p>In einer <strong>ereignisgetriebenen Architektur</strong> (<i lang="en">event-driven architecture</i>) melden Teile ein eingetretenes Ereignis. Andere Teile können darauf reagieren. Das Ereignis „Bericht freigegeben“ kann etwa eine Benachrichtigung und eine Aktualisierung des Suchindexes auslösen, ohne dass der Absender beide Empfänger kennen muss.</p>
+              <p>Ereignisse eignen sich, wenn mehrere Reaktionen unabhängig folgen dürfen und Verzögerungen zulässig sind. Bei asynchroner Zustellung brauchen Empfänger einen Plan für doppelte oder verspätete Ereignisse. Die Fehlersuche über mehrere Schritte und die Pflege gemeinsam verstandener Ereignisformate kosten Aufwand. Wenn ein Aufrufer sofort eine Entscheidung braucht, ist ein direkter Aufruf oft leichter zu verstehen.</p>
+            </section>
+            <section>
+              <h2 id="kombination" tabindex="-1">Welche Ansätze kannst du kombinieren?</h2>
+              <p>Ein modularer Monolith kann in seinen Modulen einen hexagonalen Aufbau verwenden und intern Ereignisse austauschen. Ein Microservice kann innen in Schichten organisiert sein und nach außen über direkte Aufrufe und Ereignisse kommunizieren. Selbst ein hexagonaler Kern kann intern weiter gegliedert sein.</p>
+              <p>Entscheide für jede Frage anhand des Problems. Unabhängige Fachtests sprechen für eine klare Grenze zur Infrastruktur. Getrennte Freigaben oder Skalierung können eine eigene Betriebseinheit rechtfertigen, wenn das Team den verteilten Betrieb tragen kann. Unabhängige Folgereaktionen sprechen für Ereignisse, wenn die Fachlichkeit Verzögerungen erlaubt.</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Schichten und hexagonale Architektur beschreiben die innere Struktur und ihre Abhängigkeiten.</li>
+                <li>Modularer Monolith und Microservices unterscheiden sich in der Bereitstellung und im Betrieb der Module oder Dienste.</li>
+                <li>Ereignisgetriebene Kommunikation lässt sich mit beiden Betriebsformen verbinden.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Ein Team möchte seine Fachlogik ohne Datenbank testen und nach einer Freigabe mehrere Folgeaktionen anstoßen. Braucht es dafür getrennt betriebene Dienste?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Ein modularer Monolith reicht dafür aus. Ports und Adapter können die Fachlogik vom Datenbankadapter trennen. Interne Ereignisse können Folgeaktionen auslösen. Getrennte Dienste kommen infrage, wenn zusätzliche Anforderungen wie unabhängige Freigaben oder Skalierung ihren Betriebsaufwand rechtfertigen.</p>
+              </details>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./modularisierung-und-schnittstellen.html">
+              <span>Vorheriger Block</span>
+              <strong>Modularisierung und Schnittstellen</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Softwarearchitektur</strong>
+            </a>
+            <a href="./daten-und-kommunikation.html">
+              <span>Nächster Block</span>
+              <strong>Daten und Kommunikation</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

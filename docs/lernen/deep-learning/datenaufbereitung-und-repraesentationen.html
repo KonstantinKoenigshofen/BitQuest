@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Wie bereitest du Daten für ein Netz auf, und welche Darstellungen kann es selbst lernen?">
+  <title>Datenaufbereitung und Repräsentationen · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="../softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="./index.html">Deep Learning</a>
+        <a href="../datenbanktechnologien/index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Deep Learning</a>
+          <span aria-current="page">Datenaufbereitung und Repräsentationen</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Einheit 5 von 8</p>
+            <h1>Datenaufbereitung und Repräsentationen</h1>
+            <p class="hero-intro">Wie bereitest du Daten für ein Netz auf, und welche Darstellungen kann es selbst lernen?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#skalierung">Wie machst du numerische Daten vergleichbar?</a></li>
+              <li><a href="#kategorien">Wie stellst du Kategorien und Wörter dar?</a></li>
+              <li><a href="#kosinusaehnlichkeit">Was misst der Winkel zwischen zwei Vektoren?</a></li>
+              <li><a href="#dimensionsreduktion">Wann ist eine kompaktere Darstellung sinnvoll?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="skalierung" tabindex="-1">Wie machst du numerische Daten vergleichbar?</h2>
+              <p>Numerische Merkmale (<i lang="en">features</i>) können sehr verschiedene Einheiten und Größenordnungen haben. Eine <strong>Standardisierung</strong> (<i lang="en">standardization</i>) zieht je Merkmal den Mittelwert ab und teilt durch die Standardabweichung. So haben die transformierten Trainingswerte typischerweise Mittelwert null und Standardabweichung eins. Das kann dem Optimierer helfen, mit Merkmalen auf ähnlicher Skala zu arbeiten. Bei konstanten Merkmalen geht die Division durch null, deshalb musst du sie gesondert behandeln.</p>
+              <p>Eine Min-Max-Skalierung (<i lang="en">min-max scaling</i>) bildet anhand eines Minimums und Maximums auf einen Zielbereich ab. Einzelne Extremwerte können die übrigen Beobachtungen darin zusammendrängen. Wähle die Transformation passend zu Verteilung und Aufgabe. Schätze ihre Parameter nur auf Trainingsdaten und verwende sie anschließend unverändert für Validierung, Test und Inferenz. <a href="./training-planen-und-beurteilen.html#datenlecks">Datenlecks bei der Vorverarbeitung</a></p>
+            </section>
+            <section>
+              <h2 id="kategorien" tabindex="-1">Wie stellst du Kategorien und Wörter dar?</h2>
+              <p>Eine beliebige Nummer pro Kategorie kann eine ungewollte Reihenfolge und Abstände einführen. Bei der <strong>One-Hot-Kodierung</strong> (<i lang="en">one-hot encoding</i>) steht jede Kategorie für eine eigene Position im Vektor. Für die beobachtete Kategorie ist dort eine Eins gesetzt. Dieses Verfahren eignet sich für eine überschaubare Anzahl ungeordneter Kategorien.</p>
+              <p>Ein <strong>Embedding</strong> ist hier ein gelernter dichter Vektor. Kategorien oder Wörter können darüber in weniger Dimensionen dargestellt werden als bei One-Hot. Bei <strong>Word2Vec</strong> liefern Wortkontexte das Lernsignal. Die Variante <i lang="en">Skip-gram</i> nutzt ein Wort, um Wörter in seiner Umgebung vorherzusagen. Nach dem Training kannst du die gelernten Vektoren für weitere Aufgaben verwenden. Ähnliche Kontexte können ähnliche Vektoren ergeben. Ein Word2Vec-Vektor fasst dabei die verschiedenen Verwendungen eines Wortes in einer Darstellung zusammen.</p>
+            </section>
+            <section>
+              <h2 id="kosinusaehnlichkeit" tabindex="-1">Was misst der Winkel zwischen zwei Vektoren?</h2>
+              <p>Die <strong>Kosinusähnlichkeit</strong> (<i lang="en">cosine similarity</i>) vergleicht die Richtungen zweier von null verschiedener Vektoren <var>u</var> und <var>v</var>. Im Zähler steht das Skalarprodukt und im Nenner das Produkt ihrer euklidischen Längen.</p>
+              <math display="block"><mi>cos</mi><mo>(</mo><mi>φ</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mi>u</mi><mo>⋅</mo><mi>v</mi></mrow><mrow><mo stretchy="false">‖</mo><mi>u</mi><mo stretchy="false">‖</mo><mo stretchy="false">‖</mo><mi>v</mi><mo stretchy="false">‖</mo></mrow></mfrac></math>
+              <p><var>φ</var> ist der Winkel zwischen den Vektoren. Gleiche Richtung ergibt eins, ein rechter Winkel null und entgegengesetzte Richtung minus eins. Hohe Ähnlichkeit zeigt eine ähnliche Richtung in der gelernten Darstellung. Welche fachliche Bedeutung das hat, hängt von den Trainingsdaten und der Lernaufgabe ab.</p>
+            </section>
+            <section>
+              <h2 id="dimensionsreduktion" tabindex="-1">Wann ist eine kompaktere Darstellung sinnvoll?</h2>
+              <p>Die <strong>Hauptkomponentenanalyse</strong> (<i lang="en">principal component analysis</i>, PCA) projiziert die Daten linear auf Richtungen, in denen sie am stärksten streuen. Mit weniger Komponenten erhältst du eine kompaktere Darstellung. Kleine Varianz kann trotzdem ein wichtiges Signal für die spätere Zielgröße enthalten. Miss daher den Nutzen anhand dieser Aufgabe und passe PCA nur an die Trainingsdaten an.</p>
+              <p>Ein <strong>Autoencoder</strong> trainiert einen <strong>Encoder</strong>, der die Eingabe in einen Code überführt, und einen <strong>Decoder</strong>, der daraus die Eingabe rekonstruiert. Die Eingabe liefert dabei selbst den Zielwert. Ein enger Zwischenraum (<i lang="en">bottleneck</i>) zwingt das Netz, für die Rekonstruktion wichtige Informationen zu verdichten. Ein niedriger Rekonstruktionsfehler sagt noch wenig darüber aus, ob der Code die Merkmale enthält, die du für eine spätere Klassifikation brauchst.</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Skalierung und Kodierung beeinflussen, welche Unterschiede ein Modell in den Eingaben vorfindet.</li>
+                <li>Ein Embedding lernt eine Darstellung aus einer Aufgabe. Kosinusähnlichkeit vergleicht darin Richtungen.</li>
+                <li>PCA bewahrt vor allem Varianz. Ein Autoencoder lernt für die Rekonstruktion. Prüfe die Darstellung an ihrem späteren Zweck.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Ein Autoencoder rekonstruiert Sensordaten gut. Warum kann sein kompakter Code trotzdem für die Erkennung seltener Defekte ungeeignet sein?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Der Rekonstruktionsverlust gewichtet die häufigen Muster stark, wenn sie die meisten Daten ausmachen. Ein seltenes, für Defekte wichtiges Merkmal kann im Code fehlen, obwohl die meisten Eingaben gut rekonstruiert werden. Prüfe mit separaten Defektbeispielen, ob die Darstellung diese Unterschiede bewahrt.</p>
+              </details>
+              <h3>Im Skript nachlesen</h3>
+              <p class="script-reference">Kapitel 13, §§ 13.2 und 13.5 (S. 360–365 und 380–385), zu Vorverarbeitung und PCA. Kapitel 14, §§ 14.2–14.6 (S. 398–428), zu Kategorien, Word2Vec, Kosinusähnlichkeit und Autoencodern.</p>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./generalisierung-und-regularisierung.html">
+              <span>Vorherige Einheit</span>
+              <strong>Generalisierung und Regularisierung</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Deep Learning</strong>
+            </a>
+            <a href="./training-planen-und-beurteilen.html">
+              <span>Nächste Einheit</span>
+              <strong>Training planen und beurteilen</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

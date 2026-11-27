@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Wie hältst du Gründe, Annahmen und Struktur für unterschiedliche Zielgruppen fest?">
+  <title>Entscheidungen und Dokumentation · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="./index.html">Softwarearchitektur</a>
+        <a href="../deep-learning/index.html">Deep Learning</a>
+        <a href="../datenbanktechnologien/index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Softwarearchitektur</a>
+          <span aria-current="page">Entscheidungen und Dokumentation</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Block 6 von 7</p>
+            <h1>Entscheidungen und Dokumentation</h1>
+            <p class="hero-intro">Halte fest, welche Alternativen du geprüft hast und welche Darstellung einer Zielgruppe bei ihrer Frage hilft.</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#alternativen">Wie vergleichst du Alternativen?</a></li>
+              <li><a href="#adr">Was hält ein ADR fest?</a></li>
+              <li><a href="#architektursichten">Welche Darstellung hilft wem?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="alternativen" tabindex="-1">Wie vergleichst du Alternativen?</h2>
+              <p>Beschreibe zuerst die Entscheidung und ihren Anlass. Sammle realistische Alternativen, darunter bei einem bestehenden System auch die Beibehaltung der aktuellen Lösung. Vergleiche sie entlang derselben Kriterien, etwa fachliche Muss-Anforderungen, Qualitätsziele, Aufwand für Betrieb und Migration sowie Kosten einer späteren Änderung.</p>
+              <p>Trenne beobachtete Fakten von Annahmen. Die Aussage „Die Last verdoppelt sich bis zum Jahresende“ ist eine Prognose. Ein Lasttest liefert eine Beobachtung für die geprüften Bedingungen. Wenn eine unsichere Annahme die Wahl bestimmt, prüfe sie mit einem kleinen Versuch oder halte fest, bei welcher Beobachtung ihr neu entscheidet.</p>
+              <p>Begründe die Wahl einschließlich ihrer Nachteile. Wenn ihr eine Funktion zunächst in der bestehenden Anwendung umsetzt, kann das einen zusätzlichen Dienst im Betrieb sparen. Die gemeinsame Bereitstellung bleibt dann eine bewusste Folge.</p>
+            </section>
+            <section>
+              <h2 id="adr" tabindex="-1">Was hält ein ADR fest?</h2>
+              <p>Ein <strong>Architecture Decision Record</strong> (ADR) ist ein kurzer Eintrag zu einer bedeutsamen Architekturentscheidung. Er bewahrt die Begründung, damit spätere Leserinnen und Leser die Entscheidung im damaligen Kontext nachvollziehen und bei neuen Erkenntnissen erneut prüfen können.</p>
+              <ul>
+                <li><strong>Titel, Datum und Status.</strong> Benenne die Entscheidung und kennzeichne sie etwa als vorgeschlagen, angenommen oder ersetzt.</li>
+                <li><strong>Kontext.</strong> Beschreibe Anlass, Ziele, Randbedingungen und entscheidende Annahmen.</li>
+                <li><strong>Alternativen und Entscheidung.</strong> Halte fest, was ihr abgewogen habt, wofür ihr euch entschieden habt und warum.</li>
+                <li><strong>Konsequenzen.</strong> Nenne Vorteile, in Kauf genommene Nachteile und beobachtbare Gründe, die Entscheidung erneut zu prüfen.</li>
+              </ul>
+              <p>Bewahre ADRs dort auf, wo die Beteiligten sie finden, etwa im Repository. Wenn eine neue Entscheidung eine ältere ablöst, verknüpfe die Einträge. Aktualisiere zusätzlich die Darstellungen, die den aktuellen Zustand zeigen.</p>
+            </section>
+            <section>
+              <h2 id="architektursichten" tabindex="-1">Welche Darstellung hilft wem?</h2>
+              <p>Eine <strong>Architektursicht</strong> (<i lang="en">architecture view</i>) wählt gezielt die Informationen aus, die für eine Frage relevant sind. Skizzen, Ablaufdiagramme und kurze Texte können sich dabei ergänzen.</p>
+              <dl>
+                <dt>Kontextsicht (<i lang="en">context view</i>)</dt>
+                <dd>Wer nutzt das System und welche Fremdsysteme grenzen daran? Eine Skizze mit Systemgrenze und beschrifteten Verbindungen hilft Fachverantwortlichen und Integrationsteams, Zuständigkeiten zu klären.</dd>
+                <dt>Bausteinsicht (<i lang="en">building block view</i>)</dt>
+                <dd>Wie ist das System aufgebaut und wo gehört eine Änderung hin? Eine Darstellung der Module, ihrer Aufgaben und Abhängigkeiten hilft Entwicklerinnen und Entwicklern bei der Orientierung.</dd>
+                <dt>Laufzeitsicht (<i lang="en">runtime view</i>)</dt>
+                <dd>Welche Teile arbeiten in einem konkreten Ablauf zusammen? Eine Schrittfolge oder ein Sequenzdiagramm hilft Teams, Übergaben, Zeitüberschreitungen und Fehlerwege zu besprechen.</dd>
+                <dt>Verteilungssicht (<i lang="en">deployment view</i>)</dt>
+                <dd>Welche Teile laufen wo und wie sind die Umgebungen verbunden? Eine Darstellung von Prozessen, Laufzeitumgebungen und Verbindungen hilft Betriebsteams bei Bereitstellung und Störungssuche.</dd>
+              </dl>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Vergleiche Alternativen anhand derselben Ziele und mache unsichere Annahmen sichtbar.</li>
+                <li>Ein ADR hält die Begründung und die Folgen einer einzelnen Entscheidung fest.</li>
+                <li>Wähle die Architektursicht nach der Frage und der Zielgruppe.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Der Betrieb möchte wissen, in welcher Umgebung ein Hintergrundprozess läuft. Ein Entwicklungsteam möchte verstehen, was nach einer fehlgeschlagenen Nachricht passiert. Welche Sichten helfen?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Die Verteilungssicht zeigt die Laufzeitumgebung des Hintergrundprozesses und ihre Verbindungen. Die Laufzeitsicht zeigt die Schritte nach dem Fehler, etwa eine erneute Zustellung oder die Weiterleitung zur Fehlerbearbeitung.</p>
+              </details>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./daten-und-kommunikation.html">
+              <span>Vorheriger Block</span>
+              <strong>Daten und Kommunikation</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Softwarearchitektur</strong>
+            </a>
+            <a href="./bestehende-systeme.html">
+              <span>Nächster Block</span>
+              <strong>Bestehende Systeme verstehen und weiterentwickeln</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

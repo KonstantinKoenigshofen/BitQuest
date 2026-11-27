@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Was muss das System leisten und wie machst du seine Qualitätsziele überprüfbar?">
+  <title>Anforderungen und Qualitätsziele · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="./index.html">Softwarearchitektur</a>
+        <a href="../deep-learning/index.html">Deep Learning</a>
+        <a href="../datenbanktechnologien/index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Softwarearchitektur</a>
+          <span aria-current="page">Anforderungen und Qualitätsziele</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Block 2 von 7</p>
+            <h1>Anforderungen und Qualitätsziele</h1>
+            <p class="hero-intro">Leite aus fachlichen Zielen, Randbedingungen und messbaren Qualitätszielen ab, worauf es bei einer Architektur ankommt.</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#anforderungen">Was soll das System leisten?</a></li>
+              <li><a href="#qualitaetsziele">Welche Eigenschaften sind wichtig?</a></li>
+              <li><a href="#messbarkeit">Wie formulierst du ein überprüfbares Ziel?</a></li>
+              <li><a href="#abwaegung">Wie wägt man konkurrierende Ziele ab?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="anforderungen" tabindex="-1">Was soll das System leisten?</h2>
+              <p>Eine <strong>fachliche Anforderung</strong> (<i lang="en">functional requirement</i>) beschreibt, was das System aus Sicht der Fachdomäne tun soll. Etwa soll eine berechtigte Person eine Bestellung stornieren können, solange sie noch nicht versandt wurde. Daraus ergeben sich Abläufe, Regeln und Fälle, die das System abdecken muss.</p>
+              <p><strong>Randbedingungen</strong> (<i lang="en">constraints</i>) begrenzen den Lösungsraum. Technische Randbedingungen sind etwa ein vorgegebenes Identitätssystem oder die Unterstützung einer bestehenden Schnittstelle. Organisatorische Randbedingungen sind beispielsweise die Betriebszeiten des Supportteams oder eine feste Zuständigkeit für Freigaben. Kläre, wer die Vorgabe setzt und ob sie verhandelbar ist. Davon hängt ab, welche Alternativen überhaupt infrage kommen.</p>
+            </section>
+            <section>
+              <h2 id="qualitaetsziele" tabindex="-1">Welche Eigenschaften sind wichtig?</h2>
+              <dl>
+                <dt>Wartbarkeit (<i lang="en">maintainability</i>)</dt>
+                <dd>Wie leicht kannst du Fehler lokalisieren und typische Änderungen vornehmen? Eine häufig geänderte Regel sollte sich an wenigen, gut testbaren Stellen anpassen lassen.</dd>
+                <dt>Sicherheit (<i lang="en">security</i>)</dt>
+                <dd>Welche Daten und Funktionen sind vor welchen Zugriffen zu schützen? Für einen vertraulichen Bericht kannst du etwa prüfen, dass Nutzer nur Berichte ihres eigenen Bereichs abrufen können.</dd>
+                <dt>Verfügbarkeit (<i lang="en">availability</i>)</dt>
+                <dd>In welchem Zeitraum und in welchem Umfang soll eine Funktion nutzbar sein? Miss etwa den Anteil erfolgreicher und rechtzeitiger Prüfaufrufe für eine Kernfunktion pro Monat.</dd>
+                <dt>Leistung (<i lang="en">performance</i>)</dt>
+                <dd>Wie schnell reagiert das System und wie viel Arbeit bewältigt es unter einer bestimmten Last? Antwortzeit und Durchsatz zeigen unterschiedliche Eigenschaften.</dd>
+              </dl>
+            </section>
+            <section>
+              <h2 id="messbarkeit" tabindex="-1">Wie formulierst du ein überprüfbares Ziel?</h2>
+              <p>Ein <strong>Qualitätsszenario</strong> (<i lang="en">quality attribute scenario</i>) verknüpft einen konkreten Auslöser mit dem betroffenen Systemteil, den Bedingungen, der gewünschten Reaktion und einem Maßstab. Gib auch an, von wo und über welchen Zeitraum gemessen wird.</p>
+              <p>In einem konkreten Suchszenario beantwortet der öffentliche Endpunkt bei 50 Suchanfragen pro Sekunde und einer Million Datensätzen in einem 15-minütigen Lasttest mindestens 95&nbsp;% der Anfragen erfolgreich innerhalb von 300 Millisekunden, gemessen am Testclient bis zur vollständigen Antwort. Fehler und Zeitüberschreitungen zählen als Anfragen, die das Ziel verfehlen.</p>
+              <p>Messbar heißt auch beobachtbar. Wartbarkeit lässt sich etwa daran prüfen, ob sich eine typische Validierungsregel in einem Modul ändern und mit dessen Tests absichern lässt. Wähle Beispiele aus der erwarteten Praxis, damit das Ergebnis etwas über das eigentliche Ziel aussagt.</p>
+            </section>
+            <section>
+              <h2 id="abwaegung" tabindex="-1">Wie wägt man konkurrierende Ziele ab?</h2>
+              <p>Lege mit den Betroffenen Mindestwerte fest und halte fest, welches Ziel bei einem Konflikt Vorrang hat. Vergleiche Alternativen unter denselben Bedingungen. Ein Zwischenspeicher (<i lang="en">cache</i>) kann Antworten beschleunigen, liefert aber unter Umständen ältere Daten und erhöht den Aufwand für Betrieb und Fehleranalyse.</p>
+              <p>Wenn Daten bis zu einer Minute alt sein dürfen, ist ein Cache für diese Abfrage eine mögliche Lösung. Für eine Abfrage, die einen aktuellen Kontostand verbindlich bestätigen soll, gelten andere Anforderungen. Miss die tatsächliche Antwortzeit und prüfe die zugesagte Aktualität auch unter Last und bei Fehlern. Vereinbare, wann ihr die Abwägung erneut prüft.</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Fachliche Anforderungen beschreiben das gewünschte Verhalten. Randbedingungen begrenzen die Wahl der Lösung.</li>
+                <li>Ein Qualitätsszenario verbindet eine Situation und eine Reaktion mit einem überprüfbaren Maßstab.</li>
+                <li>Gemeinsame Mindestwerte und Messbedingungen machen Zielkonflikte entscheidbar.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Wie würdest du „Die Suche muss schnell sein“ präzisieren und einen Cache als mögliche Lösung beurteilen?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Lege Datenmenge, Last, Messpunkt, Dauer und eine Grenze für Antwortzeit und Erfolgsanteil fest. Prüfe dann unter denselben Bedingungen, ob ein Cache das Ziel erreicht. Kläre, wie alt Suchergebnisse sein dürfen und wie Aktualität und Verhalten bei Ausfällen geprüft werden.</p>
+              </details>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./grundlagen.html">
+              <span>Vorheriger Block</span>
+              <strong>Grundlagen der Softwarearchitektur</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Softwarearchitektur</strong>
+            </a>
+            <a href="./modularisierung-und-schnittstellen.html">
+              <span>Nächster Block</span>
+              <strong>Modularisierung und Schnittstellen</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

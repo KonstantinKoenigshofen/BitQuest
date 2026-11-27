@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Welche Entscheidungen prägen ein Softwaresystem und woran erkennst du sie?">
+  <title>Grundlagen der Softwarearchitektur · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="./index.html">Softwarearchitektur</a>
+        <a href="../deep-learning/index.html">Deep Learning</a>
+        <a href="../datenbanktechnologien/index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Softwarearchitektur</a>
+          <span aria-current="page">Grundlagen der Softwarearchitektur</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Block 1 von 7</p>
+            <h1>Grundlagen der Softwarearchitektur</h1>
+            <p class="hero-intro">Lerne, wo ein System beginnt, wie seine Teile zusammenarbeiten und welche Entscheidungen seine Entwicklung prägen.</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#systemgrenze">Wo endet das System?</a></li>
+              <li><a href="#bausteine">Wie beschreibst du das Innere?</a></li>
+              <li><a href="#entscheidungen">Wann prägt eine Entscheidung die Architektur?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="systemgrenze" tabindex="-1">Wo endet das System?</h2>
+              <p>Die <strong>Systemgrenze</strong> (<i lang="en">system boundary</i>) legt fest, was zum betrachteten System gehört. Innerhalb der Grenze liegen die Aufgaben und Daten, für die das System verantwortlich ist. Außerhalb liegen etwa Nutzerinnen und Nutzer, Fremdsysteme und Dienste, von denen es Leistungen bezieht.</p>
+              <p>Bei einer Anwendung, die E-Mails über einen externen Versanddienst verschickt, kann die Anwendung für Inhalt und Versandauftrag zuständig sein. Der Dienst übernimmt die Zustellung. Die Grenze klärt auch den Umgang mit Fehlern. Die Anwendung kann einen abgelehnten Versandauftrag erneut einreichen. Ob eine Nachricht angekommen ist, erfährt sie nur, wenn der Dienst das meldet.</p>
+              <p>Ziehe die Grenze passend zur Frage. Für die Architektur einer einzelnen Anwendung liegt eine gemeinsam betriebene Plattform außerhalb. Wer die Architektur dieser Plattform untersucht, betrachtet dagegen auch ihre internen Bestandteile.</p>
+            </section>
+            <section>
+              <h2 id="bausteine" tabindex="-1">Wie beschreibst du das Innere?</h2>
+              <p>Ein <strong>Baustein</strong> (<i lang="en">building block</i>) ist ein benannter Teil des Systems mit einer Verantwortung. Je nach Betrachtungsebene kann das ein Modul im Code, eine ganze Anwendung oder ein separat betriebener Dienst sein. Die Beschreibung hilft dir, Änderungen zuzuordnen und betroffene Teile zu erkennen.</p>
+              <p>Eine <strong>Schnittstelle</strong> (<i lang="en">interface</i>) legt fest, wie andere Teile einen Baustein verwenden können. Der Vertrag beschreibt Eingaben, Ergebnisse, Fehler und wichtige Zusagen. Eine Schnittstelle kann ein Funktionsaufruf, eine Programmierschnittstelle über HTTP (HTTP-API) oder das Format einer Nachricht sein. Die Implementierung kann sich ändern, solange der Vertrag eingehalten wird.</p>
+            </section>
+            <section>
+              <h2 id="entscheidungen" tabindex="-1">Wann prägt eine Entscheidung die Architektur?</h2>
+              <p>Eine <strong>Architekturentscheidung</strong> (<i lang="en">architectural decision</i>) gestaltet eine Eigenschaft, die für das System wichtig ist. Prüfe dazu die Folgen der Wahl.</p>
+              <ul>
+                <li><strong>Reichweite.</strong> Müssen mehrere Bausteine, Teams oder externe Nutzer ihr Verhalten darauf abstimmen?</li>
+                <li><strong>Qualität und Betrieb.</strong> Beeinflusst die Entscheidung ein wichtiges Ziel wie Verfügbarkeit oder die Wiederherstellung nach einem Ausfall?</li>
+                <li><strong>Änderungsaufwand.</strong> Müsstest du beim späteren Wechsel Daten migrieren, öffentliche Verträge ändern oder den Betrieb umbauen?</li>
+              </ul>
+              <p>Die Benennung einer privaten Hilfsfunktion bleibt lokal. Die Wahl stabiler Datensatzkennungen für mehrere öffentliche Schnittstellen kann weitreichend sein, weil andere Programme (Clients) diese Kennungen speichern. Selbst die Wahl einer Bibliothek kann in diese Kategorie fallen, wenn sie etwa das Format langfristig gespeicherter Daten festlegt.</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Die Systemgrenze zeigt, wer welche Verantwortung trägt und welche Abhängigkeiten nach außen führen.</li>
+                <li>Bausteine bündeln Aufgaben. Schnittstellen legen fest, was andere von ihnen erwarten dürfen.</li>
+                <li>Reichweite, Folgen für Qualitätsziele und Aufwand einer späteren Änderung zeigen, wie bedeutsam eine Entscheidung ist.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Ein Team will das Format öffentlich genutzter Datensatzkennungen ändern. Woran erkennst du, ob das eine Architekturentscheidung ist?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Prüfe, wer die Kennungen speichert oder weitergibt und ob bestehende Verweise nach der Änderung gültig bleiben müssen. Wenn externe Clients und mehrere Bausteine betroffen sind oder alte Daten migriert werden müssen, hat die Wahl Auswirkungen über die Implementierung eines einzelnen Moduls hinaus.</p>
+              </details>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Softwarearchitektur</strong>
+            </a>
+            <a href="./anforderungen-und-qualitaetsziele.html">
+              <span>Nächster Block</span>
+              <strong>Anforderungen und Qualitätsziele</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

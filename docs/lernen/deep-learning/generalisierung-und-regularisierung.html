@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Warum kann ein Modell auf Trainingsdaten gut und auf neuen Daten schlecht abschneiden?">
+  <title>Generalisierung und Regularisierung · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="../softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="./index.html">Deep Learning</a>
+        <a href="../datenbanktechnologien/index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Deep Learning</a>
+          <span aria-current="page">Generalisierung und Regularisierung</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Einheit 4 von 8</p>
+            <h1>Generalisierung und Regularisierung</h1>
+            <p class="hero-intro">Warum kann ein Modell auf Trainingsdaten gut und auf neuen Daten schlecht abschneiden?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#kapazitaet">Wie entsteht die Lücke zwischen Training und neuen Daten?</a></li>
+              <li><a href="#bias-und-varianz">Was erklären Bias und Varianz?</a></li>
+              <li><a href="#regularisierung">Welche Maßnahme passt zu welcher Beobachtung?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="kapazitaet" tabindex="-1">Wie entsteht die Lücke zwischen Training und neuen Daten?</h2>
+              <p><strong>Generalisierung</strong> (<i lang="en">generalization</i>) beschreibt, wie gut ein Modell auf neuen, für die Aufgabe repräsentativen Beispielen abschneidet. Seine <strong>Modellkapazität</strong> (<i lang="en">model capacity</i>) bestimmt, welche Funktionen es darstellen kann. Breite und Tiefe zählen dazu, ebenso die Struktur des Netzes. Mehr Kapazität kann echte Muster erfassen und zugleich erlauben, zufällige Besonderheiten der Trainingsdaten nachzubilden.</p>
+              <p>Bei <strong>Unteranpassung</strong> (<i lang="en">underfitting</i>) erfasst das Modell wichtige Muster schon im Training unzureichend. Bei <strong>Überanpassung</strong> (<i lang="en">overfitting</i>) wird es auf den Trainingsdaten besser, während es auf unabhängigen Daten schlechter abschneidet oder deutlich zurückbleibt. Beurteile den Abstand erst, wenn die Metrik auf beiden Datensätzen vergleichbar erhoben wurde und die Aufteilung zur Aufgabe passt.</p>
+            </section>
+            <section>
+              <h2 id="bias-und-varianz" tabindex="-1">Was erklären Bias und Varianz?</h2>
+              <p>Stell dir vor, du trainierst dasselbe Verfahren immer wieder mit neuen Stichproben aus derselben Grundgesamtheit. Bei der Regression bezeichnet <strong>Bias</strong> die systematische Abweichung der durchschnittlichen Vorhersage vom erwarteten Zielwert für dieselbe Eingabe. <strong>Varianz</strong> (<i lang="en">variance</i>) beschreibt, wie stark die Vorhersage für diese Eingabe zwischen den Trainingsstichproben schwankt. Hier ist Bias eine statistische Eigenschaft des Verfahrens. Im künstlichen Neuron bezeichnet Bias den lernbaren Offset.</p>
+              <p>Ein sehr starres Modell kann eine gekrümmte Beziehung systematisch verfehlen. Ein sehr flexibles Modell kann auf kleine Änderungen der Stichprobe stark reagieren. Dieser <strong>Bias-Varianz-Konflikt</strong> (<i lang="en">bias–variance trade-off</i>) erklärt, warum Trainingserfolg allein für die Modellwahl wenig genügt. Bei quadratischem Fehler kommt in der klassischen Zerlegung noch Rauschen des Zielwerts hinzu. Eine einzelne Lernkurve liefert Hinweise, misst Bias und Varianz aber nicht direkt.</p>
+            </section>
+            <section>
+              <h2 id="regularisierung" tabindex="-1">Welche Maßnahme passt zu welcher Beobachtung?</h2>
+              <p><strong>Regularisierung</strong> (<i lang="en">regularization</i>) verändert das Training so, dass es bessere Vorhersagen auf neuen Daten begünstigt. Vergleiche jede Änderung mit einem Ausgangslauf bei gleicher Datenaufteilung und anhand derselben Validierungsmetrik.</p>
+              <dl>
+                <dt>Weight Decay</dt>
+                <dd>Eine Schrumpfung zieht ausgewählte Gewichte bei Updates in Richtung null. Bei einfachem Gradientenabstieg lässt sich das auch durch eine L2-Strafe auf die Summe der quadrierten Gewichte erreichen. Teste eine moderate Stärke, wenn das Training sehr gut abschneidet, die Validierung aber zurückbleibt. Eine zu starke Schrumpfung kann auch nützliche Muster unterdrücken.</dd>
+                <dt>Dropout</dt>
+                <dd>Während des Trainings setzt Dropout zufällig ausgewählte Aktivierungen auf null. Das kann die Abhängigkeit von einzelnen Aktivierungen verringern. Teste es etwa bei einem großen, zur Überanpassung neigenden Netz. Bei der üblichen Inferenz sind alle Aktivierungen verfügbar. Bewerte beide Datensätze im selben Auswertungsmodus, wenn du die Ergebnisse vergleichen willst.</dd>
+                <dt>Vorzeitiges Stoppen (<i lang="en">early stopping</i>)</dt>
+                <dd>Speichere den besten Modellstand nach der Validierungsmetrik. Beende das Training, wenn sich diese über eine vereinbarte Zahl von Prüfungen nicht verbessert, und nutze den gespeicherten Stand. Das bietet sich an, wenn der Validierungsverlust nach einem Minimum wieder steigt. Eine Wartezeit (<i lang="en">patience</i>) verhindert, dass eine einzelne Schwankung den Lauf sofort beendet.</dd>
+              </dl>
+              <p>Wenn beide Ergebnisse schlecht sind, prüfe zuerst Zielwerte, Vorverarbeitung und Optimierung. Sind diese plausibel, können mehr Kapazität, längeres Training oder weniger Regularisierung helfen. Wenn nur manche Gruppen schwach abschneiden, prüfe auch, ob die Trainingsdaten diese Gruppen angemessen abdecken.</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Eine Lücke zwischen vergleichbaren Trainings- und Validierungsergebnissen kann auf Überanpassung hindeuten.</li>
+                <li>Bias und Varianz beschreiben systematische Abweichung und Empfindlichkeit gegenüber der Trainingsstichprobe.</li>
+                <li>Wähle eine Maßnahme anhand beobachteter Muster und prüfe ihre Wirkung mit der Validierung.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Trainings- und Validierungsverlust fallen anfangs. Später sinkt der Trainingsverlust weiter, während der Validierungsverlust steigt. Welchen Modellstand verwendest du?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Verwende den gespeicherten Stand mit dem niedrigsten Validierungsverlust, wenn diese Größe für die Auswahl festgelegt wurde. Das Auseinanderlaufen spricht für Überanpassung. Vergleiche anschließend anhand der Validierungsdaten, ob zum Beispiel Weight Decay die Lücke verringert.</p>
+              </details>
+              <h3>Im Skript nachlesen</h3>
+              <p class="script-reference">Kapitel 10, §§ 10.2–10.4 und 10.6 (S. 257–273 und 282–292), zu Kapazität, Overfitting, Bias und Varianz. Kapitel 11, §§ 11.2–11.6 (S. 297–321), zu Regularisierung. Abschnitt 12.4 (S. 335–338 und Fortsetzung auf S. 339), zu Validierung und Early Stopping.</p>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./backpropagation-und-optimierung.html">
+              <span>Vorherige Einheit</span>
+              <strong>Backpropagation und Optimierung</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Deep Learning</strong>
+            </a>
+            <a href="./datenaufbereitung-und-repraesentationen.html">
+              <span>Nächste Einheit</span>
+              <strong>Datenaufbereitung und Repräsentationen</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

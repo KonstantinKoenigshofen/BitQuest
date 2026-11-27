@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Wer verantwortet welche Daten und was passiert bei Verzögerungen oder Ausfällen?">
+  <title>Daten und Kommunikation · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="./index.html">Softwarearchitektur</a>
+        <a href="../deep-learning/index.html">Deep Learning</a>
+        <a href="../datenbanktechnologien/index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Softwarearchitektur</a>
+          <span aria-current="page">Daten und Kommunikation</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Block 5 von 7</p>
+            <h1>Daten und Kommunikation</h1>
+            <p class="hero-intro">Entscheide, wer Daten ändern darf, wann Ergebnisse vorliegen müssen und wie sich ein System bei Fehlern verhält.</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#datenverantwortung">Wer entscheidet über den Zustand von Daten?</a></li>
+              <li><a href="#kommunikationsformen">Wann wartest du auf ein Ergebnis?</a></li>
+              <li><a href="#transaktionen">Welche Änderungen müssen zusammen gelten?</a></li>
+              <li><a href="#teilausfaelle">Was ändert sich bei Verzögerungen und Teilausfällen?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="datenverantwortung" tabindex="-1">Wer entscheidet über den Zustand von Daten?</h2>
+              <p><strong>Datenverantwortung</strong> (<i lang="en">data ownership</i>) bedeutet, dass ein Baustein die maßgeblichen Daten und die Regeln für ihre Änderung betreut. Andere Teile fordern Änderungen über seine Schnittstelle an. Ein Baustein kann auch dann für eine Tabelle verantwortlich sein, wenn sich mehrere Bausteine dieselbe Datenbank teilen.</p>
+              <p>Andere Bausteine können eigene Lesekopien pflegen, etwa für die Suche. Diese Kopien brauchen einen klaren Zweck und eine Zusage, wie aktuell sie sein müssen. Für eine verbindliche Auskunft ist entscheidend, welcher Baustein den gültigen Zustand kennt.</p>
+            </section>
+            <section>
+              <h2 id="kommunikationsformen" tabindex="-1">Wann wartest du auf ein Ergebnis?</h2>
+              <p>Bei <strong>synchroner Kommunikation</strong> (<i lang="en">synchronous communication</i>) wartet der Aufrufer auf die Antwort, bevor er im jeweiligen Ablauf fortfährt. Das ist hilfreich, wenn er sofort ein Ergebnis braucht. Über ein Netzwerk hängt sein Aufruf dann auch von Antwortzeit und Erreichbarkeit des Gegenübers ab. Mehrere Aufrufe in Reihe können die Wartezeit erhöhen.</p>
+              <p>Bei <strong>asynchroner Kommunikation</strong> (<i lang="en">asynchronous communication</i>) kann der Aufrufer weiterarbeiten, während der Empfänger eine Nachricht später verarbeitet. Eine Annahmebestätigung sagt zunächst nur, dass der Auftrag entgegengenommen wurde. Wenn der fachliche Abschluss wichtig ist, braucht es zum Beispiel einen sichtbaren Auftragsstatus. Eine Warteschlange (<i lang="en">queue</i>) kann Lastspitzen puffern, bis die Verarbeitung nachkommt. Dazu braucht sie genügend Kapazität und eine Überwachung des Rückstaus.</p>
+            </section>
+            <section>
+              <h2 id="transaktionen" tabindex="-1">Welche Änderungen müssen zusammen gelten?</h2>
+              <p>Eine <strong>Transaktion</strong> (<i lang="en">transaction</i>) fasst Änderungen innerhalb eines Transaktionssystems zusammen. Bei erfolgreichem Abschluss werden alle Änderungen wirksam. Scheitert die Transaktion, werden ihre Änderungen verworfen. Eine Datenbank kann damit beispielsweise eine Umbuchung mit Belastung und Gutschrift als Einheit behandeln.</p>
+              <p><strong>Konsistenz</strong> (<i lang="en">consistency</i>) meint hier zwei Fragen. Welche fachlichen Regeln müssen bei jeder Änderung gelten? Ab wann sehen andere Teile den neuen Zustand? Bestandsregeln können beim zuständigen Baustein sofort gelten, während eine Kopie für die Suche erst später aktualisiert wird. <strong>Letztendliche Konsistenz</strong> (<i lang="en">eventual consistency</i>) bedeutet, dass sich Kopien nach ausbleibenden weiteren Änderungen und erfolgreicher Übertragung angleichen. Eine konkrete Frist musst du zusätzlich festlegen und prüfen.</p>
+              <p>Die Reichweite einer lokalen Transaktion endet an der Grenze ihres Transaktionssystems. Wenn eine Regel jederzeit über mehrere Daten hinweg gelten muss, prüfe zuerst, ob diese Daten gemeinsam verantwortet und atomar geändert werden können. Darf ein Ablauf vorübergehend im Zwischenzustand bleiben, können lokale Transaktionen und ein Ausgleichsschritt (<i lang="en">compensating action</i>) genügen. Das Freigeben eines reservierten Platzes ist ein eigener fachlicher Vorgang, der ebenfalls fehlschlagen kann.</p>
+            </section>
+            <section>
+              <h2 id="teilausfaelle" tabindex="-1">Was ändert sich bei Verzögerungen und Teilausfällen?</h2>
+              <p>Bei einem <strong>Teilausfall</strong> (<i lang="en">partial failure</i>) kann ein Dienst weiterlaufen, während ein anderer Dienst oder die Verbindung ausfällt. Nach einer <strong>Zeitüberschreitung</strong> (<i lang="en">timeout</i>) weiß der Aufrufer nicht, ob die Änderung bereits ausgeführt wurde. Auch bei erneuter Zustellung aus einer Warteschlange kann eine Nachricht doppelt eintreffen.</p>
+              <p><strong>Idempotenz</strong> (<i lang="en">idempotency</i>) bedeutet, dass dieselbe Anforderung bei wiederholter Ausführung dieselbe fachliche Wirkung hat wie bei einmaliger Ausführung. Bei einem Buchungsauftrag kann der Empfänger eine eindeutige Auftragskennung zusammen mit der Buchung in derselben Transaktion speichern. Erkennt er die Kennung erneut, liefert er das Ergebnis der vorhandenen Buchung zurück.</p>
+              <p>Begrenze Wiederholungen (<i lang="en">retries</i>) und verteile sie zeitlich, damit ein Rückstau einen bereits überlasteten Dienst nicht weiter belastet. Lege fest, welche Vorgänge vorübergehend als ausstehend gelten, wie du Fehler erkennst und wie festhängende Aufträge geklärt werden. Wenn die Reihenfolge fachlich zählt, helfen etwa Versionsnummern dabei, veraltete Daten zu erkennen.</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Der verantwortliche Baustein setzt die Regeln für Änderungen durch. Für Lesekopien gelten eigene Vorgaben zur Aktualität.</li>
+                <li>Eine lokale Transaktion verbindet Änderungen innerhalb ihres Transaktionssystems. Bei getrennten Diensten musst du Zwischenzustände ausdrücklich gestalten.</li>
+                <li>Eine fehlende Antwort lässt das Ergebnis offen. Idempotenz schützt bei Wiederholungen vor doppelten Wirkungen.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Ein Aufrufer erhält beim Anlegen einer Buchung keine Antwort. Wie kann er denselben Auftrag wiederholen, ohne die Buchung zu verdoppeln?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Er verwendet dieselbe eindeutige Auftragskennung. Der Empfänger speichert diese Kennung atomar mit der Buchung und erkennt so bereits ausgeführte Aufträge. Die Zeitüberschreitung allein zeigt nur, dass die Antwort nicht rechtzeitig angekommen ist.</p>
+              </details>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./architekturstile-und-muster.html">
+              <span>Vorheriger Block</span>
+              <strong>Architekturstile und Muster</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Softwarearchitektur</strong>
+            </a>
+            <a href="./entscheidungen-und-dokumentation.html">
+              <span>Nächster Block</span>
+              <strong>Entscheidungen und Dokumentation</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

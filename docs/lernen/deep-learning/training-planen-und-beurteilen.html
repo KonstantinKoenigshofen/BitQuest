@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Wie beurteilst du einen Trainingslauf?">
+  <title>Training planen und beurteilen · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="../softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="./index.html">Deep Learning</a>
+        <a href="../datenbanktechnologien/index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Deep Learning</a>
+          <span aria-current="page">Training planen und beurteilen</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Einheit 6 von 8</p>
+            <h1>Training planen und beurteilen</h1>
+            <p class="hero-intro">Wie beurteilst du einen Trainingslauf?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#datenaufteilung">Welche Daten wofür verwenden?</a></li>
+              <li><a href="#initialisierung-und-lernkurven">Wie liest du den Verlauf eines Trainingslaufs?</a></li>
+              <li><a href="#metriken">Welche Metrik entspricht dem fachlichen Erfolg?</a></li>
+              <li><a href="#datenlecks">Woran erkennst du ein Datenleck?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="datenaufteilung" tabindex="-1">Welche Daten wofür verwenden?</h2>
+              <dl>
+                <dt>Trainingsdaten (<i lang="en">training set</i>)</dt>
+                <dd>Hier passt du Modellparameter und lernbare Schritte der Vorverarbeitung an.</dd>
+                <dt>Validierungsdaten (<i lang="en">validation set</i>)</dt>
+                <dd>Hier vergleichst du Modellvarianten und <strong>Hyperparameter</strong> wie Lernrate, Batchgröße oder Regularisierungsstärke. Auch die Auswahl des besten gespeicherten Modellstands und der Entscheidungsschwelle gehört hierher.</dd>
+                <dt>Testdaten (<i lang="en">test set</i>)</dt>
+                <dd>Sie liefern eine abschließende Schätzung für das fertig gewählte Verfahren. Sobald ihr das Modell anhand eines Testergebnisses ändert, dient dieser Datensatz der Auswahl. Für eine unabhängige Schlussbewertung braucht ihr dann neue Testdaten.</dd>
+              </dl>
+            </section>
+            <section>
+              <h2 id="initialisierung-und-lernkurven" tabindex="-1">Wie liest du den Verlauf eines Trainingslaufs?</h2>
+              <p>Bei der <strong>Initialisierung</strong> (<i lang="en">initialization</i>) bekommen die Gewichte ihre Startwerte. Zufällige, passend skalierte Werte brechen die Symmetrie zwischen gleich aufgebauten Neuronen. Die Skalierung soll verhindern, dass Aktivierungen und Gradienten mit jeder Schicht wesentlich kleiner oder größer werden. Vergleiche wichtige Konfigurationen mit mehreren Zufallsstartwerten (<i lang="en">seeds</i>) und halte Datenversion, Hyperparameter und Messverfahren fest.</p>
+              <p>Eine <strong>Lernkurve</strong> (<i lang="en">learning curve</i>) zeigt eine Messgröße über Updates oder Epochen. Eine Epoche (<i lang="en">epoch</i>) entspricht üblicherweise einem Durchlauf durch die Trainingsdaten. Bleibt der Trainingsverlust von Beginn an hoch, prüfe zuerst, ob das Modell eine kleine Trainingsmenge gut anpassen kann. So lassen sich Fehler bei Zielwerten, Updates oder der Skalierung leichter eingrenzen. Sinken Trainings- und Validierungsverlust zunächst, driften aber später auseinander, prüfe Überanpassung.</p>
+              <p>Schau bei der <strong>Fehleranalyse</strong> (<i lang="en">error analysis</i>) einzelne falsche und richtige Vorhersagen an. Gruppiere Fehler etwa nach Klasse oder Datenquelle und gib die Fallzahlen an. So kannst du fehlende Beispiele, fehlerhafte Labels oder Probleme in der Vorverarbeitung gezielter untersuchen.</p>
+            </section>
+            <section>
+              <h2 id="metriken" tabindex="-1">Welche Metrik entspricht dem fachlichen Erfolg?</h2>
+              <p class="lesson-note">Ergänzung zum Skript</p>
+              <p>Wähle die <strong>Bewertungsmetrik</strong> (<i lang="en">evaluation metric</i>) danach, welche Fehler wichtig sind. Für eine Regressionsaufgabe drückt der mittlere absolute Fehler (<i lang="en">mean absolute error</i>, MAE) den mittleren Betrag der Abweichung in der Einheit des Ziels aus. Ein quadratischer Fehler gewichtet große Abweichungen stärker.</p>
+              <p>Bei Klassifikation kann die Trefferquote (<i lang="en">accuracy</i>) Schwächen bei seltenen Klassen verdecken. Wenn ein Prozent der Teile defekt ist, erreicht „immer intakt“ eine Trefferquote von 99 Prozent. Die <strong>Precision</strong> misst den Anteil tatsächlicher Defekte unter den als defekt markierten Teilen. Der <strong>Recall</strong> misst den Anteil erkannter Defekte unter allen tatsächlichen Defekten. Wähle die Schwelle auf Validierungsdaten, etwa für möglichst hohen Recall bei einer festgelegten Mindest-Precision, wenn die manuelle Nachprüfung knapp ist.</p>
+              <p>Für Gradientenverfahren liefert ein ableitbarer Verlust dem Optimierer ein Signal. Die fachliche Metrik kann an einer Schwelle hängen und bleibt oft gleich, wenn sich nur die Sicherheit der Vorhersage ändert. Kreuzentropie kann daher sinken, obwohl bei der gleichen Schwelle genauso viele Defekte gefunden werden. <a href="https://mark.goadrich.com/articles/davisgoadrichpr.pdf" lang="en">Davis &amp; Goadrich (2006), The Relationship Between Precision-Recall and ROC Curves</a></p>
+            </section>
+            <section>
+              <h2 id="datenlecks" tabindex="-1">Woran erkennst du ein Datenleck?</h2>
+              <p class="lesson-note">Ergänzung zum Skript</p>
+              <p>Bei einem <strong>Datenleck</strong> (<i lang="en">data leakage</i>) erhält das Verfahren Informationen, die bei der späteren Entscheidung oder in einer unabhängigen Bewertung fehlen würden. Ein Feld mit dem Ergebnis einer späteren Prüfung verrät etwa die Zielklasse. Nahezu identische Bilder desselben Objekts in Training und Test können den Test zu leicht machen. Auch eine Skalierung, PCA oder Merkmalsauswahl über den gesamten Datensatz nutzt Informationen der zurückgehaltenen Daten.</p>
+              <p>Prüfe die Herkunft und den Zeitpunkt jedes Merkmals. Teile bei Wiederholungsmessungen passend zur Einsatzfrage nach Objekt oder Person auf und bei Zukunftsprognosen meist zeitlich. Lerne erst nach der Aufteilung die Vorverarbeitung aus dem Training. Ungewöhnlich gute Testwerte sind ein Anlass, Merkmale, Duplikate und Aufteilung zu prüfen. <a href="https://www.cs.umb.edu/~ding/history/470_670_fall_2011/papers/cs670_Tran_PreferredPaper_LeakingInDataMining.pdf" lang="en">Kaufman et al. (2011), Leakage in Data Mining</a></p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Trainiere, wähle und teste mit Datensätzen, die für diese Aufgaben getrennt bleiben.</li>
+                <li>Lernkurven, mehrere Läufe und konkrete Fehlerfälle beantworten unterschiedliche Diagnosefragen.</li>
+                <li>Wähle die Erfolgsmetrik nach den Folgen der Fehler und prüfe, welche Information bei der Vorhersage verfügbar ist.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Ein Defekterkenner erreicht 99 Prozent Accuracy, obwohl nur ein Prozent aller Teile defekt ist. Warum reicht die Zahl zur Bewertung nicht aus?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Ein Modell, das alle Teile als intakt einstuft, erreicht denselben Wert und erkennt keinen Defekt. Miss Recall und Precision bei einer auf Validierungsdaten gewählten Schwelle. Prüfe zudem, ob die Aufteilung echte neue Teile abbildet, und berichte die Werte für die gewählte Konfiguration auf unabhängigen Testdaten.</p>
+              </details>
+              <h3>Im Skript nachlesen</h3>
+              <p class="script-reference">Kapitel 12, §§ 12.2–12.6 (S. 326–355), zu Projektablauf, Datenteilung, Trainingsbeobachtung und Initialisierung. Abschnitt 12.4 beginnt auf S. 335, Monitoring in § 12.5 auf S. 339.</p>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./datenaufbereitung-und-repraesentationen.html">
+              <span>Vorherige Einheit</span>
+              <strong>Datenaufbereitung und Repräsentationen</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Deep Learning</strong>
+            </a>
+            <a href="./netzarchitekturen.html">
+              <span>Nächste Einheit</span>
+              <strong>Netzarchitekturen verstehen</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

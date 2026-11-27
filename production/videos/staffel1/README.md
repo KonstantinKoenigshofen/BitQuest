@@ -1,6 +1,6 @@
 # BitQuest Videos · Staffel 1
 
-`season_storyboard.py` enthält den Sprechtext, die Bildschritte, die Denkpausen und die Zuordnung zu den Quests. In `scenes.py` und `visuals.py` liegen die bearbeitbaren Animationen und Vorschaubilder. Der Export nutzt den vorhandenen Pillow- und FFmpeg-Renderer.
+`season_storyboard.py` enthält den Sprechtext, die Bildschritte und die Denkpausen. In `scenes.py` und `visuals.py` liegen die bearbeitbaren Animationen und Vorschaubilder. Der Export nutzt den vorhandenen Pillow- und FFmpeg-Renderer.
 
 Die WAV-Einsätze unter `ton/` stammen aus Google Gemini 3.8 Flash-Lite TTS mit der Katalogstimme `en-us-kira` und der Stilvorgabe „Friendly“. Jedes Archiv enthält auch die Satzanfänge für Animation und WebVTT. Die Animationen lassen sich mit den archivierten Aufnahmen ohne API-Zugriff erneut exportieren.
 

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Was hat das Lernen im Nervensystem mit künstlichen Neuronen gemeinsam?">
+  <title>Biologische Grundlagen · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="../softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="./index.html">Deep Learning</a>
+        <a href="../datenbanktechnologien/index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Deep Learning</a>
+          <span aria-current="page">Biologische Grundlagen</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Vertiefung</p>
+            <h1>Biologische Grundlagen</h1>
+            <p class="hero-intro">Was hat das Lernen im Nervensystem mit künstlichen Neuronen gemeinsam?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#neuron-und-synapsen">Wie gelangen Signale von einer Nervenzelle zur nächsten?</a></li>
+              <li><a href="#plastizitaet-und-hebb">Wie können sich Verbindungen verändern?</a></li>
+              <li><a href="#grenzen-der-analogie">Wo endet die Analogie zum künstlichen Neuron?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="neuron-und-synapsen" tabindex="-1">Wie gelangen Signale von einer Nervenzelle zur nächsten?</h2>
+              <p>Eine biologische Nervenzelle erhält Signale unter anderem an ihren Dendriten (<i lang="en">dendrites</i>). Die Signale beeinflussen das elektrische Potenzial der Zelle. Ein entstehendes Aktionspotenzial (<i lang="en">action potential</i>) breitet sich entlang des Axons aus. An einer <strong>Synapse</strong> (<i lang="en">synapse</i>) kann es die nächste Zelle beeinflussen.</p>
+              <p>An chemischen Synapsen setzt die sendende Zelle Botenstoffe frei. Rezeptoren der empfangenden Zelle reagieren darauf. Die Wirkung kann erregend oder hemmend sein und hängt auch vom zeitlichen Verlauf und vom Zustand der beteiligten Zellen ab. Ein einzelnes künstliches Gewicht greift davon die Idee einer unterschiedlich starken Verbindung auf.</p>
+            </section>
+            <section>
+              <h2 id="plastizitaet-und-hebb" tabindex="-1">Wie können sich Verbindungen verändern?</h2>
+              <p><strong>Neuronale Plastizität</strong> (<i lang="en">neural plasticity</i>) ist die Fähigkeit des Nervensystems, sich durch Aktivität und Erfahrung zu verändern. Dazu gehört <strong>synaptische Plastizität</strong> (<i lang="en">synaptic plasticity</i>), bei der sich die Stärke der Signalübertragung ändert.</p>
+              <p>Die <strong>Hebb’sche Lernregel</strong> (<i lang="en">Hebbian learning rule</i>) beschreibt die Idee, dass eine Verbindung stärker werden kann, wenn die Aktivität der sendenden Zelle wiederholt zum Feuern der empfangenden Zelle beiträgt. Eine vereinfachte Ratenregel ist <math><mo>Δ</mo><msub><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mi>η</mi><msub><mi>a</mi><mi>i</mi></msub><msub><mi>a</mi><mi>j</mi></msub></math>. Dabei ist <var>w<sub>ij</sub></var> das Verbindungsgewicht von Zelle <var>i</var> zu Zelle <var>j</var>, <var>η</var> eine positive Lernkonstante und <var>a<sub>i</sub></var> und <var>a<sub>j</sub></var> sind die nichtnegativen Aktivitäten. Je stärker beide gleichzeitig aktiv sind, desto größer ist der Zuwachs.</p>
+              <p>Diese einfache Produktregel liefert bei wiederholter gemeinsamer Aktivität nur Zuwächse. Biologische Veränderungen können Verbindungen auch schwächen. Bei zeitabhängiger synaptischer Plastizität (<i lang="en">spike-timing-dependent plasticity</i>, STDP) spielt der Zeitpunkt der Impulse beider Zellen eine Rolle.</p>
+            </section>
+            <section>
+              <h2 id="grenzen-der-analogie" tabindex="-1">Wo endet die Analogie zum künstlichen Neuron?</h2>
+              <p>Ein übliches künstliches Neuron berechnet eine gewichtete Summe und eine Aktivierungsfunktion. In biologischen Zellen beeinflussen auch die Lage der Synapse am Dendriten, die zeitliche Abfolge und der Zustand der Zelle die Antwort. Die Abstraktion lässt solche Details weg und dient der mathematischen Modellierung.</p>
+              <p>Hebb’sche Regeln verwenden in ihrer einfachen Form lokale Aktivität. Backpropagation berechnet Gewichtsgradienten anhand einer vorgegebenen Verlustfunktion und der Ableitungen entlang des gesamten betreffenden Rechenpfads. Die biologische Inspiration erklärt, warum Verbindungen mit veränderbarer Stärke plausibel sind. Die jeweilige Lernregel musst du separat betrachten.</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Synapsen übertragen Signale und können ihre Wirkung durch Aktivität verändern.</li>
+                <li>Eine einfache Hebb-Regel verstärkt ein Gewicht anhand lokaler gemeinsamer Aktivität.</li>
+                <li>Künstliche Neuronen übernehmen einzelne Ideen. Ihr Rechenmodell und ihr Lernverfahren sind eigene Konstruktionen.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Warum liefert gemeinsame Aktivität zweier Neuronen noch keine Erklärung für Backpropagation?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Die einfache Hebb-Regel kann aus den Aktivitäten an einer Verbindung ein lokales Update berechnen. Backpropagation braucht zusätzlich Informationen darüber, wie eine Änderung an dieser Verbindung den Verlust über nachfolgende Rechenschritte beeinflusst.</p>
+              </details>
+              <h3>Im Skript nachlesen</h3>
+              <p class="script-reference">Kapitel 3, §§ 3.2, 3.4 und 3.5 (S. 46–51 und 57–68), zu Aufbau, Dendriten und Aktionspotenzial. Kapitel 4, §§ 4.3–4.7 (S. 85–106), zu Plastizität, Synapsen, Hebb und STDP. Abschnitt 5.4 (S. 120–125) vertieft den Vergleich mit dem künstlichen Neuron.</p>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Themenübersicht">
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Deep Learning</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

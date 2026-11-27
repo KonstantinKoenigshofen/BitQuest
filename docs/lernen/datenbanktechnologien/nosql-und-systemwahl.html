@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Wann passt ein Key-Value-, Dokument-, Wide-Column- oder Graphmodell zu einer Aufgabe?">
+  <title>NoSQL und die Auswahl eines Datenbanksystems · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="../softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="../deep-learning/index.html">Deep Learning</a>
+        <a href="./index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Datenbanktechnologien</a>
+          <span aria-current="page">NoSQL und die Auswahl eines Datenbanksystems</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Einheit 8 von 9</p>
+            <h1>NoSQL und die Auswahl eines Datenbanksystems</h1>
+            <p class="hero-intro">Wann passt ein Key-Value-, Dokument-, Wide-Column- oder Graphmodell zu einer Aufgabe?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#modelle-im-vergleich">Welche Zugriffe begünstigen die vier Modelle?</a></li>
+              <li><a href="#wide-column-und-spaltenspeicherung">Warum sind Wide-Column und spaltenorientierte Speicherung zwei verschiedene Entscheidungen?</a></li>
+              <li><a href="#auswahl">Wie leitest du die Systemwahl aus Anforderungen ab?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="modelle-im-vergleich" tabindex="-1">Welche Zugriffe begünstigen die vier Modelle?</h2>
+              <dl>
+                <dt>Key-Value, etwa Redis</dt>
+                <dd>Ein eindeutiger Schlüssel führt direkt zu einem Wert. Das passt zu Zugriffen auf Zustände mit bekanntem Schlüssel, etwa einer Sitzung. Redis kennt verschiedene Werttypen und eignet sich unter anderem zum Zwischenspeichern. Wenn mehrere Schlüssel gemeinsam verändert werden müssen, prüfe, welche atomaren Operationen und Clustergrenzen das konkrete System bietet. <a href="https://redis.io/docs/latest/develop/data-types/">Redis-Dokumentation zu Datentypen</a></dd>
+                <dt>Dokumentmodell, etwa MongoDB</dt>
+                <dd>Verschachtelte Felder bilden zusammengehörige Informationen als Dokument ab. Suche und Indizes können Dokumentfelder nutzen. Häufig zusammen gelesene Daten wie eine Konfiguration und ihre Werte lassen sich einbetten. Unabhängig geänderte oder sehr große Teilmengen sprechen eher für Referenzen. Prüfe dann, welche Regeln und Transaktionen dokumentübergreifend nötig sind. <a href="https://www.mongodb.com/docs/manual/data-modeling/">MongoDB-Handbuch zur Datenmodellierung</a></dd>
+                <dt>Wide-Column, etwa Cassandra</dt>
+                <dd>Der Partitionsschlüssel legt fest, welche Daten gemeinsam abgelegt werden. In Cassandra können Clustering-Schlüssel die Reihenfolge innerhalb einer Partition bestimmen. Das passt etwa zu vielen Messwerten je Gerät und Zeitfenster mit vorhersehbaren Abfragen. Andere Zugriffspfade können eigene, redundant gepflegte Tabellen benötigen. Prüfe Partitionsgrößen, gleichmäßige Lastverteilung und Garantien für Änderungen über Partitionen hinweg. <a href="https://cassandra.apache.org/doc/latest/cassandra/developing/data-modeling/intro.html">Cassandra-Dokumentation zur Datenmodellierung</a></dd>
+                <dt>Graphmodell, etwa Neo4j</dt>
+                <dd>Knoten und Kanten sind eigene Elemente mit Eigenschaften. Das passt zu Abfragen, die Beziehungen über mehrere Schritte verfolgen, etwa welche Bauteile mittelbar von einem anderen abhängen. Prüfe die Größe des durchlaufenen Teilgraphen und bei verteilter Speicherung den Aufwand für Pfade über Knotengrenzen. Welche Transaktionen möglich sind, hängt vom Produkt ab. <a href="https://neo4j.com/docs/getting-started/appendix/graphdb-concepts/">Neo4j-Dokumentation zu Graphdatenbanken</a></dd>
+              </dl>
+            </section>
+            <section>
+              <h2 id="wide-column-und-spaltenspeicherung" tabindex="-1">Warum sind Wide-Column und spaltenorientierte Speicherung zwei verschiedene Entscheidungen?</h2>
+              <p><strong>Wide-Column</strong> beschreibt hier das Daten- und Zugriffsmodell eines Systems wie Cassandra. Es gruppiert Zeilen nach Partitionsschlüsseln und richtet den Zugriff auf bekannte Schlüsselbereiche aus. <strong>Spaltenorientierte Speicherung</strong> (<i lang="en">columnar storage</i>) ist eine physische Anordnung. Die Werte einer Spalte werden zusammen gespeichert, damit eine Analyse über viele Zeilen nur die benötigten Spalten lesen und ähnliche Werte gut komprimieren kann. Auch eine relationale Tabelle in einem Analysesystem kann so gespeichert sein.</p>
+            </section>
+            <section>
+              <h2 id="auswahl" tabindex="-1">Wie leitest du die Systemwahl aus Anforderungen ab?</h2>
+              <ol>
+                <li><strong>Zugriffe.</strong> Notiere häufige Lese- und Schreibvorgänge mit Selektivität, Filter und Sortierung. Halte auch fest, welche flexiblen Abfragen künftig möglich sein sollen.</li>
+                <li><strong>Beziehungen und Regeln.</strong> Prüfe, welche Daten zusammen gelesen, unabhängig geändert oder gleichzeitig bestätigt werden müssen. Kläre, welche Regeln das System selbst durchsetzen muss.</li>
+                <li><strong>Skalierung und Betrieb.</strong> Prüfe Datenmenge, Verteilung der Last und Verhalten bei Ausfällen. Vergleiche Kandidaten mit repräsentativen Daten und Abfragen. Berücksichtige Migration, Sicherungen und den Aufwand für redundante Kopien.</li>
+              </ol>
+              <p>Ein relationales System bleibt eine naheliegende Wahl, wenn häufig wechselnde Abfragen, Beziehungen und gemeinsame Transaktionen wichtig sind. Ein spezialisiertes Modell lohnt sich, wenn es bei konkreten Anforderungen einen messbaren Vorteil bietet, etwa für Pfadabfragen oder häufige Schreib- und Lesevorgänge innerhalb derselben Partition.</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Wähle das Modell anhand tatsächlicher Zugriffe und fachlicher Regeln.</li>
+                <li>Ein flexibles Schema braucht weiterhin klare Datenstrukturen und konsistente Änderungen.</li>
+                <li>Wide-Column beschreibt ein Zugriffsmodell. Spaltenorientierung für Analysen beschreibt die physische Ablage.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Du brauchst pro Gerät oft Messwerte für den letzten Tag, später aber auch flexible Auswertungen über alle Geräte. Warum kann ein einziges auf Gerätepartitionen ausgelegtes Modell dabei an Grenzen stoßen?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Das Laden eines Gerätezeitraums lässt sich direkt auf die passende Partition begrenzen. Eine flexible Abfrage über alle Geräte müsste viele Partitionen erreichen und Ergebnisse zusammenführen. Miss beide Arbeitslasten. Ein passendes analytisches Zielmodell oder ein System, das beide Anforderungen ausreichend erfüllt, kann diesen zweiten Zugriff besser unterstützen.</p>
+              </details>
+              <h3>In den Unterlagen nachlesen</h3>
+              <p class="script-reference">Modulskript <cite>Datenbanktechnologien</cite>, Kap. 8, § 8.1 (S. 137–151) zu den vier Modellen und Produktbeispielen sowie § 8.2 (S. 151–156) zur Auswahl.</p>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./verteilte-datenbanken.html">
+              <span>Vorherige Einheit</span>
+              <strong>Verteilte Datenbanken</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Datenbanktechnologien</strong>
+            </a>
+            <a href="./vektordatenbanken-und-aehnlichkeitssuche.html">
+              <span>Nächste Einheit</span>
+              <strong>Vektordatenbanken und Ähnlichkeitssuche</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

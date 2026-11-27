@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Welches Problem lösen Replikation und Sharding jeweils, und welche neuen Probleme entstehen dadurch?">
+  <title>Verteilte Datenbanken · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="../softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="../deep-learning/index.html">Deep Learning</a>
+        <a href="./index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Datenbanktechnologien</a>
+          <span aria-current="page">Verteilte Datenbanken</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Einheit 7 von 9</p>
+            <h1>Verteilte Datenbanken</h1>
+            <p class="hero-intro">Welches Problem lösen Replikation und Sharding jeweils, und welche neuen Probleme entstehen dadurch?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#replikation">Wann brauchst du mehrere Kopien?</a></li>
+              <li><a href="#sharding">Wann verteilst du verschiedene Teile der Daten?</a></li>
+              <li><a href="#koordination-und-cap">Was entscheidet ein System bei einer Netzwerkpartition?</a></li>
+              <li><a href="#mapreduce">Welche Aufgabe löst MapReduce?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="replikation" tabindex="-1">Wann brauchst du mehrere Kopien?</h2>
+              <p>Bei der <strong>Replikation</strong> (<i lang="en">replication</i>) liegen Kopien derselben Daten auf mehreren Knoten. Ein weiterer Knoten kann Lesezugriffe übernehmen oder bei einem Ausfall einspringen. Bei synchroner Replikation wartet eine Schreibbestätigung auf die vom System verlangten Replikate. Bei asynchroner Replikation kann der schreibende Knoten früher antworten. Abfragen auf einer nachlaufenden Kopie können ältere Werte sehen. Fällt der schreibende Knoten vor der Übertragung aus, können kürzlich bestätigte Änderungen beim Umschalten fehlen.</p>
+              <p>Lege fest, wo gelesen und geschrieben wird und welche Kopie bei Ausfällen übernehmen darf. Wer direkt nach dem Speichern den neuen Wert sehen muss, braucht passende Zusagen für seinen Lesepfad.</p>
+            </section>
+            <section>
+              <h2 id="sharding" tabindex="-1">Wann verteilst du verschiedene Teile der Daten?</h2>
+              <p>Eine horizontale <strong>Partitionierung</strong> teilt Zeilen nach einem Schlüssel auf. Beim <strong>Sharding</strong> liegen diese Teile auf verschiedenen Knoten. Das verteilt Speicher und Last. Ein Schlüssel nach Region kann regionale Abfragen bündeln. Wenn eine Region einen Großteil der Last verursacht, wird ihr Shard zum Engpass. Eine Hash-Verteilung streut Schlüssel oft gleichmäßiger, während Bereichsabfragen mehr Knoten erreichen können.</p>
+              <p>Wähle den Shard-Schlüssel zusammen mit den häufigsten Abfragen und Änderungen. Eine Abfrage ohne den Schlüssel muss unter Umständen viele Shards ansprechen. Eine Regel, die Änderungen über mehrere Shards zusammenfasst, benötigt zusätzliche Koordination. Shards lassen sich jeweils replizieren, wenn sowohl Lastverteilung als auch Ausfalltoleranz wichtig sind.</p>
+            </section>
+            <section>
+              <h2 id="koordination-und-cap" tabindex="-1">Was entscheidet ein System bei einer Netzwerkpartition?</h2>
+              <p>Knoten koordinieren, wer Änderungen annehmen darf und welche Änderungen in welcher Reihenfolge gelten. Ein System kann beispielsweise nur auf der Seite weiterschreiben, die eine Mehrheit seiner Knoten erreicht. Bei einem Verbindungsabbruch ist für einen Knoten oft zunächst unklar, ob der andere ausgefallen ist oder nur nicht antwortet.</p>
+              <p>Das <strong>CAP-Theorem</strong> betrachtet <i lang="en">consistency</i>, <i lang="en">availability</i> und <i lang="en">partition tolerance</i>. Konsistenz bedeutet hier, dass die verteilten Operationen wie an einer einzigen, die reale Reihenfolge respektierenden Kopie wirken (<i lang="en">linearizability</i>). Verfügbarkeit bedeutet, dass Anfragen an erreichbare, funktionierende Knoten auch bei der Störung zu Ende geführt werden. Eine Netzwerkpartition liegt vor, wenn Knoten oder Gruppen keine Nachrichten mehr austauschen können.</p>
+              <p>Zwei Standortgruppen haben die Verbindung verloren. Eine Gruppe bestätigt den Verkauf des letzten verfügbaren Platzes. Die andere kann den Verkauf nicht sehen. Wenn sie Buchungen weiterhin annimmt, kann auch dort derselbe Platz zugesagt werden. Wenn sie Anfragen für diesen Platz ablehnt oder warten lässt, verzichtet sie während der Trennung für diese Operation auf Verfügbarkeit und kann die gemeinsame Buchungsregel schützen. Plane daher pro Operation, welche Zusage gelten soll und was Nutzer während der Störung sehen. <a href="https://cs.nyu.edu/~apanda/classes/sp25/papers/gilbert02brewers.pdf">Gilbert und Lynch (2002), formale Fassung des CAP-Theorems</a></p>
+              <p>Wenn ein System vorübergehend unterschiedliche Kopien zulässt, braucht es Regeln zur Konfliktauflösung. Bei letztendlicher Konsistenz (<i lang="en">eventual consistency</i>) sollen sich die Kopien nach ausbleibenden weiteren Änderungen und erfolgreicher Übertragung wieder angleichen. Wie lange eine Sicht hinterherhinken darf, ist eine zusätzliche Anforderung.</p>
+            </section>
+            <section>
+              <h2 id="mapreduce" tabindex="-1">Welche Aufgabe löst MapReduce?</h2>
+              <p><strong>MapReduce</strong> ist ein Modell für verteilte Stapelverarbeitung. <i lang="en">Map</i> erzeugt aus Eingabeteilen Schlüssel-Wert-Paare. Das System gruppiert gleiche Schlüssel und verteilt die Gruppen über das Netz (<i lang="en">shuffle</i>). <i lang="en">Reduce</i> fasst die Werte pro Schlüssel zusammen. Um Ereignisse pro Typ zu zählen, erzeugt Map pro Ereignis das Paar aus Typ und Eins. Reduce addiert die Einsen je Typ.</p>
+              <p>Die Verarbeitung lässt sich auf viele Knoten verteilen. Das Umverteilen der Zwischenergebnisse kostet Zeit und Netzwerkbandbreite. Häufige Schlüssel können einen einzelnen Verarbeitungsknoten stark belasten. Das Verfahren eignet sich für große Stapel, bei denen ein späteres Gesamtergebnis genügt.</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Replikation vervielfältigt Daten. Sharding verteilt verschiedene Teile des Bestands.</li>
+                <li>Wähle den Shard-Schlüssel nach Zugriffsmustern und der Verteilung der Last.</li>
+                <li>Im CAP-Fall entscheidet die gewünschte Zusage für die einzelne Operation, wie sie bei einer Netztrennung reagiert.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Zwei Standorte dürfen während einer Netztrennung keine widersprüchlichen Buchungen bestätigen. Was ist die Folge für Anfragen auf der abgeschnittenen Seite?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Die abgeschnittene Seite muss Buchungsanfragen warten lassen oder ablehnen, wenn sie die Schreibberechtigung und den aktuellen Zustand nicht sicher kennt. Würden beide Seiten ohne Abstimmung zusagen, könnten sie denselben Platz vergeben. Andere Operationen, etwa das Anzeigen älterer Informationen, können eigene Regeln haben.</p>
+              </details>
+              <h3>In den Unterlagen nachlesen</h3>
+              <p class="script-reference">Modulskript <cite>Datenbanktechnologien</cite>, Kap. 7 (S. 119–134), zum CAP-Theorem auf S. 119–121, zu Replikation und Sharding in § 7.2, zu MapReduce in § 7.3 und zur Koordination in § 7.4.</p>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./data-warehousing.html">
+              <span>Vorherige Einheit</span>
+              <strong>Data Warehousing und analytische Abfragen</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Datenbanktechnologien</strong>
+            </a>
+            <a href="./nosql-und-systemwahl.html">
+              <span>Nächste Einheit</span>
+              <strong>NoSQL und die Auswahl eines Datenbanksystems</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Was soll das Netz lernen, und woran misst es seinen Fehler?">
+  <title>Lernaufgaben und Lernziele · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="../softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="./index.html">Deep Learning</a>
+        <a href="../datenbanktechnologien/index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Deep Learning</a>
+          <span aria-current="page">Lernaufgaben und Lernziele</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Einheit 1 von 8</p>
+            <h1>Lernaufgaben und Lernziele</h1>
+            <p class="hero-intro">Was soll das Netz lernen, und woran misst es seinen Fehler?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#eingaben-und-ziele">Wie wird aus einer Aufgabe ein Lernproblem?</a></li>
+              <li><a href="#aufgabe-und-ausgabe">Welche Ausgabe passt zur Aufgabe?</a></li>
+              <li><a href="#verlustfunktion">Wie macht der Verlust einen Fehler messbar?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="eingaben-und-ziele" tabindex="-1">Wie wird aus einer Aufgabe ein Lernproblem?</h2>
+              <p>Beim <strong>Deep Learning</strong> lernt ein neuronales Netz in mehreren Schichten Darstellungen für seine Aufgabe. Beim <strong>überwachten Lernen</strong> (<i lang="en">supervised learning</i>) besteht ein Trainingsbeispiel aus einer numerisch dargestellten Eingabe <var>x</var> und einem bekannten Zielwert <var>y</var> (<i lang="en">target</i>). Die Vorhersage des Netzes heißt <var>ŷ</var>. Ein Zielwert kann etwa die gemessene Dauer eines Vorgangs oder die bekannte Produktkategorie sein.</p>
+              <p>Definiere zuerst, welche Eingaben zum Zeitpunkt der Vorhersage verfügbar sind und was der Zielwert fachlich bedeutet. Eine Kategorie aus einer nachträglichen Prüfung kann ein geeignetes Ziel sein. Ihr Ergebnis als Eingabemerkmal zu verwenden würde die Vorhersageaufgabe verändern.</p>
+            </section>
+            <section>
+              <h2 id="aufgabe-und-ausgabe" tabindex="-1">Welche Ausgabe passt zur Aufgabe?</h2>
+              <dl>
+                <dt>Regression (<i lang="en">regression</i>)</dt>
+                <dd>Das Ziel ist eine numerische Größe, etwa eine Dauer in Sekunden. Eine lineare Ausgabe eignet sich für einen unbeschränkten reellen Wert. Bei einem fachlich eingeschränkten Wertebereich prüfst du, ob Ausgabe oder Modellierung diesen Bereich berücksichtigen sollten. Ein typischer Verlust ist der mittlere quadratische Fehler (<i lang="en">mean squared error</i>, MSE).</dd>
+                <dt>Binäre Klassifikation (<i lang="en">binary classification</i>)</dt>
+                <dd>Das Ziel ist 0 oder 1. Eine Sigmoidfunktion wandelt eine Rohbewertung (<i lang="en">logit</i>) in einen Wert zwischen 0 und 1 um. Dazu passt die binäre Kreuzentropie (<i lang="en">binary cross-entropy</i>). Aus dem Wahrscheinlichkeitswert wird anhand einer Schwelle eine Entscheidung.</dd>
+                <dt>Mehrklassen-Klassifikation (<i lang="en">multiclass classification</i>)</dt>
+                <dd>Genau eine von mehreren Klassen trifft zu. Die Softmaxfunktion wandelt die Logits in Klassenwahrscheinlichkeiten um, die sich zu eins addieren. Die Kreuzentropie (<i lang="en">cross-entropy</i>) bewertet die Wahrscheinlichkeitsverteilung anhand der Zielklasse.</dd>
+                <dt>Mehrfachzuordnung (<i lang="en">multilabel classification</i>)</dt>
+                <dd>Mehrere Kennzeichnungen (<i lang="en">labels</i>) können gleichzeitig zutreffen. Verwende beispielsweise einen Sigmoidwert und eine binäre Kreuzentropie pro Label. Die Ausgabewerte müssen sich dann nicht zu eins addieren.</dd>
+              </dl>
+            </section>
+            <section>
+              <h2 id="verlustfunktion" tabindex="-1">Wie macht der Verlust einen Fehler messbar?</h2>
+              <p>Die <strong>Verlustfunktion</strong> (<i lang="en">loss function</i>) gibt dem Training eine Zahl, die sich minimieren lässt. Der MSE über <var>n</var> Beispiele mit je einem Zielwert ist ein solches Maß.</p>
+              <math display="block"><mi>MSE</mi><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><munder><mo>∑</mo><mi>i</mi></munder><msup><mrow><mo>(</mo><msub><mi>ŷ</mi><mi>i</mi></msub><mo>−</mo><msub><mi>y</mi><mi>i</mi></msub><mo>)</mo></mrow><mn>2</mn></msup></math>
+              <p>Der Index <var>i</var> läuft über die Beispiele. Du quadrierst die Abweichung von Vorhersage und Ziel und bildest den Mittelwert. Eine doppelt so große Abweichung trägt viermal so stark bei.</p>
+              <p>Bei genau einer richtigen Klasse ist die Kreuzentropie eines Beispiels <math><mo>−</mo><mi>log</mi><mo>(</mo><msub><mi>p</mi><mi>c</mi></msub><mo>)</mo></math>. Dabei ist <var>p<sub>c</sub></var> die vorhergesagte Wahrscheinlichkeit der richtigen Klasse <var>c</var>. Je kleiner diese Wahrscheinlichkeit ausfällt, desto größer wird der Verlust, selbst wenn die vorhergesagte Klasse unverändert bleibt.</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Die fachliche Bedeutung der Zielwerte bestimmt die Form der Ausgabe.</li>
+                <li>Softmax passt zu genau einer Klasse. Einzelne Sigmoidwerte erlauben gleichzeitig zutreffende Labels.</li>
+                <li>Der Verlust legt fest, wie stark verschiedene Vorhersagefehler in das Training eingehen.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Ein Foto kann gleichzeitig die Labels „Nacht“ und „Regen“ tragen. Welche Ausgabe und welcher Verlust passen dazu?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Für jedes Label passt ein Sigmoidwert mit binärer Kreuzentropie. Damit können beide Labels hohe Werte erhalten. Softmax würde Wahrscheinlichkeitsmasse auf die Klassen verteilen, obwohl beide Labels gleichzeitig zutreffen können.</p>
+              </details>
+              <h3>Im Skript nachlesen</h3>
+              <p class="script-reference">Kapitel 1, §§ 1.1 und 1.3 (S. 9 und 12–14), zur Einordnung. Kapitel 2, §§ 2.2 und 2.4–2.6 (S. 26–29 und 32–42), zu Ein- und Ausgaben. Kapitel 16, §§ 16.2 und 16.4–16.8 (S. 489–498 und 504–528), zu Aufgaben und Verlustfunktionen.</p>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Deep Learning</strong>
+            </a>
+            <a href="./neuron-und-netz.html">
+              <span>Nächste Einheit</span>
+              <strong>Vom künstlichen Neuron zum Netz</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

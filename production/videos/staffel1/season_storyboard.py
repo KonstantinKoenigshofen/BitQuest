@@ -20,8 +20,6 @@ class Film:
     stem: str
     title: str
     poster_title: tuple[str, str]
-    quest: str
-    quest_title: str
     shots: tuple[Shot, ...]
     voice: str | None = None
 
@@ -31,7 +29,6 @@ FILMS = (
         "library", "warum-software-in-module-aufteilen",
         "Ein Buch, zwei Mahnfristen – warum Module helfen",
         ("Ein Buch,", "zwei Mahnfristen"),
-        "module-entwerfen", "Module mit klarer Verantwortung entwerfen",
         (
             shot("screen", "Auf dem Bildschirm der Stadtbibliothek steht: Keine Mahnung fällig."),
             shot("mail", "Im selben Moment bekommt Lea eine Mahnmail.", "Sie nennt genau das Buch, das die Bibliothek gerade geprüft hat.", "Wie kann das sein?"),
@@ -53,7 +50,6 @@ FILMS = (
         "locker", "raetsel-der-doppelten-reservierung",
         "Ein Klick zu viel? Das Rätsel der doppelten Reservierung",
         ("Ein Klick", "zu viel?"),
-        "schnittstellen-entwerfen", "Verlässliche Schnittstellen entwerfen",
         (
             shot("start", "Mila will ein Fach am Paketautomaten reservieren.", "Links siehst du ihr Handy, rechts den Automaten.", "Alle Fächer sind frei."),
             shot("request", "Beim Tippen schickt das Handy den Auftrag mit dem Schlüssel A eins los.", "Der Schlüssel steht für diesen einen Auftrag."),
@@ -74,7 +70,6 @@ FILMS = (
         "weather", "warum-null-komma-sechs-fuenf-die-regenwarnung-verschluckt",
         "Warum 0,65 eine Regenwarnung verschwinden lässt",
         ("Wo steckt die", "Regenwarnung?"),
-        "abhaengigkeiten-austauschen", "Abhängigkeiten austauschbar machen",
         (
             shot("start", "Die Wander-App soll ab sechzig Prozent Regenwahrscheinlichkeit warnen.", "Morgen sieht es nach Regen aus, aber die App zeigt keinen Regenhinweis."),
             shot("provider", "Seit heute bezieht die App ihre Vorhersage von einem anderen Wetterdienst.", "Der Dienst schickt null Komma sechs fünf als Antwort."),
@@ -96,7 +91,6 @@ FILMS = (
         "shipping", "express-gewaehlt-standard-bezahlt",
         "Express gewählt, Standard bezahlt – wie Strategien funktionieren",
         ("Express gewählt,", "Standard bezahlt"),
-        "strategien-variieren", "Verhalten mit Entwurfsmustern variieren",
         (
             shot("start", "Nora braucht ihr Paket schnell und wählt Expressversand.", "Der Warenkorb zeigt vier Euro neunzig Versandkosten. Für Express sollten es neun Euro neunzig sein."),
             shot("trace", "Wir folgen der Auswahl bis zur Berechnung.", "Der Shop bekommt die Lieferart Express und die Versanddaten: zwei Kilo, Lieferzone Innenstadt."),
@@ -117,7 +111,6 @@ FILMS = (
         "register", "der-test-der-einen-cent-unterschied-findet",
         "Der Test, der einen Cent Unterschied findet",
         ("Ein Cent", "als Spur"),
-        "code-refaktorieren", "Bestehenden Code refaktorieren",
         (
             shot("start", "Zwei Kassen, ein Fall für dich.", "Die linke Kasse läuft seit Jahren. Die rechte wurde im Code umgebaut.", "Beide sollen ab hundert Euro Rabatt geben."),
             shot("below", "Wir schicken denselben Warenkorb für neunundneunzig Euro neunundneunzig durch beide Kassen.", "Die Ausdrucke stimmen überein. Auf beiden steht: kein Rabatt."),

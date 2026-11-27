@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Wie lässt sich eine fachliche Regel im Schema ausdrücken?">
+  <title>Datenmodellierung und Integrität · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="../softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="../deep-learning/index.html">Deep Learning</a>
+        <a href="./index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Datenbanktechnologien</a>
+          <span aria-current="page">Datenmodellierung und Integrität</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Einheit 2 von 9</p>
+            <h1>Datenmodellierung und Integrität</h1>
+            <p class="hero-intro">Wie lässt sich eine fachliche Regel im Schema ausdrücken?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#er-modell">Wie werden Entitäten und Beziehungen zu Tabellen?</a></li>
+              <li><a href="#abhaengigkeiten">Woran erkennst du Redundanz und Anomalien?</a></li>
+              <li><a href="#normalformen">Welche Anomalien verhindern die Normalformen?</a></li>
+              <li><a href="#integritaet">Welche Regeln kann die Datenbank direkt prüfen?</a></li>
+              <li><a href="#vierte-und-fuenfte-normalform">Wann helfen die vierte und fünfte Normalform?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="er-modell" tabindex="-1">Wie werden Entitäten und Beziehungen zu Tabellen?</h2>
+              <p>Ein <strong>Entität-Beziehungs-Modell</strong> (<i lang="en">entity–relationship model</i>, ER-Modell) beschreibt fachliche Gegenstände, ihre Eigenschaften und Beziehungen. <strong>Kardinalitäten</strong> legen fest, wie viele Gegenstücke zulässig oder erforderlich sind. Bei „jede Buchung gehört genau einem Termin“ ist die Untergrenze eins. „Ein Termin hat null bis viele Buchungen“ erlaubt auch einen Termin ohne Buchungen.</p>
+              <p>Entitätstypen werden meist zu Tabellen. Bei einer 1:n-Beziehung speicherst du den Fremdschlüssel auf der n-Seite. <code>NOT NULL</code> erzwingt dort eine Pflichtbeziehung. Bei 1:1 kann ein zusätzlicher <code>UNIQUE</code>-Constraint die Mehrfachverwendung des Fremdschlüssels verhindern. Eine n:m-Beziehung erhält eine Zuordnungstabelle mit zwei Fremdschlüsseln. Ihr zusammengesetzter Schlüssel kann Wiederholungen derselben Zuordnung verhindern. Beteiligungsregeln auf der jeweils anderen Seite, etwa „jeder Termin hat mindestens eine Buchung“, brauchen eine eigene Prüfung.</p>
+            </section>
+            <section>
+              <h2 id="abhaengigkeiten" tabindex="-1">Woran erkennst du Redundanz und Anomalien?</h2>
+              <p>Eine <strong>funktionale Abhängigkeit</strong> <code>X → Y</code> besagt, dass gleiche Werte für die Attribute <code>X</code> in allen zulässigen Datenbeständen auch gleiche Werte für <code>Y</code> erfordern. Sie folgt aus einer fachlichen Regel. Dass alle Raumnamen in einer aktuellen Stichprobe verschieden sind, reicht als Beleg nicht aus. Ein <strong>Schlüsselkandidat</strong> ist eine minimale Attributmenge, die die ganze Zeile bestimmt.</p>
+              <p>Steht ein Raumname in jeder Teilnahmezeile, muss eine Umbenennung an vielen Stellen erfolgen (<strong>Änderungsanomalie</strong>). Ohne Teilnahme lässt sich ein Raum dort womöglich gar nicht anlegen (<strong>Einfügeanomalie</strong>). Das Entfernen der letzten Teilnahme kann die einzige Information zum Raum löschen (<strong>Löschanomalie</strong>).</p>
+            </section>
+            <section>
+              <h2 id="normalformen" tabindex="-1">Welche Anomalien verhindern die Normalformen?</h2>
+              <dl>
+                <dt>Erste Normalform (1NF)</dt>
+                <dd>Jedes Feld enthält einen für das Modell einzelnen Wert. Eine Liste von Personen in einem Kursfeld verlegst du in einzelne Teilnahmezeilen. So lassen sich Zuordnungen einzeln prüfen, ergänzen oder löschen.</dd>
+                <dt>Zweite Normalform (2NF)</dt>
+                <dd>Sie setzt 1NF voraus. Jedes Attribut außerhalb aller Schlüsselkandidaten hängt vollständig von jedem Schlüsselkandidaten ab. In <code>Teilnahme(Person, Kurs, Personenname)</code> bestimmt schon <code>Person</code> den Namen. Speichere ihn in der Personentabelle. Dort kannst du ihn einmal ändern und auch ohne Teilnahme erfassen.</dd>
+                <dt>Dritte Normalform (3NF)</dt>
+                <dd>Ein typischer Verstoß ist eine transitive Abhängigkeit über ein Nichtschlüsselattribut. In <code>Kurs(Kurs, Raum, Raumname)</code> bestimmt der Kurs den Raum und der Raum seinen Namen. Eine eigene Raumtabelle erlaubt, den Raum vor dem ersten Kurs einzutragen und den letzten Kurs zu löschen, ohne die Raumdaten zu verlieren. Formal verlangt 3NF für jede nichttriviale Abhängigkeit mit einem einzelnen Zielattribut links einen Superschlüssel oder rechts ein Attribut eines Schlüsselkandidaten.</dd>
+                <dt>Boyce-Codd-Normalform (BCNF)</dt>
+                <dd>Bei jeder nichttrivialen funktionalen Abhängigkeit muss die linke Seite die ganze Zeile bestimmen, also ein Superschlüssel sein. Angenommen, jede Person hat je Kurs genau einen Tutor und jeder Tutor betreut genau einen Kurs. In <code>Betreuung(Person, Kurs, Tutor)</code> sind <code>(Person, Kurs)</code> und <code>(Person, Tutor)</code> Schlüsselkandidaten. Trotzdem wiederholt <code>Tutor → Kurs</code> die Kurszuordnung je Person. Die Zerlegung in <code>TutorKurs</code> und <code>PersonTutor</code> erhält die Zeilen beim Zusammenfügen. Die Regel „höchstens ein Tutor je Person und Kurs“ muss nun tabellenübergreifend geprüft werden.</dd>
+              </dl>
+              <p>Prüfe nach einer Zerlegung, ob der Join die ursprünglichen zulässigen Zeilen ohne zusätzliche Kombinationen rekonstruiert und welche Regeln weiterhin lokal geprüft werden können. Eine bewusst redundante Speicherung braucht einen nachvollziehbaren Grund und eine Strategie, um Kopien konsistent zu halten.</p>
+            </section>
+            <section>
+              <h2 id="integritaet" tabindex="-1">Welche Regeln kann die Datenbank direkt prüfen?</h2>
+              <p><strong>Constraints</strong> sind deklarative Regeln im Schema. Kombiniere Schlüssel und Fremdschlüssel mit <code>NOT NULL</code> für Pflichtwerte und <code>CHECK</code> für Bedingungen wie <code>ende &gt; beginn</code>. In PostgreSQL akzeptiert <code>CHECK</code> auch ein unbekanntes Ergebnis. Wenn beide Zeiten Pflicht sind, setze zusätzlich <code>NOT NULL</code>. Für Regeln über mehrere Zeilen prüfst du, ob Eindeutigkeit, Fremdschlüssel oder ein anderes deklaratives Mittel genügt.</p>
+            </section>
+            <section>
+              <h2 id="vierte-und-fuenfte-normalform" tabindex="-1">Wann helfen die vierte und fünfte Normalform?</h2>
+              <p>Die <strong>4NF</strong> behandelt unabhängige Mehrfachzuordnungen. Wenn eine Person unabhängig voneinander mehrere Sprachen und mehrere Werkzeuge nutzt, speichere die Beziehungen getrennt. Sonst müssten sich alle passenden Sprach-Werkzeug-Paare wiederholen.</p>
+              <p>Die <strong>5NF</strong> untersucht allgemeinere Verbundabhängigkeiten. Eine Dreierbeziehung darfst du etwa nur dann in Paarbeziehungen zerlegen, wenn die fachliche Regel garantiert, dass der Join genau die erlaubten Dreierkombinationen ergibt. Prüfe das anhand der Regel und anhand von Kombinationen, die ausdrücklich ausgeschlossen sein sollen.</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Kardinalitäten und fachliche Abhängigkeiten leiten die Wahl von Tabellen und Schlüsseln.</li>
+                <li>Normalisierung gibt wiederkehrenden Fakten einen eindeutigen Speicherort und begrenzt Änderungsanomalien.</li>
+                <li>Prüfe beim Zerlegen sowohl den verlustfreien Verbund als auch die Durchsetzbarkeit der Regeln.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Eine Kurstabelle enthält Kurs-ID, Raum-ID und Raumname. Mehrere Kurse verwenden denselben Raum. Welche Anomalie droht und welche Zerlegung hilft?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Der Raumname hängt vom Raum und damit nur mittelbar von der Kurs-ID ab. Beim Umbenennen könnten einzelne Kurszeilen den alten Namen behalten. Speichere Raum-ID und Raumname in einer Raumtabelle. In Kurs bleibt ein Fremdschlüssel auf den Raum, sodass die Umbenennung an einer Stelle genügt.</p>
+              </details>
+              <h3>In den Unterlagen nachlesen</h3>
+              <p class="script-reference">Modulskript <cite>Datenbanktechnologien</cite>, §§ 5.4–5.6 (S. 31–60), zu ER-Modellen, den Normalformen und der Bewertung von Datenmodellen. § 5.8.5 (S. 75–76) behandelt CHECK-Constraints.</p>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./relationale-grundlagen-und-sql.html">
+              <span>Vorherige Einheit</span>
+              <strong>Relationale Grundlagen und SQL</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Datenbanktechnologien</strong>
+            </a>
+            <a href="./speicherung-und-abfrageperformanz.html">
+              <span>Nächste Einheit</span>
+              <strong>Physische Speicherung und Abfrageperformanz</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

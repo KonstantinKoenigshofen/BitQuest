@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Wann lässt sich Gelerntes auf eine neue Aufgabe übertragen?">
+  <title>Vortrainierte Modelle nutzen · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="../softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="./index.html">Deep Learning</a>
+        <a href="../datenbanktechnologien/index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Deep Learning</a>
+          <span aria-current="page">Vortrainierte Modelle nutzen</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Einheit 8 von 8</p>
+            <h1>Vortrainierte Modelle nutzen</h1>
+            <p class="hero-intro">Wann lässt sich Gelerntes auf eine neue Aufgabe übertragen?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#transfer">Was kannst du aus einem vortrainierten Modell übernehmen?</a></li>
+              <li><a href="#merkmalsextraktion">Wann bleiben Schichten eingefroren?</a></li>
+              <li><a href="#fine-tuning">Wann lohnt es sich, Gewichte weiterzutrainieren?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="transfer" tabindex="-1">Was kannst du aus einem vortrainierten Modell übernehmen?</h2>
+              <p>Beim <strong>Transferlernen</strong> (<i lang="en">transfer learning</i>) startest du mit Gewichten, die zuvor an einer anderen Aufgabe oder mit anderen Daten gelernt wurden (<i lang="en">pretraining</i>). Die Zwischenrepräsentationen können nützliche Merkmale enthalten, etwa Kanten und Formen in einem Bildmodell. Die ursprüngliche Ausgabe hängt meist enger an der damaligen Aufgabe.</p>
+              <p>Prüfe, ob Eingabeformat, Vorverarbeitung und Merkmale zur neuen Aufgabe passen. Ein Modell für Farbfotos kann zum Beispiel für neue Fotokategorien nützlich sein. Bei Bildern aus einer stark abweichenden Quelle kann selbst die interne Darstellung wichtige Unterschiede übersehen.</p>
+            </section>
+            <section>
+              <h2 id="merkmalsextraktion" tabindex="-1">Wann bleiben Schichten eingefroren?</h2>
+              <p>Bei der <strong>Merkmalsextraktion</strong> (<i lang="en">feature extraction</i>) nutzt du den vortrainierten Teil, um aus der Eingabe Merkmale zu berechnen. Du <strong>frierst</strong> seine Gewichte <strong>ein</strong> (<i lang="en">freezing</i>) und trainierst eine neue Ausgabekomponente, den <i lang="en">head</i>, für deine Zielwerte. Bei einem vollständig festen Merkmalsextraktor und unveränderten Eingaben kannst du die Merkmale für wiederholte Läufe vorab berechnen.</p>
+              <p>Das spart Trainingsaufwand und lässt bei wenigen gelabelten Beispielen weniger Parameter anpassen. Wenn die vorhandenen Merkmale relevante Unterschiede für die neue Aufgabe nicht ausdrücken, ist der Spielraum der neuen Ausgabe begrenzt. Auch eingefrorene Schichten müssen bei der späteren Vorhersage normalerweise mitgerechnet werden.</p>
+            </section>
+            <section>
+              <h2 id="fine-tuning" tabindex="-1">Wann lohnt es sich, Gewichte weiterzutrainieren?</h2>
+              <p>Beim <strong>Fine-Tuning</strong> trainierst du einen Teil oder alle vortrainierten Schichten mit neuen Daten weiter. Eine kleinere Lernrate für den vortrainierten Teil kann helfen, nützliche Merkmale bei der Anpassung zu erhalten. Das Öffnen weiterer Schichten kostet mehr Trainingsspeicher und Rechenzeit. Bei wenig Daten kann es die Überanpassung verstärken.</p>
+              <p>Beginne bei ähnlichen Daten und wenig Labels mit einem eingefrorenen Modell als Vergleichspunkt. Zeigt die Fehleranalyse systematische Schwächen und stehen genug passende Beispiele zur Verfügung, kannst du obere Schichten teilweise freigeben. Bei stark abweichenden Daten ist auch ein passender vortrainierter Ausgangspunkt oder ein von Grund auf trainiertes Modell einen Vergleich wert. Beurteile alle Kandidaten mit derselben Datenaufteilung und derselben fachlichen Metrik. Miss Trainingsaufwand und Betriebskosten separat.</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Transfer lohnt sich, wenn gelernte Darstellungen für die neue Aufgabe nützlich sind.</li>
+                <li>Einfrieren spart Trainingsaufwand. Fine-Tuning erlaubt eine tiefere Anpassung an neue Daten.</li>
+                <li>Vergleiche die Varianten anhand passender Validierungsdaten, der Fehlerarten und des Rechenbudgets.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Du hast wenige gelabelte Bilder und ein Modell, das auf sehr ähnlichen Fotos vortrainiert wurde. Welche Variante probierst du zuerst und wann änderst du sie?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Friere die Gewichte des vortrainierten Teils ein und trainiere eine Ausgabekomponente für deine Labels. Vergleiche sie auf separaten Validierungsdaten. Wenn Fehler systematisch auf fehlende Merkmale hinweisen und ausreichend passende Daten vorliegen, prüfe partielles Fine-Tuning mit kleiner Lernrate.</p>
+              </details>
+              <h3>Im Skript nachlesen</h3>
+              <p class="script-reference">Kapitel 17, § 17.2 (S. 538–539) zur Wiederverwendung gelernter Merkmale und § 17.5 (S. 548–552) zum Einfrieren und Fine-Tuning. Beispiele zu Bildern und Text stehen in §§ 17.3–17.4 (S. 540–548).</p>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./netzarchitekturen.html">
+              <span>Vorherige Einheit</span>
+              <strong>Netzarchitekturen verstehen</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Deep Learning</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

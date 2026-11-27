@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Wie schneidest du Module zu und beurteilst ihre Schnittstellen?">
+  <title>Modularisierung und Schnittstellen · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="./index.html">Softwarearchitektur</a>
+        <a href="../deep-learning/index.html">Deep Learning</a>
+        <a href="../datenbanktechnologien/index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Softwarearchitektur</a>
+          <span aria-current="page">Modularisierung und Schnittstellen</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Block 3 von 7</p>
+            <h1>Modularisierung und Schnittstellen</h1>
+            <p class="hero-intro">Erkenne tragfähige Modulgrenzen und gestalte Schnittstellen, die Änderungen auf wenige Stellen begrenzen.</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#verantwortung">Was gehört in dasselbe Modul?</a></li>
+              <li><a href="#kopplung">Was verrät eine Abhängigkeit?</a></li>
+              <li><a href="#vertraege">Was sollte eine Schnittstelle offenlegen?</a></li>
+              <li><a href="#grenzen-pruefen">Woran erkennst du eine tragfähige Modulgrenze?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="verantwortung" tabindex="-1">Was gehört in dasselbe Modul?</h2>
+              <p>Eine <strong>Verantwortlichkeit</strong> (<i lang="en">responsibility</i>) beschreibt, welche Aufgabe ein Modul erfüllt und welche Regeln oder Daten es dabei betreut. Formuliere sie so, dass du für eine typische Änderung entscheiden kannst, wo sie hingehört.</p>
+              <p><strong>Kohäsion</strong> (<i lang="en">cohesion</i>) bezeichnet den inneren Zusammenhalt. Regeln, die sich aus denselben fachlichen Gründen ändern, profitieren davon, nahe beieinander zu liegen. Bei der Prüfung einer Lieferadresse können beispielsweise die Regeln für Pflichtfelder und zulässige Kombinationen zusammengehören. Eine Sammlung aller Prüfungen im System hätte zwar einen gemeinsamen Namen, müsste aber aus vielen verschiedenen Gründen geändert werden.</p>
+            </section>
+            <section>
+              <h2 id="kopplung" tabindex="-1">Was verrät eine Abhängigkeit?</h2>
+              <p><strong>Kopplung</strong> (<i lang="en">coupling</i>) beschreibt, wie stark Teile aufeinander angewiesen sind. Sie entsteht auch ohne direkten Import, etwa wenn zwei Module dieselbe Tabelle beschreiben oder wenn eine Ablaufreihenfolge nur stillschweigend vorausgesetzt wird. Je stärker andere Teile von internen Details oder zeitlichen Zusagen abhängen, desto mehr Stellen können bei einer Änderung betroffen sein.</p>
+              <p>Die <strong>Abhängigkeitsrichtung</strong> (<i lang="en">dependency direction</i>) zeigt, welcher Teil den anderen kennen muss. Wenn Fachlogik direkt eine konkrete Datenbankbibliothek verwendet, muss sie beim Wechsel dieser Bibliothek gegebenenfalls mitgeändert werden. Bei der <strong>Abhängigkeitsumkehr</strong> (<i lang="en">dependency inversion</i>) beschreibt die Fachlogik ihren Speicherbedarf durch eine Schnittstelle. Der technische Baustein implementiert sie. Die Fachlogik ruft ihn zur Laufzeit auf, während im Code die Implementierung von der fachlich definierten Schnittstelle abhängt.</p>
+              <p>Prüfe den erwarteten Nutzen einer solchen Grenze. Für eine einfache, stabile Hilfsfunktion kostet eine zusätzliche Schnittstelle oft mehr Orientierung, als sie bei späteren Änderungen spart.</p>
+            </section>
+            <section>
+              <h2 id="vertraege" tabindex="-1">Was sollte eine Schnittstelle offenlegen?</h2>
+              <p>Beim <strong>Verbergen interner Details</strong> (<i lang="en">information hiding</i>) bleibt verborgen, was sich innerhalb eines Moduls ändern können soll. Nach außen zeigt es die angebotenen Operationen und ihre Zusagen. Eine Schnittstelle zur Abfrage eines Lieferstatus kann beispielsweise vereinbarte Statuswerte liefern, während Datenbankschema und Berechnung intern bleiben.</p>
+              <p>Ein brauchbarer Vertrag macht klar, welche Eingaben gültig sind, was ein erfolgreicher Aufruf bewirkt und welche Fehler zu erwarten sind. Halte auch wichtige Zusagen wie die Reihenfolge oder Wiederholbarkeit von Aufrufen fest, wenn Nutzer der Schnittstelle davon abhängen. Zusätzliche öffentliche Felder und Operationen vergrößern die Fläche, die du bei Änderungen berücksichtigen musst.</p>
+            </section>
+            <section>
+              <h2 id="grenzen-pruefen" tabindex="-1">Woran erkennst du eine tragfähige Modulgrenze?</h2>
+              <ul>
+                <li>Die Verantwortung ist klar benennbar. Ein typischer Änderungswunsch lässt sich einem Modul zuordnen.</li>
+                <li>Fachlich zusammengehörige Regeln bleiben beieinander. Häufige Änderungen berühren möglichst wenige öffentliche Verträge.</li>
+                <li>Andere Teile greifen über die vorgesehenen Schnittstellen zu. Geteilte Daten, stillschweigende Reihenfolgen und zyklische Abhängigkeiten verdienen besondere Aufmerksamkeit.</li>
+                <li>Die Schnittstelle lässt sich aus Sicht ihrer Nutzer testen. Ein Fehlerfall und eine typische spätere Änderung zeigen, ob ihre Zusagen ausreichen.</li>
+              </ul>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Hohe Kohäsion bündelt Regeln, die sich aus ähnlichen Gründen ändern.</li>
+                <li>Kopplung entsteht auch durch gemeinsame Daten oder Annahmen zur Reihenfolge.</li>
+                <li>Eine gute Schnittstelle schützt interne Details und macht die erwartbaren Ergebnisse und Fehler verständlich.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Zwei Module schreiben dieselbe Tabelle. Warum sind sie auch dann gekoppelt, wenn sie sich gegenseitig nicht importieren?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Beide verlassen sich auf dasselbe Schema und dieselben Regeln für gültige Änderungen. Eine Schemaänderung oder neue Fachregel kann beide Module treffen. Ein Modul als Eigentümer der Daten kann die Schreibregeln bündeln und erlaubte Änderungen über eine Schnittstelle anbieten.</p>
+              </details>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./anforderungen-und-qualitaetsziele.html">
+              <span>Vorheriger Block</span>
+              <strong>Anforderungen und Qualitätsziele</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Softwarearchitektur</strong>
+            </a>
+            <a href="./architekturstile-und-muster.html">
+              <span>Nächster Block</span>
+              <strong>Architekturstile und Muster</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

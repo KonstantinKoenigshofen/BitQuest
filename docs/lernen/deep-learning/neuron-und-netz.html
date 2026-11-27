@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Wie entsteht aus Eingaben eine Vorhersage?">
+  <title>Vom künstlichen Neuron zum Netz · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="../softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="./index.html">Deep Learning</a>
+        <a href="../datenbanktechnologien/index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Deep Learning</a>
+          <span aria-current="page">Vom künstlichen Neuron zum Netz</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Einheit 2 von 8</p>
+            <h1>Vom künstlichen Neuron zum Netz</h1>
+            <p class="hero-intro">Wie entsteht aus Eingaben eine Vorhersage?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#neuron">Was berechnet ein künstliches Neuron?</a></li>
+              <li><a href="#aktivierungen">Warum brauchen tiefe Netze Nichtlinearität?</a></li>
+              <li><a href="#forward-pass">Wie entsteht aus vielen Neuronen eine Vorhersage?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="neuron" tabindex="-1">Was berechnet ein künstliches Neuron?</h2>
+              <p>Ein künstliches Neuron (<i lang="en">artificial neuron</i>) multipliziert jede seiner Eingaben <var>x<sub>i</sub></var> mit einem <strong>Gewicht</strong> (<i lang="en">weight</i>) <var>w<sub>i</sub></var>. Es summiert die Beiträge und addiert einen lernbaren Offset, den <strong>Bias</strong> <var>b</var>. Auf diese Zwischengröße <var>z</var> wendet es eine <strong>Aktivierungsfunktion</strong> (<i lang="en">activation function</i>) <var>f</var> an. Das Ergebnis ist seine Ausgabe <var>a</var>.</p>
+              <math display="block"><mi>z</mi><mo>=</mo><munder><mo>∑</mo><mi>i</mi></munder><msub><mi>w</mi><mi>i</mi></msub><msub><mi>x</mi><mi>i</mi></msub><mo>+</mo><mi>b</mi><mo>,</mo><mspace width="0.65em"></mspace><mi>a</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>z</mi><mo>)</mo></math>
+              <p>Der Index <var>i</var> bezeichnet die jeweilige Eingabekomponente. Die Gewichte beeinflussen, wie stark eine Eingabe die Summe erhöht oder senkt. Der Bias verschiebt die Summe unabhängig von den aktuellen Eingabewerten. So kann etwa eine Aktivierungsschwelle an einer anderen Stelle liegen als beim Ursprung.</p>
+            </section>
+            <section>
+              <h2 id="aktivierungen" tabindex="-1">Warum brauchen tiefe Netze Nichtlinearität?</h2>
+              <p>Eine gewichtete Summe plus Bias ist eine affine Abbildung (<i lang="en">affine transformation</i>). Würde jede Schicht nur solche Abbildungen berechnen, ließe sich die Verkettung zu einer einzigen affinen Abbildung zusammenfassen. Zusätzliche Schichten würden die damit darstellbaren Funktionen nicht erweitern.</p>
+              <p>Eine nichtlineare Funktion wie <strong>ReLU</strong> (<i lang="en">rectified linear unit</i>) gibt negative Zwischengrößen als null aus und nimmt bei positiven Zwischengrößen den Wert unverändert an. So können nächste Schichten abhängig von der Eingabe verschiedene Merkmale kombinieren. Ein Netz kann dadurch etwa Bereiche mit geknickten statt nur geraden Entscheidungsgrenzen bilden.</p>
+              <p>Die Sigmoidfunktion begrenzt die Ausgabe auf Werte zwischen null und eins. In verdeckten Schichten können ihre Ableitungen bei großen positiven oder negativen Eingaben sehr klein werden. Welche Funktion du wählst, beeinflusst damit sowohl die Darstellung als auch den Lernprozess.</p>
+            </section>
+            <section>
+              <h2 id="forward-pass" tabindex="-1">Wie entsteht aus vielen Neuronen eine Vorhersage?</h2>
+              <p>In einem vorwärts gerichteten Netz (<i lang="en">feedforward network</i>) fließen Werte von den Eingaben durch die <strong>verdeckten Schichten</strong> (<i lang="en">hidden layers</i>) zur <strong>Ausgabeschicht</strong> (<i lang="en">output layer</i>). Eine vollständig verbundene Schicht (<i lang="en">fully connected layer</i>) berechnet für mehrere Neuronen gleichzeitig gewichtete Summen mit einer Matrix von Gewichten. Jede Zeile enthält die Gewichte eines Neurons zur vorherigen Schicht.</p>
+              <p>Beim <strong>Vorwärtsdurchlauf</strong> (<i lang="en">forward pass</i>) wird die Ausgabe einer Schicht zur Eingabe der nächsten. Jede Schicht kann eine neue Darstellung erzeugen. Die letzte liefert die Vorhersage. Das Training verwendet dieselbe Vorwärtsrechnung, um den Verlust zu bestimmen. Bei der Anwendung des trainierten Netzes heißt die Vorhersage <strong>Inferenz</strong> (<i lang="en">inference</i>).</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Ein Neuron verbindet Eingaben über Gewichte, verschiebt die Summe über den Bias und wendet seine Aktivierungsfunktion an.</li>
+                <li>Nichtlineare Aktivierungen ermöglichen Funktionen, die eine einzelne affine Schicht nicht darstellen kann.</li>
+                <li>Der Forward Pass berechnet die Vorhersage schichtweise mit den aktuellen Parametern.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Zwei vollständig verbundene Schichten rechnen nur gewichtete Summen plus Bias. Was ändert sich, wenn du zwischen ihnen ReLU einfügst?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Ohne ReLU lassen sich beide Schichten zu einer affinen Abbildung zusammenfassen. Mit ReLU wird abhängig von der Eingabe ein Teil der Zwischenausgaben auf null gesetzt. Die zweite Schicht kann deshalb in verschiedenen Eingabebereichen unterschiedliche Beiträge kombinieren.</p>
+              </details>
+              <h3>Im Skript nachlesen</h3>
+              <p class="script-reference">Kapitel 5, §§ 5.2–5.5 (S. 113–128), zu Gewichten, Bias, Vektornotation und Sigmoid. Kapitel 6, §§ 6.1 und 6.4 (S. 136–137 und 146–149), zu Aktivierungen und ReLU. Kapitel 7, §§ 7.4–7.6 (S. 175–187), zu Schichten und Forward Pass.</p>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./lernaufgaben-und-lernziele.html">
+              <span>Vorherige Einheit</span>
+              <strong>Lernaufgaben und Lernziele</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Deep Learning</strong>
+            </a>
+            <a href="./backpropagation-und-optimierung.html">
+              <span>Nächste Einheit</span>
+              <strong>Backpropagation und Optimierung</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

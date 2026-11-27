@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Wie verändert ein Netz seine Gewichte?">
+  <title>Backpropagation und Optimierung · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="../softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="./index.html">Deep Learning</a>
+        <a href="../datenbanktechnologien/index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Deep Learning</a>
+          <span aria-current="page">Backpropagation und Optimierung</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Einheit 3 von 8</p>
+            <h1>Backpropagation und Optimierung</h1>
+            <p class="hero-intro">Wie verändert ein Netz seine Gewichte?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#gradient">Was sagt der Gradient über die Gewichte aus?</a></li>
+              <li><a href="#backward-pass">Wie kommt das Signal bis in frühe Schichten?</a></li>
+              <li><a href="#optimierer">Was entscheidet der Optimierer?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="gradient" tabindex="-1">Was sagt der Gradient über die Gewichte aus?</h2>
+              <p>Im Vorwärtsdurchlauf errechnest du die Vorhersagen für einen Stapel Beispiele (<i lang="en">batch</i>) und daraus einen Verlust <var>L</var>. Der <strong>Gradient</strong> (<i lang="en">gradient</i>) enthält die partielle Ableitung dieses Verlusts nach jedem trainierbaren Parameter. Eine positive Ableitung nach einem Gewicht bedeutet, dass eine kleine Erhöhung dieses Gewichts den Verlust lokal erhöht, wenn die anderen Gewichte gleich bleiben.</p>
+              <p>Beim einfachen <strong>Gradientenabstieg</strong> (<i lang="en">gradient descent</i>) veränderst du die Parameter in Richtung des negativen Gradienten. Bezeichne mit <var>θ</var> alle Parameter und mit <var>η</var> die Lernrate. Ein Update folgt dieser Regel.</p>
+              <math display="block"><msub><mi>θ</mi><mtext>neu</mtext></msub><mo>=</mo><mi>θ</mi><mo>−</mo><mi>η</mi><msub><mo>∇</mo><mi>θ</mi></msub><mi>L</mi></math>
+              <p><math><msub><mo>∇</mo><mi>θ</mi></msub><mi>L</mi></math> ist der Gradient nach diesen Parametern. Die Lernrate skaliert die Schritte. Ein lokaler Gradient sagt aus, was bei einer kleinen Änderung zu erwarten ist. Ein großer Schritt kann über einen günstigen Bereich hinausschießen.</p>
+            </section>
+            <section>
+              <h2 id="backward-pass" tabindex="-1">Wie kommt das Signal bis in frühe Schichten?</h2>
+              <p><strong>Backpropagation</strong> verwendet die <strong>Kettenregel</strong> (<i lang="en">chain rule</i>). Hängt der Verlust <var>L</var> von der Ausgabe <var>a</var> eines Neurons ab, <var>a</var> von der Voraktivierung <var>z</var> und <var>z</var> von einem Gewicht <var>w</var>, multiplizierst du die lokalen Ableitungen entlang dieses Pfads.</p>
+              <math display="block"><mfrac><mrow><mo>∂</mo><mi>L</mi></mrow><mrow><mo>∂</mo><mi>w</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mo>∂</mo><mi>L</mi></mrow><mrow><mo>∂</mo><mi>a</mi></mrow></mfrac><mo>⋅</mo><mfrac><mrow><mo>∂</mo><mi>a</mi></mrow><mrow><mo>∂</mo><mi>z</mi></mrow></mfrac><mo>⋅</mo><mfrac><mrow><mo>∂</mo><mi>z</mi></mrow><mrow><mo>∂</mo><mi>w</mi></mrow></mfrac></math>
+              <p>Damit wird aus der Wirkung des Neuronenausgangs auf den Verlust die Wirkung seines Gewichts. Wenn ein Zwischenwert über mehrere Pfade in die Rechnung eingeht, werden deren Beiträge addiert. Im <strong>Rückwärtsdurchlauf</strong> (<i lang="en">backward pass</i>) arbeitest du vom Verlust zurück durch den Rechengraphen und verwendest die Zwischenwerte aus dem Forward Pass. Das Ergebnis sind die Gradienten zu den aktuellen Parametern.</p>
+            </section>
+            <section>
+              <h2 id="optimierer" tabindex="-1">Was entscheidet der Optimierer?</h2>
+              <p>Der <strong>Optimierer</strong> (<i lang="en">optimizer</i>) berechnet aus Gradienten und gegebenenfalls seinem bisherigen Zustand das nächste Parameterupdate. Beim <strong>Momentum</strong> fließt ein Anteil der bisherigen Bewegungsrichtung in das Update ein. Ähnliche Richtungen aus mehreren Schritten verstärken sich. Wechselnde Richtungen können sich teilweise aufheben. Bei einem Richtungswechsel wirkt der alte Impuls zunächst weiter.</p>
+              <ul>
+                <li><strong>Lernrate (<i lang="en">learning rate</i>).</strong> Zu kleine Schritte führen oft zu langsamem Fortschritt, zu große zu Oszillation oder einem stark steigenden Verlust. Beurteile dazu den Verlustverlauf und vergleiche Läufe unter gleichen Bedingungen.</li>
+                <li><strong>Batchgröße (<i lang="en">batch size</i>).</strong> Bei gleichem Datensatz liefern kleine Mini-Batches mehr Updates pro Durchlauf und tendenziell stärker schwankende Gradienten. Große Batches glätten die Schätzung, brauchen typischerweise mehr Speicher und liefern weniger Updates pro Durchlauf. Vergleiche bei geänderter Batchgröße auch Lernrate, Laufzeit und Validierungsergebnis.</li>
+              </ul>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Backpropagation berechnet Ableitungen. Der Optimierer verwendet sie für die Parameterupdates.</li>
+                <li>Die Kettenregel verbindet lokale Ableitungen mit der Wirkung eines Parameters auf den Verlust.</li>
+                <li>Lernrate, Batchgröße und Momentum verändern, wie und wie oft das Netz seine Parameter bewegt.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Der Trainingsverlust schwankt nach einer Erhöhung der Lernrate stark und steigt zeitweise. Welche Prüfung liegt nahe, und welche Rolle hat Backpropagation dabei?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Vergleiche bei gleicher Batchgröße einen Lauf mit kleinerer Lernrate. Die Gradienten aus Backpropagation beschreiben weiterhin die örtliche Steigung. Die zu großen Schritte können daraus entstehen, wie der Optimierer diese Gradienten mit der Lernrate in Updates umsetzt.</p>
+              </details>
+              <h3>Im Skript nachlesen</h3>
+              <p class="script-reference">Kapitel 8, §§ 8.2–8.6 (S. 194–218), zu Verlust, Kettenregel, Backward Pass und Batches. Kapitel 9, §§ 9.2–9.3 und 9.6 (S. 226–233 und 245–251), zu Lernrate, Momentum und Optimierern.</p>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./neuron-und-netz.html">
+              <span>Vorherige Einheit</span>
+              <strong>Vom künstlichen Neuron zum Netz</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Deep Learning</strong>
+            </a>
+            <a href="./generalisierung-und-regularisierung.html">
+              <span>Nächste Einheit</span>
+              <strong>Generalisierung und Regularisierung</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

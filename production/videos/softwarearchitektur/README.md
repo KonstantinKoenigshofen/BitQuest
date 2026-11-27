@@ -1,6 +1,6 @@
 # BitQuest-Videos zur Softwarearchitektur
 
-Die Reihe verwendet die Abfahrtstafel aus der BitQuest-Quest „Qualitätsziele in Entwürfe übersetzen“.
+Die Reihe erklärt Softwarearchitektur und messbare Qualitätsziele am Beispiel einer Abfahrtstafel bei Netzausfall.
 
 - **Folge 1 · Was ist Softwarearchitektur?** vergleicht zwei Entwürfe bei Netzausfall. Der Sprechtext steht in `episode.py`, die Szenen in `bild.py`. Gemini TTS verwendet `en-us-kira`.
 - **Folge 2 · Qualitätsziele messbar machen** formuliert ein Qualitätsszenario und wertet drei Störungstests aus. Der Sprechtext steht in `qualitaetsziele.py`, die Szenen in `bild_qualitaetsziele.py`. Gemini TTS verwendet `Charon`.

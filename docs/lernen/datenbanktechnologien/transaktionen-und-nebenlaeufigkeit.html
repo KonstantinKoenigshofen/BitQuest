@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Welche Änderungen müssen gemeinsam gelingen, und was darf eine parallele Transaktion davon sehen?">
+  <title>Transaktionen und gleichzeitige Zugriffe · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="../softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="../deep-learning/index.html">Deep Learning</a>
+        <a href="./index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Datenbanktechnologien</a>
+          <span aria-current="page">Transaktionen und gleichzeitige Zugriffe</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Einheit 4 von 9</p>
+            <h1>Transaktionen und gleichzeitige Zugriffe</h1>
+            <p class="hero-intro">Welche Änderungen müssen gemeinsam gelingen, und was darf eine parallele Transaktion davon sehen?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#acid-und-grenzen">Was gehört in dieselbe Transaktion?</a></li>
+              <li><a href="#leseanomalien">Welche Beobachtungen können bei parallelem Lesen auftreten?</a></li>
+              <li><a href="#standard-und-postgresql">Welche Isolation garantiert der SQL-Standard und welche PostgreSQL?</a></li>
+              <li><a href="#lost-update">Wie verhinderst du ein verlorenes Update?</a></li>
+              <li><a href="#sperren-und-mvcc">Wie steuert die Datenbank konkurrierende Zugriffe?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="acid-und-grenzen" tabindex="-1">Was gehört in dieselbe Transaktion?</h2>
+              <p>Eine <strong>Transaktion</strong> bündelt Anweisungen, die eine fachliche Änderung gemeinsam bilden. Wenn ein Lagerbestand sinkt und gleichzeitig ein Entnahmebeleg entsteht, gehören beide Änderungen zusammen, falls jeder Abgang einen Beleg braucht. Mit <code>BEGIN</code> öffnest du in PostgreSQL eine Transaktion, mit <code>COMMIT</code> schließt du sie erfolgreich ab. <code>ROLLBACK</code> verwirft ihre noch nicht bestätigten Änderungen. Bei Autocommit läuft jede einzelne Anweisung ohne expliziten Block typischerweise in ihrer eigenen Transaktion.</p>
+              <dl>
+                <dt>Atomarität (<i lang="en">atomicity</i>)</dt><dd>Alle Änderungen werden wirksam oder die Transaktion wird als Ganzes verworfen.</dd>
+                <dt>Konsistenz (<i lang="en">consistency</i>)</dt><dd>Ein gültiger Ausgangszustand führt wieder zu einem gültigen Zustand. Datenbank-Constraints prüfen nur Regeln, die im Schema definiert sind. Weitere Invarianten brauchen korrekte Transaktionslogik.</dd>
+                <dt>Isolation (<i lang="en">isolation</i>)</dt><dd>Sie bestimmt, welche parallelen Änderungen eine Transaktion bemerkt und welche Wechselwirkungen zulässig sind.</dd>
+                <dt>Dauerhaftigkeit (<i lang="en">durability</i>)</dt><dd>Bestätigte Änderungen überstehen Ausfälle im Rahmen der zugesagten Persistenz.</dd>
+              </dl>
+              <p>Halte eine Transaktion so kurz, wie die fachliche Regel erlaubt. Warte etwa außerhalb einer offenen Transaktion auf Benutzereingaben. Sonst bleiben Sperren oder alte Datenversionen womöglich länger als nötig gebunden.</p>
+            </section>
+            <section>
+              <h2 id="leseanomalien" tabindex="-1">Welche Beobachtungen können bei parallelem Lesen auftreten?</h2>
+              <dl>
+                <dt>Dirty Read</dt>
+                <dd>B ändert einen Preis von 20 auf 25. A liest 25, bevor B bestätigt. B macht ein Rollback. A hat einen Wert verwendet, der nie bestätigt wurde.</dd>
+                <dt>Non-Repeatable Read</dt>
+                <dd>A liest einen Preis von 20. B setzt ihn auf 25 und bestätigt. A liest dieselbe Zeile erneut und sieht 25.</dd>
+                <dt>Phantom</dt>
+                <dd>A fragt alle offenen Tickets ab. B fügt ein weiteres offenes Ticket ein und bestätigt. Dieselbe Filterabfrage von A liefert nun eine zusätzliche Zeile.</dd>
+              </dl>
+            </section>
+            <section>
+              <h2 id="standard-und-postgresql" tabindex="-1">Welche Isolation garantiert der SQL-Standard und welche PostgreSQL?</h2>
+              <p>Die Stufen des <strong>SQL-Standards</strong> legen Mindestgarantien fest. <code>READ UNCOMMITTED</code> darf unbestätigte Änderungen zeigen. <code>READ COMMITTED</code> schließt Dirty Reads aus. <code>REPEATABLE READ</code> verhindert zusätzlich nicht wiederholbare Einzelzeilenlesungen, erlaubt als Mindestgarantie aber noch Phantome. Bei <code>SERIALIZABLE</code> müssen die Wirkungen erfolgreich abgeschlossener Transaktionen einer möglichen seriellen Reihenfolge entsprechen.</p>
+              <p>In <strong>PostgreSQL</strong> ist <code>READ COMMITTED</code> voreingestellt, und <code>READ UNCOMMITTED</code> verhält sich genauso. Ein normales <code>SELECT</code> erhält dabei zu Beginn jeder Anweisung eine aktuelle Sicht (<i lang="en">snapshot</i>). <code>REPEATABLE READ</code> verwendet für normale Abfragen eine Lesesicht ab der ersten Anweisung, die keine Transaktionssteuerung ist. Eigene Änderungen bleiben sichtbar. So bleiben auch vom anderen Prozess bestätigte Phantome unsichtbar.</p>
+              <p>Die Vertiefungsunterlage <cite>Performanz-Transaktion</cite> (Kap. 10, § 10.2, gedruckte S. 303–305) diskutiert die drei Leseanomalien. Für die Einstufung zählt zusätzlich die Serialisierungsanomalie. Bei PostgreSQLs <code>REPEATABLE READ</code> können etwa beide Transaktionen zwei aktive Geräte sehen und jeweils ein anderes deaktivieren. Danach wäre keines mehr aktiv, obwohl jede Transaktion für sich eines übrig gelassen hätte. <code>SERIALIZABLE</code> erkennt solche Konflikte und kann eine Transaktion abbrechen. Bei einem Serialisierungsfehler muss die Anwendung die gesamte Transaktion mit frischen Leseergebnissen wiederholen. <a href="https://www.postgresql.org/docs/18/transaction-iso.html">PostgreSQL-18-Handbuch, § 13.2 „Transaction Isolation“</a></p>
+            </section>
+            <section>
+              <h2 id="lost-update" tabindex="-1">Wie verhinderst du ein verlorenes Update?</h2>
+              <ol>
+                <li>A und B lesen unter PostgreSQLs <code>READ COMMITTED</code> denselben Bestand von 10.</li>
+                <li>A zieht in der Anwendung 2 ab, schreibt die berechnete 8 und bestätigt.</li>
+                <li>B zieht von seinen zuvor gelesenen 10 eine 3 ab, schreibt die berechnete 7 und bestätigt. Erwartet wäre 5. Die Wirkung von A ist verloren (<i lang="en">lost update</i>).</li>
+              </ol>
+              <p>Wenn es um eine einzelne Zeile geht, drücke die Änderung möglichst als Operation auf dem aktuellen Wert aus. Das folgende Statement zieht nur ab, wenn ausreichend Bestand vorliegt. Prüfe, ob es eine Zeile geändert hat.</p>
+              <pre><code>UPDATE lager
+SET bestand = bestand - 3
+WHERE id = 1 AND bestand &gt;= 3;</code></pre>
+              <p>PostgreSQL sperrt beim Schreiben die betroffene Zeile und prüft die Bedingung nach einem konkurrierenden Update anhand der aktualisierten Zeile erneut. Muss die Anwendung erst lesen und rechnen, kann sie die Zeile mit <code>SELECT … FOR UPDATE</code> in derselben Transaktion sperren. Bei Regeln über mehrere Zeilen musst du alle relevanten Wechselwirkungen berücksichtigen.</p>
+            </section>
+            <section>
+              <h2 id="sperren-und-mvcc" tabindex="-1">Wie steuert die Datenbank konkurrierende Zugriffe?</h2>
+              <p><strong>Sperren</strong> (<i lang="en">locks</i>) lassen kompatible Zugriffe zu und halten konfliktträchtige Zugriffe zurück. Beim <strong>Zwei-Phasen-Sperrprotokoll</strong> (<i lang="en">two-phase locking</i>, 2PL) nimmt eine Transaktion in der Wachstumsphase Sperren auf. Sobald sie mit der Freigabe beginnt, darf sie keine neuen Sperren anfordern. Mit geeigneten Sperren auf alle relevanten Daten oder Wertebereiche kann 2PL serialisierbare Abläufe gewährleisten. Wenn A auf B und B auf A wartet, liegt ein <strong>Deadlock</strong> vor. Eine Datenbank kann diesen durch Abbruch einer Transaktion auflösen.</p>
+              <p>Die <strong>Mehrversionenkontrolle</strong> (<i lang="en">multiversion concurrency control</i>, MVCC) hält mehrere Versionen einer Zeile. Eine Lesesicht bestimmt, welche Version sichtbar ist. So können gewöhnliche Lesezugriffe in PostgreSQL mit Schreibvorgängen überlappen. Konkurrierende Schreibzugriffe werden weiterhin koordiniert. Lange Transaktionen können die Bereinigung alter Versionen verzögern.</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Transaktionsgrenzen folgen fachlichen Invarianten.</li>
+                <li>PostgreSQL bietet bei REPEATABLE READ eine stabile Sicht einschließlich Schutz vor Phantomen. Volle Serialisierbarkeit verlangt SERIALIZABLE.</li>
+                <li>Schreibkonflikte brauchen Schutz durch passende Updates, Sperren oder eine Isolationsstufe mit Wiederholung bei Konflikten.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>A liest offene Tickets, B fügt eines hinzu und bestätigt. Was sieht A bei einer zweiten gewöhnlichen SELECT-Abfrage in PostgreSQL unter READ COMMITTED und unter REPEATABLE READ?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Unter READ COMMITTED kann A das neue Ticket sehen, weil die zweite Anweisung eine neue Lesesicht erhält. Unter REPEATABLE READ bleibt die ursprüngliche Sicht von A erhalten, sodass der von B eingefügte Treffer unsichtbar bleibt. Wenn A Entscheidungen anhand dieser Sicht trifft und gleichzeitig eigene Zeilen ändert, kann für fachliche Regeln über mehrere Zeilen trotzdem SERIALIZABLE nötig sein.</p>
+              </details>
+              <h3>In den Unterlagen nachlesen</h3>
+              <p class="script-reference">Modulskript <cite>Datenbanktechnologien</cite>, § 5.8.2 (S. 66–72), zu ACID, Isolationsstufen, Anomalien und 2PL.</p>
+              <p class="script-reference">Vertiefungsunterlage <cite>Performanz-Transaktion</cite>, Kap. 10, §§ 10.1–10.2 (gedruckte S. 297–306), zu Transaktionskontrolle, parallelen Zugriffen und MVCC. Die PostgreSQL-Isolation ist zusätzlich am oben verlinkten PostgreSQL-18-Handbuch (§ 13.2) abgeglichen.</p>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./speicherung-und-abfrageperformanz.html">
+              <span>Vorherige Einheit</span>
+              <strong>Physische Speicherung und Abfrageperformanz</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Datenbanktechnologien</strong>
+            </a>
+            <a href="./anwendung-und-betrieb.html">
+              <span>Nächste Einheit</span>
+              <strong>Datenbanken in Anwendung und Betrieb</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Wie erkennst du Qualitätsprobleme im Betrieb und wägst Modellgüte, Latenz und Kosten ab?">
+  <title>Modelle im Betrieb · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="../softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="./index.html">Deep Learning</a>
+        <a href="../datenbanktechnologien/index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Deep Learning</a>
+          <span aria-current="page">Modelle im Betrieb</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Vertiefung · Ergänzung zum Skript</p>
+            <h1>Modelle im Betrieb</h1>
+            <p class="hero-intro">Wie erkennst du Qualitätsprobleme im Betrieb und wägst Modellgüte, Latenz und Kosten ab?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#veraenderte-eingaben">Was kann sich nach der Bereitstellung ändern?</a></li>
+              <li><a href="#qualitaetsueberwachung">Wie merkst du, ob Vorhersagen schlechter werden?</a></li>
+              <li><a href="#modellguete-latenz-kosten">Wie wägst du Modellgüte, Latenz und Kosten ab?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="veraenderte-eingaben" tabindex="-1">Was kann sich nach der Bereitstellung ändern?</h2>
+              <p>Ein Modell lernt aus einer Stichprobe. Im Betrieb können sich durch neue Nutzergruppen, Sensoren oder Arbeitsabläufe die Verteilungen der Eingaben verändern (<i lang="en">input drift</i>). Auch die Beziehung zwischen Eingaben und Zielwert kann sich ändern (<i lang="en">concept drift</i>), etwa wenn eine neue Prüfvorschrift dieselben Beobachtungen anders einstuft.</p>
+              <p>Überwache das Eingabeformat, fehlende Werte, Wertebereiche und Verteilungen wichtiger Merkmale gegenüber einem geeigneten Referenzzeitraum. Berücksichtige Tageszyklen und Unterschiede zwischen Datenquellen. Eine Verschiebung ist ein Anlass zur Untersuchung. Wie sie die Modellgüte beeinflusst, kannst du erst mit passenden Zielwerten beurteilen. <a href="https://arxiv.org/abs/1810.11953" lang="en">Rabanser et al. (2019), Failing Loudly</a></p>
+            </section>
+            <section>
+              <h2 id="qualitaetsueberwachung" tabindex="-1">Wie merkst du, ob Vorhersagen schlechter werden?</h2>
+              <p>Erfasse Modellversion, Datenquelle und den Zeitpunkt der Vorhersage, damit du Ergebnisse später zuordnen kannst. Wenn Zielwerte verspätet eintreffen, führe Vorhersagen und bestätigte Ergebnisse dann zusammen und miss die fachliche Metrik nach Zeitraum und relevanter Gruppe. Vergleiche möglichst ähnliche Bedingungen und nenne die Zahl der überprüften Beispiele.</p>
+              <p>Bis Ziele vorliegen, können fehlende Werte, die Verteilung der Vorhersagen oder die Häufigkeit manueller Korrekturen als Warnsignale dienen. Stichproben außerhalb der automatisch geprüften Fälle helfen, blinde Flecken zu entdecken. Vereinbare Schwellen, Zuständigkeiten und Reaktionen. Kläre bei einem Alarm zuerst, ob etwa die Eingabeverarbeitung fehlerhaft ist, bevor du ein Modell mit neuen Daten trainierst. <a href="https://research.google/pubs/the-ml-test-score-a-rubric-for-ml-production-readiness-and-technical-debt-reduction/" lang="en">Breck et al. (2017), The ML Test Score</a></p>
+            </section>
+            <section>
+              <h2 id="modellguete-latenz-kosten" tabindex="-1">Wie wägst du Modellgüte, Latenz und Kosten ab?</h2>
+              <p>Lege für die Anwendung eine Mindestgüte, ein Zeitbudget und einen Kostenrahmen fest. Miss Vorhersagen unter realistischer Last einschließlich Vorverarbeitung, Wartezeit und Übertragung. Die <strong>Latenz</strong> (<i lang="en">latency</i>) am 95. Perzentil, kurz p95, ist die Zeit, innerhalb der ungefähr 95 Prozent der gemessenen Anfragen beantwortet werden. Ein Mittelwert allein kann lange Wartezeiten einzelner Anfragen verdecken.</p>
+              <p>Ein höherer <strong>Durchsatz</strong> (<i lang="en">throughput</i>) spart bei gleicher Last unter Umständen Rechenressourcen. Das Bündeln mehrerer Anfragen (<i lang="en">batching</i>) kann den Durchsatz verbessern, verlängert aber womöglich die Wartezeit auf eine volle Gruppe. Vergleiche Modelle unter derselben Last nach fachlicher Güte, p95 und Gesamtkosten pro tausend Vorhersagen. Eine günstigere Variante kann ausreichen, wenn sie alle vereinbarten Mindestanforderungen erfüllt. <a href="https://www.usenix.org/conference/osdi20/presentation/gujarati" lang="en">Gujarati et al. (2020), Serving DNNs like Clockwork</a></p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Veränderte Eingaben und sinkende Vorhersagegüte sind unterschiedliche Beobachtungen.</li>
+                <li>Miss die fachliche Güte mit bestätigten Zielwerten. Nutze Warnsignale, wenn diese erst später verfügbar sind.</li>
+                <li>Bewerte Modelle unter realistischer Last anhand derselben Qualitäts-, Latenz- und Kostenziele.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Nach einem Sensorwechsel ändern sich die Eingabewerte deutlich. Die Zielwerte treffen erst eine Woche später ein. Was kannst du sofort prüfen und was erst danach?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Prüfe sofort Format, Einheiten, fehlende Werte und Verteilungen für den neuen Sensor. Vergleiche auch vorhergesagte Klassen oder die Zahl manueller Korrekturen und untersuche auffällige Beispiele. Wenn die Zielwerte vorliegen, überprüfe die fachliche Metrik gezielt für den neuen Sensor und entscheide anhand der Ursache über Korrektur, Rückkehr zur alten Version oder Nachtraining.</p>
+              </details>
+              <h3>Im Skript nachlesen</h3>
+              <p class="script-reference">Abschnitt 12.5 (S. 339–347) behandelt Monitoring und Fehleranalyse bei der Entwicklung. Diese Vertiefung ergänzt den Skriptbezug um die Überwachung und Ausführung bereitgestellter Modelle.</p>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Themenübersicht">
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Deep Learning</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

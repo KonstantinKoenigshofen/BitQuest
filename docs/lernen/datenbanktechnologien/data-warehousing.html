@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Warum werden Daten für Auswertungen anders modelliert als für das Tagesgeschäft?">
+  <title>Data Warehousing und analytische Abfragen · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="../softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="../deep-learning/index.html">Deep Learning</a>
+        <a href="./index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Datenbanktechnologien</a>
+          <span aria-current="page">Data Warehousing und analytische Abfragen</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Einheit 6 von 9</p>
+            <h1>Data Warehousing und analytische Abfragen</h1>
+            <p class="hero-intro">Warum werden Daten für Auswertungen anders modelliert als für das Tagesgeschäft?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#oltp-und-olap">Welche Zugriffe unterscheiden Tagesgeschäft und Analyse?</a></li>
+              <li><a href="#etl">Wie werden Quelldaten auswertbar?</a></li>
+              <li><a href="#sternschema">Was zählt als eine Zeile in der Faktentabelle?</a></li>
+              <li><a href="#data-mining">Welche weiteren Fragen beantwortet Data Mining?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="oltp-und-olap" tabindex="-1">Welche Zugriffe unterscheiden Tagesgeschäft und Analyse?</h2>
+              <p>Die <strong>Online-Transaktionsverarbeitung</strong> (<i lang="en">online transaction processing</i>, OLTP) unterstützt viele kurze Vorgänge wie das Erfassen oder Ändern einzelner Aufträge. Konsistente Änderungen und schnelle Zugriffe auf wenige Zeilen stehen im Vordergrund. Normalisierte Tabellen helfen dabei, denselben aktuellen Sachverhalt an einer Stelle zu pflegen.</p>
+              <p>Die <strong>Online-Analyseverarbeitung</strong> (<i lang="en">online analytical processing</i>, OLAP) fragt oft lange Zeiträume ab, vergleicht Gruppen und aggregiert viele Datensätze. Ein <strong>Data Warehouse</strong> führt Daten aus mehreren Quellen für diese Fragen zusammen und hält Historie bereit. Ein eigenes analytisches Modell kann Begriffe vereinheitlichen und aufwendige Auswertungen vom Tagesbetrieb entkoppeln.</p>
+            </section>
+            <section>
+              <h2 id="etl" tabindex="-1">Wie werden Quelldaten auswertbar?</h2>
+              <p><strong>ETL</strong> steht für <i lang="en">extract, transform, load</i>. Du entnimmst Daten aus den Quellen, vereinheitlichst beispielsweise Datentypen, Einheiten und Codes, prüfst Dubletten und lädst die Ergebnisse in das analytische Zielmodell. Bei ELT erfolgt ein Teil der Transformation erst im Zielsystem.</p>
+              <p>Lege fest, welche Datenstände eine Auswertung abbildet und wie verspätete oder korrigierte Quelldaten übernommen werden. Ein erneut gestarteter Ladevorgang sollte dieselbe Messung nicht doppelt zählen. Halte Herkunft und Transformation nachvollziehbar, damit sich Unterschiede zwischen Berichten erklären lassen.</p>
+            </section>
+            <section>
+              <h2 id="sternschema" tabindex="-1">Was zählt als eine Zeile in der Faktentabelle?</h2>
+              <p>Die <strong>Granularität</strong> (<i lang="en">grain</i>) definiert die fachliche Bedeutung einer Zeile. Ein Energiebericht kann etwa eine Zeile je Messgerät und Stunde verwenden. Die <strong>Faktentabelle</strong> (<i lang="en">fact table</i>) enthält dazu Messgrößen wie Verbrauch sowie Verweise auf die <strong>Dimensionen</strong> (<i lang="en">dimensions</i>) Zeit und Gerät. Dimensionen liefern Beschreibungen und Gruppierungen, etwa Monat, Gebäudetyp oder Standort.</p>
+              <p>Im <strong>Sternschema</strong> (<i lang="en">star schema</i>) steht die Faktentabelle im Zentrum und verweist direkt auf die Dimensionstabellen. Eine Abfrage kann die Fakten mit der Zeitdimension verbinden und den Verbrauch nach Monat summieren. Prüfe, ob die Kennzahl über die gewählte Dimension sinnvoll summierbar ist. Ein Lagerbestand ist an einem Stichtag über Standorte summierbar. Über mehrere Stichtage addiert, zählt er denselben Bestand mehrfach.</p>
+              <p>Mische Tages- und Stundenwerte nur mit einer klaren Regel für ihre Aggregation. Wenn dieselbe Messung bereits in beiden enthalten ist, führt eine gemeinsame Summe zur Doppelzählung.</p>
+            </section>
+            <section>
+              <h2 id="data-mining" tabindex="-1">Welche weiteren Fragen beantwortet Data Mining?</h2>
+              <p><strong>Data Mining</strong> sucht Muster, Zusammenhänge oder Vorhersagemöglichkeiten in Daten. Während ein OLAP-Bericht den Verbrauch pro Standort zusammenfasst, kann eine Analyse etwa ähnliche Verbrauchsprofile gruppieren, ungewöhnliche Muster finden oder künftige Werte schätzen. Assoziationsanalysen suchen Merkmale, die auffällig häufig gemeinsam auftreten. Prüfe anschließend mit geeigneten Daten, ob ein Muster stabil ist und sich für die Entscheidung verwenden lässt.</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>OLTP optimiert kurze Änderungen und gezielte Zugriffe. OLAP verdichtet viele Daten für Analysen.</li>
+                <li>Definiere die Granularität vor Kennzahlen, Dimensionen und Joins.</li>
+                <li>ETL macht Quellen vergleichbar. Data Mining untersucht Muster über fest vorgegebene Berichte hinaus.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Eine Faktentabelle enthält den Lagerbestand pro Tag und Standort. Warum liefert die Summe über einen ganzen Monat keinen Monatsendbestand?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Jede Zeile ist eine Bestandsaufnahme zu einem Tag. Über Tage hinweg kann derselbe Bestand mehrfach eingehen. Für den Monatsendbestand wählst du die Zeilen des vorgesehenen Stichtags und summierst dann über die Standorte. Wenn manche Stände fehlen, brauchst du eine fachliche Regel für diese Lücken.</p>
+              </details>
+              <h3>In den Unterlagen nachlesen</h3>
+              <p class="script-reference">Modulskript <cite>Datenbanktechnologien</cite>, Kap. 6, §§ 6.1–6.2 (S. 89–97) zu OLTP, OLAP und Datenflüssen, § 6.3 (S. 97–113) zur multidimensionalen Modellierung und § 6.4 (S. 113–118) zu Data Mining.</p>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./anwendung-und-betrieb.html">
+              <span>Vorherige Einheit</span>
+              <strong>Datenbanken in Anwendung und Betrieb</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Datenbanktechnologien</strong>
+            </a>
+            <a href="./verteilte-datenbanken.html">
+              <span>Nächste Einheit</span>
+              <strong>Verteilte Datenbanken</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

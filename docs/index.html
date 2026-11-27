@@ -3,33 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Lerne Softwaredesign, Softwarearchitektur, Deep Learning, IT-Sicherheit, Quantencomputing und Datenbank-Technologie mit interaktiven Praxisfällen.">
   <meta name="theme-color" content="#f3f6f8">
-  <title>BitQuest · Themen</title>
+  <title>BitQuest</title>
   <link rel="icon" href="./favicon.png" type="image/png">
-  <link rel="stylesheet" href="./styles.css">
-  <script src="./softwaredesign.js" defer></script>
-  <script src="./softwarearchitektur.js" defer></script>
-  <script src="./deep-learning.js" defer></script>
-  <script src="./deep-learning-vertiefung.js" defer></script>
-  <script src="./it-sicherheit.js" defer></script>
-  <script src="./quantencomputer.js" defer></script>
-  <script src="./datenbank-technologie.js" defer></script>
-  <script src="./inhalt.js" defer></script>
-  <script src="./deep-learning-labs.js" defer></script>
-  <script src="./ziffernlabor.js" defer></script>
-  <script src="./cnn-labor.js" defer></script>
-  <script src="./sprachmodell-labor.js" defer></script>
-  <script src="./dl-sprachtraining.js" defer></script>
-  <script src="./dl-anwendungs-labore.js" defer></script>
-  <script src="./dl-grundlagen-labore.js" defer></script>
-  <script src="./lernaufgaben.js" defer></script>
-  <script src="./softwaredesign-labore.js" defer></script>
-  <script src="./sicherheitslabore.js" defer></script>
-  <script src="./quantenlabore.js" defer></script>
-  <script src="./datenbanklabore.js" defer></script>
-  <script src="./lernexperimente.js" defer></script>
-  <script src="./kurs.js" defer></script>
+  <link rel="stylesheet" href="./styles.css?v=11">
+  <script>
+    const legacyAnchors = ["#quests", "#module", "#vertraege", "#abhaengigkeiten", "#qualitaet", "#entscheidungen", "#sichten"];
+
+    function redirectLegacyLink() {
+      const params = new URLSearchParams(window.location.search);
+      const isLegacyQuery = ["thema", "quest", "schritt"].some((name) => params.has(name));
+      if (isLegacyQuery || legacyAnchors.includes(window.location.hash)) {
+        window.location.replace("./index.html");
+      }
+    }
+
+    redirectLegacyLink();
+    window.addEventListener("hashchange", redirectLegacyLink);
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
@@ -38,12 +29,38 @@
       <a class="wordmark" href="./index.html">
         <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
       </a>
-      <nav class="topic-nav" id="themen-nav" aria-label="Themen"></nav>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="./lernen/softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="./lernen/deep-learning/index.html">Deep Learning</a>
+        <a href="./lernen/datenbanktechnologien/index.html">Datenbanktechnologien</a>
+      </nav>
     </aside>
     <div class="workspace">
-      <header class="toolbar"><nav class="breadcrumbs" id="breadcrumb" aria-label="Pfad"></nav></header>
+      <header class="toolbar">
+        <div class="breadcrumbs"><span aria-current="page">Startseite</span></div>
+      </header>
       <main class="content" id="inhalt" tabindex="-1">
-        <noscript><p>Aktiviere JavaScript, um die Themen, Lektionen und Praxisfälle zu öffnen.</p></noscript>
+        <header class="hero">
+          <div>
+            <h1>BitQuest</h1>
+            <p class="hero-intro">Informatik lernen und nachschlagen</p>
+          </div>
+        </header>
+        <section class="learning-index" aria-labelledby="themen">
+          <h2 id="themen">Themenbereiche</h2>
+          <a class="topic-card" href="./lernen/softwarearchitektur/index.html">
+            <strong>Softwarearchitektur</strong>
+            <span>Wie strukturierst du ein System und triffst Entscheidungen, die im Betrieb und bei späteren Änderungen tragen?</span>
+          </a>
+          <a class="topic-card" href="./lernen/deep-learning/index.html">
+            <strong>Deep Learning</strong>
+            <span>Wie lernen neuronale Netze, und wie beurteilst du Training, Vorhersagen und Modellwahl?</span>
+          </a>
+          <a class="topic-card" href="./lernen/datenbanktechnologien/index.html">
+            <strong>Datenbanktechnologien</strong>
+            <span>Wie modellierst du Daten, schreibst korrekte Abfragen und wählst ein passendes Datenbanksystem?</span>
+          </a>
+        </section>
       </main>
     </div>
   </div>

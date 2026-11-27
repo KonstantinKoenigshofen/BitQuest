@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Wie findest du in einem gewachsenen System Orientierung und änderst es schrittweise?">
+  <title>Bestehende Systeme verstehen und weiterentwickeln · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="./index.html">Softwarearchitektur</a>
+        <a href="../deep-learning/index.html">Deep Learning</a>
+        <a href="../datenbanktechnologien/index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Softwarearchitektur</a>
+          <span aria-current="page">Bestehende Systeme verstehen und weiterentwickeln</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Block 7 von 7</p>
+            <h1>Bestehende Systeme verstehen und weiterentwickeln</h1>
+            <p class="hero-intro">Erschließe ein gewachsenes System anhand konkreter Abläufe und sichere Änderungen mit Tests und Beobachtungen aus dem Betrieb ab.</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#einarbeitung">Wo beginnst du in einem gewachsenen System?</a></li>
+              <li><a href="#abhaengigkeiten-und-risiken">Wie erkennst du Abhängigkeiten und Risiken?</a></li>
+              <li><a href="#schrittweise-aendern">Wie änderst du Architektur in kleinen Schritten?</a></li>
+              <li><a href="#annahmen-pruefen">Wie überprüfst du Annahmen im Betrieb?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="einarbeitung" tabindex="-1">Wo beginnst du in einem gewachsenen System?</h2>
+              <p>Wähle einen wichtigen Ablauf oder einen konkreten Änderungswunsch. Starte bei einer beobachtbaren Schnittstelle, etwa einer Seite, einem API-Endpunkt oder einem Hintergrundauftrag. Verfolge im Code und in der laufenden Anwendung, welche Regeln, Module, Speicher und Fremdsysteme beteiligt sind.</p>
+              <p>Nutze Dokumentation, Tests und Gespräche mit Fach- und Betriebsteams für den Einstieg. Gleiche ihre Aussagen mit Konfiguration, Code und Verhalten ab. Eine alte Skizze kann den ursprünglichen Entwurf erklären, während die laufende Anwendung bereits andere Wege nimmt. Notiere bei deinen Erkenntnissen, was du beobachtet hast und was du noch vermutest.</p>
+            </section>
+            <section>
+              <h2 id="abhaengigkeiten-und-risiken" tabindex="-1">Wie erkennst du Abhängigkeiten und Risiken?</h2>
+              <p>Suche im Code nach Importen, Konfiguration und Aufrufen. Prüfe auch gemeinsame Tabellen, Formate, Berechtigungen und geplante Hintergrundaufgaben. Laufzeitspuren (<i lang="en">traces</i>) können zeigen, welche Dienste an einer Anfrage beteiligt sind. Ein einzelner beobachteter Lauf deckt nur den tatsächlich durchlaufenen Pfad ab.</p>
+              <p>Priorisiere Risiken anhand ihrer Folgen und der Wahrscheinlichkeit. Frag bei einer Abhängigkeit, welche fachliche Funktion bei einem Ausfall betroffen wäre, wer eine Änderung koordinieren muss und ob ihr den Fehler erkennen und beheben könnt. Eine selten geänderte Abhängigkeit kann hohe Priorität haben, wenn ihr Ausfall einen Kernablauf unterbricht.</p>
+            </section>
+            <section>
+              <h2 id="schrittweise-aendern" tabindex="-1">Wie änderst du Architektur in kleinen Schritten?</h2>
+              <ol>
+                <li><strong>Ziel und Ausgangszustand festhalten.</strong> Benenne die beobachtete Schwierigkeit und prüfe, woran du eine Verbesserung erkennen würdest.</li>
+                <li><strong>Heutiges Verhalten absichern.</strong> Schreibe bei lückenhafter Testabdeckung <strong>Charakterisierungstests</strong> (<i lang="en">characterization tests</i>) für die betroffenen Schnittstellen. Halte fest, welches Verhalten fachlich gewollt ist und welche bekannten Fehler später korrigiert werden sollen.</li>
+                <li><strong>Eine Änderung abgrenzen.</strong> Führe etwa eine Schnittstelle ein, bevor du die Implementierung austauschst. Bei einem Datenumbau kannst du zuerst das neue Schema ergänzen, dann Daten und Zugriffe umstellen und erst danach das alte Schema entfernen.</li>
+                <li><strong>Ausrollen und überprüfen.</strong> Beobachte den neuen Pfad zunächst in einem begrenzten Umfang, wenn das möglich ist. Bei Datenänderungen klärst du vorab, ob ein Rückweg mit dem alten Code und den bereits geschriebenen Daten funktioniert. Andernfalls brauchst du einen getesteten Plan für die Korrektur im neuen Stand.</li>
+              </ol>
+            </section>
+            <section>
+              <h2 id="annahmen-pruefen" tabindex="-1">Wie überprüfst du Annahmen im Betrieb?</h2>
+              <p>Tests prüfen vereinbarte Fälle und können seltene Fehler gezielt auslösen. Messreihen zeigen etwa Fehlerrate, Antwortzeiten oder Rückstau über einen Zeitraum. Protokolle (<i lang="en">logs</i>) und Laufzeitspuren helfen, einzelne Fehler und den Weg einer Anfrage zu untersuchen. Zusammen beantworten sie, ob eine Änderung das erwartete Verhalten und die gewünschte Wirkung erreicht.</p>
+              <p>Wenn ein Umbau eine Anfrage beschleunigen soll, erfasse ihre Antwortzeit und Fehlerrate vorher und nachher unter vergleichbarer Last. Liefert die Messung keinen Vorteil, prüfe mit einer Laufzeitspur, welche Schritte tatsächlich Zeit kosten. Halte neue Erkenntnisse fest und leite daraus den nächsten Änderungsschritt ab.</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Ein konkreter Ablauf erschließt Code, Daten und Abhängigkeiten entlang einer echten Aufgabe.</li>
+                <li>Kleine kompatible Änderungen begrenzen die Folgen einer Fehlannahme.</li>
+                <li>Tests und Betriebsdaten prüfen Annahmen aus unterschiedlichen Blickwinkeln. Vergleiche das Ergebnis mit dem Ausgangszustand.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Ein bisher direkter Aufruf soll durch eine Warteschlange ersetzt werden. Wie würdest du die Umstellung absichern?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Sichere das benötigte fachliche Ergebnis mit Tests ab. Kläre, wie der Aufrufer ausstehende und fehlgeschlagene Aufträge erkennt, und teste doppelte Zustellungen. Stelle einen begrenzten Teil der Aufrufe um und beobachte Rückstau, Zeit bis zum Abschluss und Fehler. Prüfe vorab, wie bereits eingereihte Aufträge bei einer Rückkehr zum direkten Aufruf behandelt werden.</p>
+              </details>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./entscheidungen-und-dokumentation.html">
+              <span>Vorheriger Block</span>
+              <strong>Entscheidungen und Dokumentation</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Softwarearchitektur</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

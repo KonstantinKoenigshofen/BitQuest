@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Warum kann dieselbe SQL-Abfrage bei anderer Datenmenge einen anderen Ausführungsplan bekommen?">
+  <title>Physische Speicherung und Abfrageperformanz · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="../softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="../deep-learning/index.html">Deep Learning</a>
+        <a href="./index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Datenbanktechnologien</a>
+          <span aria-current="page">Physische Speicherung und Abfrageperformanz</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Einheit 3 von 9</p>
+            <h1>Physische Speicherung und Abfrageperformanz</h1>
+            <p class="hero-intro">Warum kann dieselbe SQL-Abfrage bei anderer Datenmenge einen anderen Ausführungsplan bekommen?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#seiten-und-puffer">Warum spielt die Seitenzahl beim Lesen eine Rolle?</a></li>
+              <li><a href="#index-und-statistik">Wann lohnt sich ein B-Baum-Index?</a></li>
+              <li><a href="#ausfuehrungsplan">Wie unterscheidest du Schätzung und Messung?</a></li>
+              <li><a href="#join-strategien">Wie kann der Plan einen Join ausführen?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="seiten-und-puffer" tabindex="-1">Warum spielt die Seitenzahl beim Lesen eine Rolle?</h2>
+              <p>Eine Datenbank organisiert Daten und Indizes in <strong>Speicherseiten</strong> (<i lang="en">pages</i>). Eine Seite kann mehrere Zeilen enthalten. Die Speicherverwaltung lädt benötigte Seiten in einen <strong>Puffer</strong> (<i lang="en">buffer</i>) im Arbeitsspeicher. Folgezugriffe auf dieselbe Seite können aus dem Puffer bedient werden.</p>
+              <p>Ein <strong>Tabellenscan</strong> (<i lang="en">sequential scan</i>) untersucht die Seiten der Tabelle und filtert dabei die Zeilen. Bei einer kleinen Tabelle oder wenn du einen großen Teil ihrer Zeilen brauchst, kann das günstiger sein als viele einzelne Zugriffe über einen Index.</p>
+            </section>
+            <section>
+              <h2 id="index-und-statistik" tabindex="-1">Wann lohnt sich ein B-Baum-Index?</h2>
+              <p>Ein <strong>B-Baum-Index</strong> hält Schlüssel sortiert. Über wenige Ebenen findet die Datenbank die passenden Blatteinträge. Sie kann Gleichheitsbedingungen und Bereiche suchen und gegebenenfalls die Sortierreihenfolge des Index nutzen. Für weitere Spalten muss sie je nach Plan die zugehörigen Tabellenseiten lesen. Liegen viele Treffer verstreut, steigen diese Zugriffskosten.</p>
+              <p>Entscheidend ist der erwartete Trefferanteil (<i lang="en">selectivity</i>). Ein Filter, der wenige von vielen Zeilen auswählt, kann einen Indexzugriff begünstigen. Die Datenbank schätzt Trefferzahlen unter anderem aus Tabellenstatistiken über Umfang und Werteverteilung. Nach starkem Datenwachstum oder veränderter Verteilung kann dieselbe Abfrage daher einen anderen Plan erhalten. Veraltete oder zu grobe Statistiken können zu Fehlschätzungen führen, etwa wenn zwei Spalten stark voneinander abhängen.</p>
+              <p>Jeder zusätzliche Index belegt Platz und kann Schreibarbeit verursachen. Einfügungen, Löschungen und Änderungen an indizierten Werten erfordern Pflege. Prüfe den Nutzen bei häufigen Abfragen und unter typischer Schreiblast. Ein Index für eine seltene Abfrage kann mehr kosten, als er im Alltag spart.</p>
+            </section>
+            <section>
+              <h2 id="ausfuehrungsplan" tabindex="-1">Wie unterscheidest du Schätzung und Messung?</h2>
+              <p><code>EXPLAIN</code> zeigt in PostgreSQL den gewählten Plan und seine Schätzungen, ohne die eigentliche Abfrage auszuführen. <code>EXPLAIN ANALYZE</code> führt die Anweisung aus und ergänzt tatsächlich an den Planknoten gelieferte Zeilen, Zeit und Wiederholungen. Das gilt auch für schreibende Anweisungen. Die folgende Gegenüberstellung verwendet ein lesendes Beispiel.</p>
+              <pre><code>EXPLAIN
+SELECT * FROM messwert WHERE station_id = 7;
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT * FROM messwert WHERE station_id = 7;</code></pre>
+              <p>Die geschätzten <code>cost</code>-Werte sind relative Plankosten. Tatsächliche Zeiten stehen in Millisekunden. Bei mehreren <code>loops</code> werden die tatsächlichen Zeilen und Zeiten pro Ausführung gemittelt. Vergleiche am gleichen Knoten zum Beispiel eine Schätzung von 10 Zeilen mit tatsächlich 8.000 Zeilen je Ausführung. Eine solche Lücke kann erklären, warum ein vermeintlich günstiger Nested Loop bei der Ausführung sehr viele Zugriffe auf die innere Tabelle verursacht. <code>BUFFERS</code> unterscheidet unter anderem Puffertreffer und eingelesene Blöcke. Ein gelesener Datenbankblock kann dabei noch aus dem Betriebssystemcache stammen. <a href="https://www.postgresql.org/docs/18/using-explain.html">PostgreSQL-18-Handbuch, § 14.1 „Using EXPLAIN“</a></p>
+            </section>
+            <section>
+              <h2 id="join-strategien" tabindex="-1">Wie kann der Plan einen Join ausführen?</h2>
+              <p>Beim <strong>Nested Loop</strong> verarbeitet die Datenbank für jede Zeile der äußeren Eingabe die passenden Zeilen der inneren Eingabe. Diese Strategie ist attraktiv, wenn außen wenige Zeilen übrig bleiben und innen schnelle Indexzugriffe möglich sind. Bei vielen äußeren Zeilen kann sich die Arbeit stark vervielfachen.</p>
+              <p>Beim <strong>Hash Join</strong> baut die Datenbank aus einer Eingabe eine Hashtabelle über dem Verbundschlüssel auf. Für jede Zeile der anderen Eingabe sucht sie dort nach passenden Schlüsseln und prüft die Gleichheit. Das passt zu Gleichheitsjoins mit vielen Treffern oder größeren Eingaben. Passt die Hashtabelle nicht in den verfügbaren Arbeitsspeicher, kann die Verarbeitung zusätzlicher Partitionen auf dem Datenträger Zeit kosten.</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Der Optimierer vergleicht unter anderem erwartete Zeilenmengen und Seitenzugriffe.</li>
+                <li>Ein Index spart gezielte Lesezugriffe und erhöht Speicher- und Schreibaufwand.</li>
+                <li>Vergleiche mit EXPLAIN ANALYZE geschätzte und gemessene Zeilen am selben Planknoten.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Warum kann dieselbe Abfrage auf einer kleinen Tabelle einen Tabellenscan und auf einer großen Tabelle einen Indexzugriff nutzen?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Eine kleine Tabelle hat nur wenige Seiten, die der Scan direkt verarbeitet. Wenn die Abfrage in der großen Tabelle weiterhin nur wenige Zeilen trifft, kann der Index die zu lesenden Seiten stark reduzieren. Der Optimierer entscheidet anhand der geschätzten Treffer und Zugriffskosten. Mit EXPLAIN ANALYZE prüfst du, ob die tatsächlichen Zeilenmengen zur Schätzung passen.</p>
+              </details>
+              <h3>In den Unterlagen nachlesen</h3>
+              <p class="script-reference">Modulskript <cite>Datenbanktechnologien</cite>, § 5.7 (S. 60–65), zu Indizes und PostgreSQL-Plänen.</p>
+              <p class="script-reference">Vertiefungsunterlage <cite>Performanz-Transaktion</cite>, Kap. 9, §§ 9.1–9.4 (gedruckte S. 264–293), zu Seitenhaltung, Optimierung, Indizierung und Verbundstrategien.</p>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./datenmodellierung-und-integritaet.html">
+              <span>Vorherige Einheit</span>
+              <strong>Datenmodellierung und Integrität</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Datenbanktechnologien</strong>
+            </a>
+            <a href="./transaktionen-und-nebenlaeufigkeit.html">
+              <span>Nächste Einheit</span>
+              <strong>Transaktionen und gleichzeitige Zugriffe</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

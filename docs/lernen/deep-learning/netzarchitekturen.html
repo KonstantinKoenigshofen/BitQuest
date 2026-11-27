@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Welche Eigenschaften der Daten nutzt eine Architektur aus?">
+  <title>Netzarchitekturen verstehen · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="../softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="./index.html">Deep Learning</a>
+        <a href="../datenbanktechnologien/index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Deep Learning</a>
+          <span aria-current="page">Netzarchitekturen verstehen</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Einheit 7 von 8</p>
+            <h1>Netzarchitekturen verstehen</h1>
+            <p class="hero-intro">Welche Eigenschaften der Daten nutzt eine Architektur aus?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#cnn">Wann helfen lokale Muster?</a></li>
+              <li><a href="#rnn-und-lstm">Wann lohnt sich ein fortlaufender Zustand?</a></li>
+              <li><a href="#attention">Wie greift ein Modell gezielt auf andere Elemente zu?</a></li>
+              <li><a href="#transformer">Was ändert sich beim Transformer?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="cnn" tabindex="-1">Wann helfen lokale Muster?</h2>
+              <p>Ein <strong>Faltungsnetz</strong> (<i lang="en">convolutional neural network</i>, CNN) wendet kleine, gelernte Filter auf benachbarte Werte an. Derselbe Filter wird an vielen Positionen verwendet. So kann ein Netz etwa eine Kante an verschiedenen Stellen eines Bildes erkennen, ohne für jede Position eigene Gewichte zu lernen.</p>
+              <p>Mehrere Schichten erfassen schrittweise Zusammenhänge aus größeren Ausschnitten. Die Größe des betrachteten Ausschnitts heißt <i lang="en">receptive field</i>. Eine gröbere räumliche Darstellung etwa durch <i lang="en">pooling</i> kann Rechenaufwand senken und gegenüber kleinen Verschiebungen robuster machen. Wenn genaue Positionen oder feine Details wichtig sind, kann diese Verdichtung schaden. Ein CNN ist ein guter Ausgangspunkt, wenn Nachbarschaft repräsentativ ist und lokale Muster wiederholt auftreten.</p>
+            </section>
+            <section>
+              <h2 id="rnn-und-lstm" tabindex="-1">Wann lohnt sich ein fortlaufender Zustand?</h2>
+              <p>Ein <strong>rekurrentes neuronales Netz</strong> (<i lang="en">recurrent neural network</i>, RNN) verarbeitet eine Sequenz schrittweise. Jeder Schritt verwendet die neue Eingabe und den vorherigen Zustand. Dieselben Gewichte gelten an allen Positionen. Der Zustand fasst den bisherigen Verlauf zusammen. Das passt zu Aufgaben, die beim Eintreffen neuer Messwerte fortlaufend Vorhersagen brauchen.</p>
+              <p>Informationen über viele Schritte zu erhalten kann schwierig sein. Beim Rückwärtsdurchlauf über viele Schritte können Gradienten stark schrumpfen oder wachsen. <strong>Long Short-Term Memory</strong> (LSTM) ist eine RNN-Variante mit einem Speicherzustand und lernbaren Steuerfunktionen (<i lang="en">gates</i>). Sie regeln, was gespeichert, beibehalten und ausgegeben wird. Das erleichtert das Lernen längerer Abhängigkeiten, während die schrittweise Verarbeitung bestehen bleibt.</p>
+            </section>
+            <section>
+              <h2 id="attention" tabindex="-1">Wie greift ein Modell gezielt auf andere Elemente zu?</h2>
+              <p><strong>Attention</strong> bildet eine gewichtete Mischung von Informationen. Eine Anfrage (<i lang="en">query</i>) wird mit Schlüsseln (<i lang="en">keys</i>) verglichen. Die Bewertungen werden häufig per Softmax in Gewichte umgerechnet. Sie bestimmen, wie stark die zugehörigen Werte (<i lang="en">values</i>) in die Mischung eingehen. Dieselbe Quelle kann dadurch je nach Anfrage unterschiedlich genutzt werden.</p>
+              <p>In einem <strong>Encoder-Decoder-Modell</strong> (<i lang="en">encoder–decoder model</i>) bildet der Encoder die Eingabe auf eine interne Darstellung ab. Der Decoder verwendet sie, um die Ausgabe zu erzeugen. Bei einer Übersetzung kann ein Decoder mit Attention zu jedem Ausgabeschritt auf unterschiedliche Teile des Eingabesatzes zugreifen. So steht ihm mehr Information zur Verfügung als eine einzige komprimierte Darstellung des Satzes.</p>
+            </section>
+            <section>
+              <h2 id="transformer" tabindex="-1">Was ändert sich beim Transformer?</h2>
+              <p class="lesson-note">Ergänzung zum Skript</p>
+              <p>Der ursprüngliche <strong>Transformer</strong> ist ein Encoder-Decoder-Modell, das Verbindungen zwischen Positionen mit Attention berechnet. Bei der <strong>Self-Attention</strong> stammen Anfragen, Schlüssel und Werte aus derselben Sequenz. Mehrere parallel berechnete Aufmerksamkeitsmischungen (<i lang="en">multi-head attention</i>) können unterschiedliche Beziehungen erfassen. Positionsinformationen machen die Reihenfolge für das Modell nutzbar.</p>
+              <p>Im Encoder können Positionen einer Schicht parallel berechnet werden. Der ursprüngliche Decoder nutzt zusätzlich <i lang="en">cross-attention</i> auf die Encoder-Ausgaben und maskiert bei der Self-Attention spätere Zielpositionen. Beim schrittweisen Erzeugen hängt die nächste Ausgabe deshalb von den bisher erzeugten Elementen ab. Bei dichter Self-Attention wächst die Zahl der Paarvergleiche mit dem Quadrat der Sequenzlänge. Bei der Modellwahl zählen daher sowohl weitreichende Beziehungen als auch Sequenzlänge, Speicher und Laufzeit. <a href="https://arxiv.org/abs/1706.03762" lang="en">Vaswani et al. (2017), Attention Is All You Need</a></p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>CNNs nutzen lokale Nachbarschaft und wiederkehrende Muster über gemeinsam verwendete Filter.</li>
+                <li>RNNs verarbeiten Folgen mit einem fortlaufenden Zustand. LSTMs können länger relevante Information bewahren.</li>
+                <li>Attention verknüpft Elemente abhängig von ihrem Inhalt. Vergleiche den Nutzen mit dem Aufwand für die tatsächliche Sequenzlänge.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Du willst in einem langen Text entscheiden, auf welche frühere Textstelle sich ein Ausdruck bezieht. Was spricht hier für Attention und was musst du bei der Modellwahl prüfen?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Attention erlaubt einen direkten, inhaltsabhängigen Zugriff auf entfernte Positionen. Prüfe, wie viel Kontext das Modell unter deinem Speicher- und Laufzeitbudget verarbeiten kann. Bei dichter Self-Attention wächst die Anzahl betrachteter Positionspaare quadratisch mit der Länge.</p>
+              </details>
+              <h3>Im Skript nachlesen</h3>
+              <p class="script-reference">Kapitel 15, §§ 15.2–15.3 (S. 436–456) zu RNNs und LSTMs, §§ 15.4–15.5 (S. 457–471 und Fortsetzung auf S. 472) zu Attention und Encoder-Decoder-Modellen sowie § 15.6 (S. 472–482) zu CNNs. Die Transformer-Vertiefung baut auf §§ 15.4–15.5 auf.</p>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./training-planen-und-beurteilen.html">
+              <span>Vorherige Einheit</span>
+              <strong>Training planen und beurteilen</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Deep Learning</strong>
+            </a>
+            <a href="./vortrainierte-modelle.html">
+              <span>Nächste Einheit</span>
+              <strong>Vortrainierte Modelle nutzen</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

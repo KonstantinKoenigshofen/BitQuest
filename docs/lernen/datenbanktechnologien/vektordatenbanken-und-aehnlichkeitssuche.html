@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Wie findet man Datensätze, die einer Anfrage inhaltlich ähneln?">
+  <title>Vektordatenbanken und Ähnlichkeitssuche · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="../softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="../deep-learning/index.html">Deep Learning</a>
+        <a href="./index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Datenbanktechnologien</a>
+          <span aria-current="page">Vektordatenbanken und Ähnlichkeitssuche</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Einheit 9 von 9</p>
+            <h1>Vektordatenbanken und Ähnlichkeitssuche</h1>
+            <p class="hero-intro">Wie findet man Datensätze, die einer Anfrage inhaltlich ähneln?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#embeddings">Wie wird aus einem Datensatz ein suchbarer Vektor?</a></li>
+              <li><a href="#aehnlichkeitsmasse">Was bedeutet Nähe in diesem Raum?</a></li>
+              <li><a href="#nachbarsuche">Wann ist exakte und wann approximative Suche sinnvoll?</a></li>
+              <li><a href="#praxisvergleich">Wie vergleichst du Suchqualität, Speicher und Laufzeit?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="embeddings" tabindex="-1">Wie wird aus einem Datensatz ein suchbarer Vektor?</h2>
+              <p>Ein <strong>Embedding</strong> stellt etwa einen Text, ein Bild oder ein Produkt als Zahlenvektor dar. Das Modell bestimmt, welche Gemeinsamkeiten nahe Vektoren ergeben. Für die Suche erzeugst du Vektoren für die Datensätze und für die Anfrage im selben Repräsentationsraum. Bei einer Dokumentensuche können zum Beispiel Abschnitte statt ganzer Dateien die Suche präziser machen.</p>
+              <p>Wenn sich das Einbettungsmodell ändert, prüfe die Kompatibilität der Vektoren. Vektoren aus unterschiedlichen Räumen sind selbst bei gleicher Länge oft nicht sinnvoll vergleichbar. Die Lernseite zu <a href="../deep-learning/datenaufbereitung-und-repraesentationen.html#kategorien">gelernten Repräsentationen und Embeddings</a> erklärt, wie solche Vektoren entstehen.</p>
+            </section>
+            <section>
+              <h2 id="aehnlichkeitsmasse" tabindex="-1">Was bedeutet Nähe in diesem Raum?</h2>
+              <p>Die <strong>Kosinusähnlichkeit</strong> vergleicht die Richtung zweier Vektoren und ignoriert ihre Länge. Die <strong>euklidische Distanz</strong> misst den geraden Abstand und berücksichtigt die Längen. Das <strong>Skalarprodukt</strong> kann durch große Vektorlängen steigen. Sind Vektoren auf Länge eins normiert, erzeugen Kosinusähnlichkeit, Skalarprodukt und euklidische Distanz dieselbe Rangfolge, wenn du jeweils in die passende Richtung sortierst.</p>
+              <p>Verwende ein Maß, das zur Repräsentation passt und vom Index unterstützt wird. Prüfe an echten Anfragen, ob nahe Treffer fachlich relevant sind. Die <a href="../deep-learning/datenaufbereitung-und-repraesentationen.html#kosinusaehnlichkeit">Formel zur Kosinusähnlichkeit</a> steht in der Deep-Learning-Einheit.</p>
+            </section>
+            <section>
+              <h2 id="nachbarsuche" tabindex="-1">Wann ist exakte und wann approximative Suche sinnvoll?</h2>
+              <p>Die <strong>exakte Nachbarsuche</strong> (<i lang="en">exact nearest-neighbor search</i>) liefert zu einem gegebenen Maß die tatsächlich nächsten <var>k</var> Datensätze. Ein einfacher Referenzansatz berechnet die Distanz zu jedem infrage kommenden Vektor. Für kleine oder stark vorgefilterte Bestände kann das ausreichen und liefert einen Maßstab für weitere Vergleiche.</p>
+              <p>Die <strong>approximative Nachbarsuche</strong> (<i lang="en">approximate nearest-neighbor search</i>, ANN) prüft gezielt einen Teil der Kandidaten. Ein Graphindex wie HNSW (<i lang="en">hierarchical navigable small world</i>) gelangt über Verbindungen zwischen Vektoren schrittweise zu Nachbarn. Dadurch können Antworten schneller sein und dennoch einen Teil der exakten Treffer verfehlen. Der Index belegt zusätzlich Speicher und kostet Zeit beim Aufbau und bei Änderungen. <a href="https://arxiv.org/abs/1603.09320">Malkov und Yashunin, HNSW-Originalarbeit</a></p>
+            </section>
+            <section>
+              <h2 id="praxisvergleich" tabindex="-1">Wie vergleichst du Suchqualität, Speicher und Laufzeit?</h2>
+              <p>Baue einen Vergleich aus realistischen Anfragen und einer exakten Referenz. Wenn acht der zehn exakten Nachbarn in der approximativen Top-10 auftauchen, beträgt <strong>Recall@10</strong> 80 Prozent. Das misst die Übereinstimmung mit der exakten Vektorsuche. Die fachliche Relevanz für Nutzer prüfst du zusätzlich anhand bewerteter Treffer oder eines Anwendungstests.</p>
+              <p>Miss die Antwortzeiten unter erwarteter Last sowie den Speicherbedarf für Vektoren und Index. Ein größeres Suchbudget kann mehr exakte Treffer finden und die Laufzeit erhöhen. Prüfe auch Filter wie Sprache oder Dokumenttyp. Filterst du erst nach der Suche, können weniger als <var>k</var> Treffer übrig bleiben. Bei einem stark einschränkenden Filter kann sich die exakte Suche auf der gefilterten Menge lohnen.</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Einbettungsmodell und Distanzmaß legen fest, was die Suche als ähnlich einstuft.</li>
+                <li>Die exakte Suche ist die Referenz für die Treffergüte eines approximativen Index.</li>
+                <li>Miss fachliche Relevanz, Recall, Antwortzeit und Speicher unter passenden Einsatzbedingungen.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Ein ANN-Index liefert schnell Ergebnisse, nach dem Filter „nur deutsche Dokumente“ bleiben aber nur zwei Treffer übrig. Wie kannst du prüfen, ob die Suche geeignete Treffer verpasst?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Filtere den Bestand zuerst auf deutsche Dokumente und berechne darin für einige repräsentative Anfragen die exakten nächsten Nachbarn. Vergleiche diese Referenz mit den Ergebnissen des Index. Bei einer kleinen gefilterten Menge kann die exakte Suche ausreichen. Sonst kannst du eine filterbewusste Suche oder ein größeres Suchbudget messen.</p>
+              </details>
+              <h3>In den Unterlagen nachlesen</h3>
+              <p class="script-reference">Modulskript <cite>Datenbanktechnologien</cite>, Kap. 9 „Exkurs: Vektordatenbanken“ (S. 157–162), zu Embeddings, Ähnlichkeitsmaßen, Indexverfahren und der Kombination mit Filtern.</p>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./nosql-und-systemwahl.html">
+              <span>Vorherige Einheit</span>
+              <strong>NoSQL und die Auswahl eines Datenbanksystems</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Datenbanktechnologien</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

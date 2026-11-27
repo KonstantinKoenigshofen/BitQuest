@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Wie wird aus einer fachlichen Frage eine korrekte Abfrage?">
+  <title>Relationale Grundlagen und SQL · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="../softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="../deep-learning/index.html">Deep Learning</a>
+        <a href="./index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Datenbanktechnologien</a>
+          <span aria-current="page">Relationale Grundlagen und SQL</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Einheit 1 von 9</p>
+            <h1>Relationale Grundlagen und SQL</h1>
+            <p class="hero-intro">Wie wird aus einer fachlichen Frage eine korrekte Abfrage?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#tabellen-und-schluessel">Wie bildet eine Tabelle einen fachlichen Sachverhalt ab?</a></li>
+              <li><a href="#algebra-und-sql">Wie übersetzt du eine Frage in SQL?</a></li>
+              <li><a href="#null">Was bedeutet NULL für Filter und Aggregate?</a></li>
+              <li><a href="#join-vervielfachung">Warum kann ein Join eine Summe verfälschen?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="tabellen-und-schluessel" tabindex="-1">Wie bildet eine Tabelle einen fachlichen Sachverhalt ab?</h2>
+              <p>Eine <strong>Tabelle</strong> modelliert eine Menge gleichartiger Sachverhalte. Spalten beschreiben Attribute mit einem Datentyp. Eine Zeile beschreibt einen konkreten Fall. Lege zuerst fest, wofür eine Zeile steht. In <code>rechnung</code> kann sie eine Rechnung sein, in <code>position</code> eine einzelne Rechnungsposition.</p>
+              <p>Ein <strong>Primärschlüssel</strong> (<i lang="en">primary key</i>) identifiziert jede Zeile eindeutig und besteht aus einer oder mehreren Spalten ohne <code>NULL</code>. Ein <strong>Fremdschlüssel</strong> (<i lang="en">foreign key</i>) verweist auf einen eindeutigen Schlüssel in derselben oder einer anderen Tabelle. Mehrere Positionen dürfen dabei dieselbe Rechnungsnummer referenzieren. Diese Kardinalität bestimmt, wie viele Treffer ein Join liefern kann.</p>
+            </section>
+            <section>
+              <h2 id="algebra-und-sql" tabindex="-1">Wie übersetzt du eine Frage in SQL?</h2>
+              <p>Die <strong>relationale Algebra</strong> beschreibt Operationen, die aus Relationen neue Relationen bilden. <strong>Selektion</strong> filtert Zeilen, <strong>Projektion</strong> wählt Attribute, und ein <strong>Verbund</strong> (<i lang="en">join</i>) verknüpft passende Zeilen. Vereinigung, Schnitt und Differenz kombinieren Relationen mit passenden Attributen. In der klassischen Algebra sind Relationen Mengen. SQL kann gleiche Ergebniszeilen mehrfach liefern, bis du beispielsweise mit <code>DISTINCT</code> Duplikate entfernst.</p>
+              <p>SQL ändert auch Struktur und Inhalt. <code>CREATE TABLE</code>, <code>ALTER TABLE</code> und <code>DROP TABLE</code> gehören zur Schemadefinition (<i lang="en">data definition language</i>, DDL). <code>INSERT</code>, <code>UPDATE</code> und <code>DELETE</code> ändern Daten (<i lang="en">data manipulation language</i>, DML). Prüfe bei <code>UPDATE</code> und <code>DELETE</code> die <code>WHERE</code>-Bedingung, denn sie bestimmt die betroffenen Zeilen.</p>
+              <p>Mit <code>SELECT</code> fragst du Daten ab. Wie viel wurde je Rechnung berechnet? <code>FROM</code> und <code>JOIN</code> bestimmen die Zeilenbasis. <code>WHERE</code> filtert vor dem Gruppieren. <code>GROUP BY</code> fasst Zeilen zu Gruppen zusammen, <code>SUM</code> summiert Werte darin, und <code>HAVING</code> kann ganze Gruppen filtern.</p>
+              <pre><code>SELECT r.id, SUM(p.betrag) AS summe
+FROM rechnung AS r
+JOIN position AS p ON p.rechnung_id = r.id
+GROUP BY r.id;</code></pre>
+              <p>Ein <code>INNER JOIN</code> liefert nur passende Paare. Ein <code>LEFT JOIN</code> erhält zusätzlich linke Zeilen ohne Treffer. Ihre rechten Spalten enthalten <code>NULL</code>. Eine anschließende Bedingung wie <code>WHERE p.betrag &gt; 0</code> entfernt diese Zeilen wieder. Wenn du sie behalten willst, gehört die Eingrenzung der rechten Treffer in diesem Beispiel in die <code>ON</code>-Bedingung.</p>
+            </section>
+            <section>
+              <h2 id="null" tabindex="-1">Was bedeutet NULL für Filter und Aggregate?</h2>
+              <p><code>NULL</code> kennzeichnet einen fehlenden oder unbekannten Wert. In der <strong>dreiwertigen Logik</strong> kann eine Bedingung wahr, falsch oder unbekannt sein. <code>betrag = NULL</code> ist unbekannt. Auch die Negation eines unbekannten Ergebnisses bleibt unbekannt. <code>WHERE</code> behält nur Zeilen mit wahrer Bedingung. Verwende <code>IS NULL</code> und <code>IS NOT NULL</code>, um auf fehlende Werte zu prüfen.</p>
+              <p><code>COUNT(*)</code> zählt alle Zeilen seiner Gruppe, <code>COUNT(betrag)</code> nur die mit einem vorhandenen Betrag. <code>SUM(betrag)</code> lässt fehlende Beträge aus und liefert <code>NULL</code>, wenn kein summierbarer Wert vorliegt. Verwende <code>COALESCE</code> nur, wenn die fachliche Bedeutung des gewählten Ersatzwerts klar ist.</p>
+            </section>
+            <section>
+              <h2 id="join-vervielfachung" tabindex="-1">Warum kann ein Join eine Summe verfälschen?</h2>
+              <p>Hat eine Rechnung zwei Positionen über 30 und 20 Euro sowie zwei Zahlungen, erzeugt ein Join beider Detailtabellen über die Rechnungs-ID vier Paare. Jede Position erscheint zweimal. Die Summe der Positionen wird dadurch 100 statt 50 Euro. <code>SUM(DISTINCT betrag)</code> würde zwar gleiche Beträge zusammenfassen, aber auch zwei tatsächlich verschiedene Positionen mit demselben Betrag nur einmal zählen.</p>
+              <p>Lege fest, welche Einheit du zählen oder summieren willst. Für Positionen und Zahlungen pro Rechnung aggregierst du jede Detailtabelle separat auf eine Zeile je Rechnung. Anschließend verbindest du die beiden Ergebnisse. Prüfe bei unerwarteten Totals an wenigen bekannten Schlüsseln, wie oft sie vor und nach dem Join auftreten.</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Definiere zuerst, wofür eine Zeile im Ergebnis steht.</li>
+                <li>WHERE filtert Zeilen, GROUP BY bildet Gruppen und HAVING filtert Gruppen.</li>
+                <li>Joins können Zeilen vervielfachen. Unbekannte Filterergebnisse fallen bei WHERE heraus.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Eine Rechnung enthält drei Positionen und zwei Zahlungen. Wie oft erscheint jede Position, wenn du beide Detailtabellen über die Rechnungs-ID verbindest, und wie erhältst du beide Summen korrekt?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Jede Position erscheint zweimal, einmal je Zahlung. Der Join bildet sechs Paare. Aggregiere Positionen und Zahlungen getrennt nach Rechnungs-ID und verbinde erst die beiden Summen. So gehen die ursprünglichen Beträge jeweils genau einmal ein.</p>
+              </details>
+              <h3>In den Unterlagen nachlesen</h3>
+              <p class="script-reference">Modulskript <cite>Datenbanktechnologien</cite>, Kap. 4 und §§ 5.1–5.2 (S. 13–22), zu Relationen, Algebra, NULL und Aggregation. §§ 5.3.3–5.3.5 (S. 24–31) behandeln DDL, DML und Schlüssel.</p>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Datenbanktechnologien</strong>
+            </a>
+            <a href="./datenmodellierung-und-integritaet.html">
+              <span>Nächste Einheit</span>
+              <strong>Datenmodellierung und Integrität</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

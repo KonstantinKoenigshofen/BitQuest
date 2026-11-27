@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6f8">
+  <meta name="description" content="Welche Regeln gehören in die Datenbank, und was muss die Anwendung beim Zugriff beachten?">
+  <title>Datenbanken in Anwendung und Betrieb · BitQuest</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../styles.css?v=11">
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="BitQuest">
+      <a class="wordmark" href="../../index.html">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>BitQuest
+      </a>
+      <nav class="topic-nav" aria-label="Themenbereiche">
+        <a href="../softwarearchitektur/index.html">Softwarearchitektur</a>
+        <a href="../deep-learning/index.html">Deep Learning</a>
+        <a href="./index.html">Datenbanktechnologien</a>
+      </nav>
+    </aside>
+    <div class="workspace">
+      <header class="toolbar">
+        <nav class="breadcrumbs" aria-label="Pfadnavigation">
+          <a href="../../index.html">Startseite</a>
+          <a href="./index.html">Datenbanktechnologien</a>
+          <span aria-current="page">Datenbanken in Anwendung und Betrieb</span>
+        </nav>
+      </header>
+      <main class="content" id="inhalt" tabindex="-1">
+        <header class="hero">
+          <div>
+            <p class="lesson-position">Einheit 5 von 9</p>
+            <h1>Datenbanken in Anwendung und Betrieb</h1>
+            <p class="hero-intro">Welche Regeln gehören in die Datenbank, und was muss die Anwendung beim Zugriff beachten?</p>
+          </div>
+        </header>
+        <div class="lesson-layout">
+          <nav class="lesson-toc" aria-labelledby="auf-dieser-seite">
+            <h2 id="auf-dieser-seite">Auf dieser Seite</h2>
+            <ul>
+              <li><a href="#logik-in-der-datenbank">Welche Logik hat ihren Platz in der Datenbank?</a></li>
+              <li><a href="#anwendungszugriff">Was übernimmt die Anwendung beim Datenbankzugriff?</a></li>
+              <li><a href="#migrationen">Wie änderst du ein Schema im laufenden Betrieb?</a></li>
+              <li><a href="#rechte-und-datenschutz">Wer darf welche Daten wofür sehen oder ändern?</a></li>
+              <li><a href="#backup-und-restore">Woran erkennst du, ob eine Sicherung brauchbar ist?</a></li>
+              <li><a href="#merksaetze-und-verstaendnisfrage">Merksätze und Verständnisfrage</a></li>
+            </ul>
+          </nav>
+          <article class="lesson-body">
+            <section>
+              <h2 id="logik-in-der-datenbank" tabindex="-1">Welche Logik hat ihren Platz in der Datenbank?</h2>
+              <p>Fachliche Regeln, die für alle schreibenden Programme gelten, sind im Schema gut aufgehoben. Eine Eindeutigkeitsbedingung schützt zum Beispiel auch beim Import und bei parallelen Zugriffen. Die Anwendung kann zusätzlich früh verständliche Fehlermeldungen geben. Wenn eine Regel als Constraint ausdrückbar ist, bleibt sie für künftige Datenbankzugriffe direkt sichtbar.</p>
+              <dl>
+                <dt>Sicht (<i lang="en">view</i>)</dt><dd>Eine benannte Abfrage stellt Spalten und Zeilen in einer gewünschten Form bereit. Sie kann eine stabile Leseschnittstelle oder eingeschränkte Sicht auf Daten bilden. Eine gewöhnliche View wird abgefragt, indem ihre zugrunde liegende Abfrage berücksichtigt wird. Eine materialisierte Sicht speichert ein Ergebnis, das nach einer festgelegten Strategie aktualisiert wird.</dd>
+                <dt>Sequenz (<i lang="en">sequence</i>)</dt><dd>Sie vergibt fortlaufend erzeugte Werte, etwa für technische Schlüssel. Lücken, etwa nach Abbrüchen, sind möglich. Prüfe eine fachliche Vorgabe nach lückenloser Nummerierung gesondert.</dd>
+                <dt>Trigger</dt><dd>Eine Datenbankroutine reagiert automatisch auf ein Ereignis wie <code>INSERT</code> oder <code>UPDATE</code>. Das eignet sich etwa für eine Änderungsprotokollierung. Berücksichtige indirekte Effekte bei Tests und Fehlersuche.</dd>
+                <dt>Gespeicherte Prozedur (<i lang="en">stored procedure</i>)</dt><dd>Ein explizit aufrufbarer Ablauf in der Datenbank bündelt mehrere Operationen. Das kann mehreren Anwendungen denselben Ablauf bereitstellen. Syntax, Transaktionsmöglichkeiten und Portabilität hängen vom System ab.</dd>
+              </dl>
+            </section>
+            <section>
+              <h2 id="anwendungszugriff" tabindex="-1">Was übernimmt die Anwendung beim Datenbankzugriff?</h2>
+              <p>Die <strong>objektrelationale Abbildung</strong> (<i lang="en">object–relational mapping</i>, ORM) übersetzt zwischen Objektstrukturen und Tabellen. Ein ORM kann damit SQL aus Objektoperationen erzeugen. Kontrolliere die erzeugten Abfragen, etwa wenn zunächst eine Liste geladen wird und anschließend pro Objekt eine weitere Abfrage folgt (<i lang="en">N+1 query problem</i>). Wähle die Ladeform nach benötigten Daten und erwarteter Anzahl.</p>
+              <p>Die Anwendung entscheidet, welche Operationen gemeinsam bestätigt werden. Achte darauf, dass sie dieselbe Verbindung und Transaktionsgrenze verwenden. Übergebe Eingabewerte als gebundene Parameter und ordne Datenbankfehler fachlich ein. Eine Eindeutigkeitsverletzung kann etwa bedeuten, dass eine andere Anfrage denselben Schlüssel zuerst belegt hat.</p>
+            </section>
+            <section>
+              <h2 id="migrationen" tabindex="-1">Wie änderst du ein Schema im laufenden Betrieb?</h2>
+              <p>Schemamigrationen sind versionierte Änderungen an Struktur und Daten. Wenn alte und neue Anwendungsstände gleichzeitig laufen können, ergänze zunächst kompatible Strukturen. Befülle zum Beispiel eine neue Spalte schrittweise und achte darauf, dass laufende Schreibvorgänge die neuen Daten ebenfalls korrekt halten. Stelle die Anwendung um und entferne die alte Spalte erst, wenn keine laufende Version sie mehr braucht.</p>
+              <p>Prüfe vorab mit realistischen Datenmengen die Dauer, Sperrwirkungen und die Integrität nach der Umstellung. Bei einem Rückweg muss die alte Anwendung auch mit bereits geschriebenen neuen Daten zurechtkommen. Plane bei destruktiven Änderungen eine getestete Wiederherstellung oder einen Weg zur Korrektur im neuen Stand.</p>
+            </section>
+            <section>
+              <h2 id="rechte-und-datenschutz" tabindex="-1">Wer darf welche Daten wofür sehen oder ändern?</h2>
+              <p>Vergib Rechte an Rollen nach ihren Aufgaben. Eine Auswertungsrolle braucht etwa Leserechte auf eine begrenzte Sicht. Die Anwendungsrolle braucht normalerweise keine Rechte, Tabellen zu löschen. Für Migrationen kannst du eine eigene Rolle verwenden. Prüfe Zugriffsrechte auch für Sicherungen, Protokolle und Datenexporte.</p>
+              <p>Speichere personenbezogene Daten nur für einen festgelegten Zweck und nur im benötigten Umfang. Bestimme, wann sie gelöscht werden und wie du Testsysteme, Exporte und Sicherungskopien behandelst. Trenne nach Möglichkeit Daten, die Personen identifizieren, von breiter genutzten Auswertungsdaten.</p>
+            </section>
+            <section>
+              <h2 id="backup-und-restore" tabindex="-1">Woran erkennst du, ob eine Sicherung brauchbar ist?</h2>
+              <p>Ein <strong>Backup</strong> ist eine Kopie für die Wiederherstellung. Ein <strong>Restore</strong> stellt Daten aus ihr wieder bereit. Unterstützt das System eine zeitpunktgenaue Wiederherstellung (<i lang="en">point-in-time recovery</i>), kannst du eine Basissicherung und passende Protokolle bis zu einem gewählten Zeitpunkt einspielen. So lässt sich zum Beispiel der Stand unmittelbar vor einem fehlerhaften Löschvorgang wiederherstellen.</p>
+              <p>Lege fest, wie viel Datenverlust vertretbar ist und wie lange ein Ausfall dauern darf. Teste in einer getrennten Umgebung, ob Daten vollständig lesbar sind, die Anwendung damit startet und die Wiederherstellung in der vorgesehenen Zeit gelingt.</p>
+            </section>
+            <section>
+              <h2 id="merksaetze-und-verstaendnisfrage" tabindex="-1">Merksätze</h2>
+              <ul>
+                <li>Constraints schützen zentrale Regeln für alle Zugriffswege.</li>
+                <li>Anwendungen steuern Transaktionsgrenzen und sollten die tatsächlich ausgeführten Abfragen kennen.</li>
+                <li>Versioniere Migrationen, vergib Rechte nach Aufgaben und teste Wiederherstellung mit realistischen Daten.</li>
+              </ul>
+              <h3>Verständnisfrage</h3>
+              <p>Eine selten genutzte Spalte soll entfernt werden, während zwei Anwendungsversionen parallel laufen. Wie gehst du vor?</p>
+              <details>
+                <summary>Musterantwort</summary>
+                <p>Prüfe Abhängigkeiten in Anwendung, Sichten und Abfragen. Entferne die Nutzung zuerst in einer neuen, noch kompatiblen Version und warte, bis sämtliche älteren Instanzen und Verbraucher umgestellt sind. Entferne die Spalte in einer separaten Migration mit geprüftem Wiederherstellungs- oder Korrekturweg. Dadurch können alte Instanzen die Spalte bis zu ihrer Ablösung weiter lesen.</p>
+              </details>
+              <h3>In den Unterlagen nachlesen</h3>
+              <p class="script-reference">Modulskript <cite>Datenbanktechnologien</cite>, §§ 5.8.1, 5.8.3–5.8.6 und 5.8.11 (S. 65–66, 72–78 und 80–81), zu Views, Sequenzen, Triggern, Constraints, Prozeduren und Rechten. §§ 5.9–5.10 (S. 81–87) behandeln Migration, Betrieb und Datenschutz.</p>
+              <p class="script-reference">Modulskript <cite>Datenbanktechnologien</cite>, §§ 10.1–10.2 (S. 163–165) zur Anwendungsanbindung und § 10.4.3.2 (S. 187–188) zur objektrelationalen Abbildung.</p>
+            </section>
+          </article>
+          <nav class="lesson-nav" aria-label="Lernreihenfolge">
+            <a href="./transaktionen-und-nebenlaeufigkeit.html">
+              <span>Vorherige Einheit</span>
+              <strong>Transaktionen und gleichzeitige Zugriffe</strong>
+            </a>
+            <a href="./index.html">
+              <span>Zur Übersicht</span>
+              <strong>Datenbanktechnologien</strong>
+            </a>
+            <a href="./data-warehousing.html">
+              <span>Nächste Einheit</span>
+              <strong>Data Warehousing und analytische Abfragen</strong>
+            </a>
+          </nav>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
